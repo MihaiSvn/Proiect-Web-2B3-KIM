@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /kim/
+
+# conditie astfel incat sa nu trimitem spre index.php fisiere reale de pe disc, adica daca am un logo.png nu e nevoie de reidretionat la index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ index.php [QSA,L]
+#orice dupa /kim/ este prins si redirectionat la index.php
+# QSA- query string append pastreaza parametrii GET existenti in url
+# L spune ca e ultima regula de rewrite
