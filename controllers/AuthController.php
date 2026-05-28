@@ -40,7 +40,7 @@ class AuthController
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
         try{
-            $user = $this->userService->authenticate($email, $password);
+            $user = $this->userService->authenticate($email, $password); //authenticate va returna assoc array cu user daca e bun
 
             $_SESSION['user_id'] = $user->id;
             $_SESSION['user_name'] = $user->first_name . " " . $user->last_name;
