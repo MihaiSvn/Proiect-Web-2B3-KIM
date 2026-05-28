@@ -1,11 +1,12 @@
 
 INSERT INTO USERS (first_name, last_name, email, password_hash, role) VALUES 
-('Super', 'Admin', 'admin@kim.com', 'hash_12345', 'admin'),
-('Alex', 'Smith', 'alex@kim.com', 'hash_12345', 'trainer'),
-('Maria', 'Johnson', 'maria@kim.com', 'hash_12345', 'trainer'),
-('John', 'Client', 'john@kim.com', 'hash_12345', 'member'),
-('Anna', 'Davis', 'anna@kim.com', 'hash_12345', 'member'),
-('William', 'Test', 'william@kim.com', 'hash_12345', 'member');
+-- TOATE PAROLELE NEHASHUITE SUNT hash_12345
+('Super', 'Admin', 'admin@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'admin'),
+('Alex', 'Smith', 'alex@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+('Maria', 'Johnson', 'maria@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+('John', 'Client', 'john@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+('Anna', 'Davis', 'anna@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+('William', 'Test', 'william@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member');
 
 INSERT INTO TRAINERS (user_id, specialization, bio, work_schedule) VALUES 
 (2, 'fitness', 'Personal trainer with 5 years of experience in hypertrophy.', 'Mon-Fri: 08:00 - 16:00'),
