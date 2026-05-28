@@ -24,6 +24,12 @@ class AuthController
         try {
             $this->userService->createUser($first_name, $last_name, $email, $password, $role);
 
+            $user = $this->userService->getUserByEmail($email);
+
+            $_SESSION['user_id'] = $user->id;
+            $_SESSION['user_name'] = $user->first_name . " " . $user->last_name;
+            $_SESSION['user_role'] = $user->role;
+
             header('Location: /kim/home');
             exit;
         } catch (\Exception $ex) {
@@ -40,8 +46,7 @@ class AuthController
         $password = isset($_POST['password']) ? $_POST['password'] : '';
 
         try{
-            $user = $this->userService->authenticate($email, $password); //authenticate va returna assoc array cu user daca e bun
-
+            $user = $this->userService->authenticate($email, $password); //authenticate va returna un obiect cu user daca e bun
             $_SESSION['user_id'] = $user->id;
             $_SESSION['user_name'] = $user->first_name . " " . $user->last_name;
             $_SESSION['user_role'] = $user->role;
