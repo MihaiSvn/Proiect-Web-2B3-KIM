@@ -42,7 +42,7 @@ class UserService
         }
 
         $user = User::findByEmail($email);
-
+        
         if (!$user || !password_verify($password, $user->password_hash)) {
             throw new \Exception("Invalid email or password");
         }
