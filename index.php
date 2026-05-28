@@ -1,10 +1,14 @@
 <?php
-require_once 'includes/Router.php';
+session_start();
+require_once 'core/Router.php';
+require_once 'config/database.php';
 
 $router = new Router();
 
-$router->get('/login','pages/login.php');
-$router->get('/home','pages/home.php');
+$router->get('/login','views/login.php');
+$router->get('/home','views/home.php');
+
+$router->get('/test','config/test_db.php');
 
 $router->resolve();
 ?>

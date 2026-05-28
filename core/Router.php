@@ -51,7 +51,7 @@ class Router
         } else {
             http_response_code(404);
 
-            require 'pages/404.php';
+            require 'views/404.php';
         }
 
     }
