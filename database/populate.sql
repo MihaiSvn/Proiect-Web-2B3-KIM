@@ -1,11 +1,11 @@
 
-INSERT INTO USERS (first_name, last_name, email, password_hash, role, phone, birth_date) VALUES 
-('Super', 'Admin', 'admin@kim.com', 'hash_12345', 'admin', '0700000000', '1985-10-15'),
-('Alex', 'Smith', 'alex@kim.com', 'hash_12345', 'trainer', '0711111111', '1992-05-20'),
-('Maria', 'Johnson', 'maria@kim.com', 'hash_12345', 'trainer', '0722222222', '1994-08-10'),
-('John', 'Client', 'john@kim.com', 'hash_12345', 'member', '0733333333', '1998-02-25'),
-('Anna', 'Davis', 'anna@kim.com', 'hash_12345', 'member', '0744444444', '1995-11-30'),
-('William', 'Test', 'william@kim.com', 'hash_12345', 'member', '0755555555', '1990-04-12');
+INSERT INTO USERS (first_name, last_name, email, password_hash, role) VALUES 
+('Super', 'Admin', 'admin@kim.com', 'hash_12345', 'admin'),
+('Alex', 'Smith', 'alex@kim.com', 'hash_12345', 'trainer'),
+('Maria', 'Johnson', 'maria@kim.com', 'hash_12345', 'trainer'),
+('John', 'Client', 'john@kim.com', 'hash_12345', 'member'),
+('Anna', 'Davis', 'anna@kim.com', 'hash_12345', 'member'),
+('William', 'Test', 'william@kim.com', 'hash_12345', 'member');
 
 INSERT INTO TRAINERS (user_id, specialization, bio, work_schedule) VALUES 
 (2, 'fitness', 'Personal trainer with 5 years of experience in hypertrophy.', 'Mon-Fri: 08:00 - 16:00'),

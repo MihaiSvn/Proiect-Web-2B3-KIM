@@ -6,7 +6,6 @@ CREATE TABLE USERS (
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('admin', 'trainer', 'member') NOT NULL,
     phone VARCHAR(20),
-    birth_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
