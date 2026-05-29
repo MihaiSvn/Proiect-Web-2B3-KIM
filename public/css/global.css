@@ -1,0 +1,196 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --fitness-dark-color: #2e7ddc; /*used for buy button and colored text*/
+    --fitness-light-color: #e5f1fd; /*used for colored background*/
+
+    --physiotherapy-dark-color: #eb5078;
+    --physiotherapy-light-color: #fee5e9;
+
+    --mixed-dark-color: #7b3dba;
+    --mixed-light-color: #f1e5fb;
+}
+
+.theme-fitness {
+    --card-dark: var(--fitness-dark-color);
+    --card-light: var(--fitness-light-color);
+}
+
+.theme-physiotherapy {
+    --card-dark: var(--physiotherapy-dark-color);
+    --card-light: var(--physiotherapy-light-color);
+}
+
+.theme-mixed {
+    --card-dark: var(--mixed-dark-color);
+    --card-light: var(--mixed-light-color);
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+/* FORMURI SI POPUP */
+
+.popup__hidden{
+    display: none !important;
+}
+.popup__overlay { /*efectl de blur si focus de la un popup*/
+    position: fixed; /* ingheta pe ecram chiar daca dai scroll */
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% din ecran */
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup_window {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.popup__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.popup__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.popup__closebutton {
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.popup__header button:hover {
+    color: #dc2626;
+}
+
+.form__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form__label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.form__group input {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1f2937;
+    transition: border-color 0.2s ease;
+}
+
+.form__group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.form__body button[type="submit"] {
+    margin-top: 10px;
+    padding: 12px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.form__body button[type="submit"]:hover {
+    background-color: #2563eb;
+}
+
+
+
+/* ALERTE */
+
+/* Containerul pentru alerte */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    animation: slideIn 0.3s ease-out forwards;
+/*    forwards adica ramane in acea stare dupa ce se termina animatia*/
+}
+
+.alert__success {
+    background-color: #2e7d32;
+}
+
+.alert__error {
+    background-color: #c62828;
+}
+
+.alert__close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+@keyframes slideIn {
+    /*from: cum elementul sta in dreapta sus, x 100% il va impinge inafara ecranilui, iar opacity 0*/
+    from { transform: translateX(100%); opacity: 0; }
+    /* x 0 revine pe ecran si devine opac */
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.alert__hidden {
+    display: none !important;
+}

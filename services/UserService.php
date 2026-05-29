@@ -9,6 +9,10 @@ class UserService
         return User::findByEmail($email);
     }
 
+    public function getUserById($id){
+        return User::findById($id);
+    }
+
     public function createUser($first_name, $last_name, $email, $password, $role){
 
         if (empty($first_name) || empty($last_name) || empty($email) || empty($password)) {
