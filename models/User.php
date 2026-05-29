@@ -36,5 +36,14 @@ class User
         return $stmt->fetch(); //associative array sau false
     }
 
+    public static function findById($id){
+        global $pdo;
+        $sql = "SELECT * FROM USERS WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
 
 }

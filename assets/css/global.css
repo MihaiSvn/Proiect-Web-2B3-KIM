@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --fitness-dark-color: #2e7ddc; /*used for buy button and colored text*/
+    --fitness-light-color: #e5f1fd; /*used for colored background*/
+
+    --physiotherapy-dark-color: #eb5078;
+    --physiotherapy-light-color: #fee5e9;
+
+    --mixed-dark-color: #7b3dba;
+    --mixed-light-color: #f1e5fb;
+}
+
+.theme-fitness {
+    --card-dark: var(--fitness-dark-color);
+    --card-light: var(--fitness-light-color);
+}
+
+.theme-physiotherapy {
+    --card-dark: var(--physiotherapy-dark-color);
+    --card-light: var(--physiotherapy-light-color);
+}
+
+.theme-mixed {
+    --card-dark: var(--mixed-dark-color);
+    --card-light: var(--mixed-light-color);
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
