@@ -1,6 +1,7 @@
 <?php
 /**
  * @var object $subscription //venit din profile.php, are toate informatiile despre un abonament, venit din foreach activeSubscriptions
+ * la fiecare profile subscription card trebuie sa generezi si popup-ul (vezi popup.php)
  */
 ?>
 
@@ -50,9 +51,13 @@ $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 
                 left: <?= $suspending_days_left ?></p>
         </div>
 
-        <button class="subscription__button" <?php if ($suspending_days_left <= 0): ?>disabled<?php endif; ?>>
+<!--        data-target = popupOverlay_id pentru a putea sa gasesc popup-ul specific in js-->
+        <button class="subscription__button js-open-popup"
+                data-target="popupOverlay_<?= $subscription->id ?>"
+                <?php if ($suspending_days_left <= 0): ?>disabled<?php endif; ?>>
             <i class="fa-solid fa-pause"></i>
             Suspend subscription
         </button>
     </div>
+
 </div>

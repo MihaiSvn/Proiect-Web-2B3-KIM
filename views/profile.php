@@ -14,8 +14,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/kim/assets/css/global.css">
-    <link rel="stylesheet" href="/kim/assets/css/profile_subscriptions.css">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
+    <link rel="stylesheet" href="/kim/public/css/profile_subscriptions.css">
+    <script src="/kim/public/js/popup.js" defer></script>
+    <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
 <body>
 <div class="profile__card">
@@ -51,13 +53,38 @@
         <?php if (empty($activeSubscriptions)): ?>
             No active subscriptions
         <?php else: ?>
-        <div class="subscription__grid">
-            <?php foreach ($activeSubscriptions as $subscription): ?>
+            <div class="subscription__grid">
+                <?php foreach ($activeSubscriptions as $subscription): ?>
 
-                <?php include 'components/profile_subscription_card.php'; ?>
+                    <?php include 'components/profile_subscription_card.php'; ?>
 
-            <?php endforeach; ?>
-        </div>
+                    <?php
+                    $title = 'Suspend ' . htmlspecialchars($subscription->subscription_name);
+                    $submit = 'Confirm Suspend';
+                    $action = '/kim/subscription/suspend';
+
+                    require_once __DIR__ . '/../classes/FormField.php';
+
+                    $formBody = [
+                            new FormField(
+                                    'Days to suspend',
+                                    'suspend_days',
+                                    'number',
+                                    true,
+                                    '1',
+                                    '',
+                                    1,
+                                    $subscription->suspending_days_left
+                            )
+                    ];
+
+                    $popupId = 'popupOverlay_' . $subscription->id; //pt a o putea gasi in js
+
+                    include 'components/popup.php';
+                    ?>
+
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
 
     </div>
