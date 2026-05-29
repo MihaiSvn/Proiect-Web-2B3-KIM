@@ -14,12 +14,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/profile_subscriptions.css">
     <script src="/kim/public/js/popup.js" defer></script>
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
 <body>
+
+<?php include 'components/alert.php'; ?>
 <div class="profile__card">
     <h1>Hello,
         <?php echo htmlspecialchars($user->first_name); ?>
@@ -61,7 +63,7 @@
                     <?php
                     $title = 'Suspend ' . htmlspecialchars($subscription->subscription_name);
                     $submit = 'Confirm Suspend';
-                    $action = '/kim/subscription/suspend';
+                    $action = '/kim/subscription/suspend?id=' . $subscription->id;
 
                     require_once __DIR__ . '/../classes/FormField.php';
 
