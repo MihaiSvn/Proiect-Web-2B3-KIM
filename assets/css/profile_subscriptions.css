@@ -1,0 +1,104 @@
+.subscription__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.subscription__card {
+    display: flex;
+    flex-direction: column;
+    /*max-width: 500px;*/
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background: white;
+    font-size: 1.1rem;
+}
+
+.subscription__header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 2px;
+}
+
+.subscription__title,
+.subscription__category,
+.subscription__text {
+    margin: 0;
+}
+
+.subscription__header i {
+    color: var(--card-dark);
+    background: var(--card-light);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.subscription__title {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.subscription__category {
+    color: var(--card-dark);
+    background: var(--card-light);
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.subscription__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 2;
+    padding: 20px;
+    gap: 10px;
+}
+
+.subscription__row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: #3e3e3e;
+    align-items: center;
+}
+
+.subscription__text {
+    color: #3e3e3e;
+}
+
+
+.subscription__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background: white;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+
+}
+
+.subscription__button:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+    cursor: pointer;
+}
+
+.subscription__button:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
