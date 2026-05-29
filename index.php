@@ -13,12 +13,15 @@ require_once 'services/UserSubscriptionsService.php';
 
 require_once 'controllers/AuthController.php';
 require_once 'controllers/ProfileController.php';
+require_once 'controllers/UserSubscriptionController.php';
 
-use controllers\AuthController;
-use models\UserSubscription;
 use services\UserService;
 use services\UserSubscriptionsService;
+
 use controllers\ProfileController;
+use controllers\AuthController;
+use controllers\UserSubscriptionController;
+
 
 $router = new Router();
 
@@ -43,6 +46,12 @@ $router->post('/register', function(){
     $userService = new UserService();
     $authController = new AuthController($userService);
     $authController->register();
+});
+
+$router->post('/subscription/suspend', function(){
+    $userSubscriptionService = new UserSubscriptionsService();
+    $userSubscriptionController = new UserSubscriptionController($userSubscriptionService);
+    $userSubscriptionController->suspend();
 });
 
 

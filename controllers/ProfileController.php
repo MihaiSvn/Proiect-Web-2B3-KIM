@@ -25,6 +25,9 @@ class ProfileController
         $userId = $_SESSION['user_id'];
 
         $user = $this->userService->getUserById($userId);
+
+        $this->userSubscriptionsService->checkAndReactivateSuspensions($userId);
+
         $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
 
         if (!$user) {
