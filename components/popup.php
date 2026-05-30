@@ -15,9 +15,12 @@
  *      $title = 'Title';
  *      $submit = 'Submit';
  *      $action = '/kim/login';
+ *      $daysField = FormField::create('Days to suspend', 'suspend_days')
+ *              ->type('number')
+ *              ->required(true)
+ *              ->limits(1,$subscription->suspending_days_left);
  *      $formBody = [
- *          new FormField('Email', 'email', 'email', true, 'john.doe@kim.com', 'john.doe@gmail.com'),
- *          new FormField('First name', 'first_name', 'text', true, 'John')
+ *          $daysField
  *      ];
  *      $popupId = 'popupOverlay_' . $id -> unde id este o variabila luata din baza de date, id-ul utilizatorului sau ce ar mai ajuta
  * ?>

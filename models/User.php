@@ -33,7 +33,7 @@ class User
         $stmt->bindParam(":email", $email, PDO::PARAM_STR);
         $stmt->execute();
 
-        return $stmt->fetch(); //associative array sau false
+        return $stmt->fetch(); //obiect sau false
     }
 
     public static function findById($id){
