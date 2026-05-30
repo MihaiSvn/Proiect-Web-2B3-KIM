@@ -5,14 +5,20 @@
 }
 
 :root{
-    --fitness-dark-color: #2e7ddc; /*used for buy button and colored text*/
-    --fitness-light-color: #e5f1fd; /*used for colored background*/
+    --fitness-dark-color: #d4a5a5; /*used for icon*/
+    --fitness-light-color: #f5e8e4; /*used for colored background*/
 
-    --physiotherapy-dark-color: #eb5078;
-    --physiotherapy-light-color: #fee5e9;
+    --physiotherapy-dark-color: #a5c4a5;
+    --physiotherapy-light-color: #e8f5ee;
 
-    --mixed-dark-color: #7b3dba;
-    --mixed-light-color: #f1e5fb;
+    --strength-dark-color: #a5a5d4;
+    --strength-light-color: #e8e4f5;
+
+    --all-dark-color: #2e2016;
+    --all-light-color: #c0b18d;
+
+    --kim-dark-pink: #d4a5a5;
+    --kim-light-pink: #f5e8e4;
 }
 
 .theme-fitness {
@@ -25,9 +31,14 @@
     --card-light: var(--physiotherapy-light-color);
 }
 
-.theme-mixed {
-    --card-dark: var(--mixed-dark-color);
-    --card-light: var(--mixed-light-color);
+.theme-strength {
+    --card-dark: var(--strength-dark-color);
+    --card-light: var(--strength-light-color);
+}
+
+.theme-all {
+    --card-dark: var(--all-dark-color);
+    --card-light: var(--all-light-color);
 }
 
 body{
