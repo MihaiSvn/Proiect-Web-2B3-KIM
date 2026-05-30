@@ -17,6 +17,7 @@ $icons = [
 ];
 
 $suspending_days_left = $subscription->suspending_days_left;
+$sessions_left = $subscription->sessions_left;
 
 $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 'fa-solid fa-id-card';
 ?>
@@ -46,6 +47,12 @@ $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 
                 <?php elseif ($daysLeft === 0): ?>
                     Expires today!
                 <?php endif; ?>
+            </p>
+        </div>
+        <div class="subscription__row">
+            <i class="fa-solid fa-ticket"></i>
+            <p class="subscription__text">Sessions left:
+                <?= $sessions_left === null ? 'Unlimited' : htmlspecialchars($sessions_left) ?>
             </p>
         </div>
         <div class="subscription__row">

@@ -23,7 +23,12 @@
  *          $daysField
  *      ];
  *      $popupId = 'popupOverlay_' . $id -> unde id este o variabila luata din baza de date, id-ul utilizatorului sau ce ar mai ajuta
+ *
+ *
  * ?>
+ *
+ *   BUTONUL PE CARE DESCHIZI POPUP-UL TREBUIE SA AIBA UN ATRIBUT
+ *      data-target="popupOverlay_<?= id ?>" unde id e din db
  *
  * SI APOI APELEZ COMPONENTA CU
  *
