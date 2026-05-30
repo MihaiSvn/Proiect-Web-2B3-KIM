@@ -2,6 +2,7 @@
 /**
  * @var object $user //venit din ProfileController, are toate informatiile despre utilizatorul logat in sesiune
  * @var array $activeSubscriptions //venit din ProfileController, are array de obiecte de tip UserSubscription
+ * @var array $plannedAndOngoingBookings //venit din ProfileControoler, are array de obiecte de tip Session
  */
 ?>
 
@@ -16,13 +17,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/profile_subscriptions.css">
+    <link rel="stylesheet" href="/kim/public/css/session_card.css">
     <script src="/kim/public/js/popup.js" defer></script>
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
 <body>
 
 <?php include 'components/alert.php'; ?>
-<div class="profile__card">
+<section class="profile__section">
     <h1>Hello,
         <?php echo htmlspecialchars($user->first_name); ?>
     </h1>
@@ -46,10 +48,10 @@
         <!--            d:28  M: May Y: 2026, D ar fi Thu., m ar fi 05, y ar fi 26-->
         <p><?= date('d M Y', strtotime($user->created_at)) ?></p>
     </div>
-</div>
+</section>
 
 <?php if ($user->role == 'member'): ?>
-    <div class="profile__card">
+    <section class="subscriptions__section">
         <h2>Active subscriptions</h2>
 
         <?php if (empty($activeSubscriptions)): ?>
@@ -67,17 +69,13 @@
 
                     require_once __DIR__ . '/../classes/FormField.php';
 
+                    $daysField = FormField::create('Days to suspend', 'suspend_days')
+                            ->type('number')
+                            ->required()
+                            ->placeholder('1')
+                            ->limits(1, $subscription->suspending_days_left);
                     $formBody = [
-                            new FormField(
-                                    'Days to suspend',
-                                    'suspend_days',
-                                    'number',
-                                    true,
-                                    '1',
-                                    '',
-                                    1,
-                                    $subscription->suspending_days_left
-                            )
+                            $daysField
                     ];
 
                     $popupId = 'popupOverlay_' . $subscription->id; //pt a o putea gasi in js
@@ -89,8 +87,26 @@
             </div>
         <?php endif; ?>
 
-    </div>
+    </section>
 
+<?php endif; ?>
+
+
+<?php if ($user->role == 'member'): ?>
+    <section class="bookings__sections">
+        <h2>My booked sessions</h2>
+
+        <div class="session__grid">
+
+            <?php foreach ($plannedAndOngoingBookings as $session): ?>
+
+                <?php include "components/session_card.php"; ?>
+
+            <?php endforeach; ?>
+        </div>
+
+
+    </section>
 <?php endif; ?>
 
 </body>
