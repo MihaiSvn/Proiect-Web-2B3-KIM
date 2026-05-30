@@ -4,15 +4,19 @@ namespace controllers;
 
 use services\UserService;
 use services\UserSubscriptionsService;
+use services\SessionService;
 class ProfileController
 {
     private $userService;
     private $userSubscriptionsService;
 
-    public function __construct($userService, $userSubscriptionsService)
+    private $sessionService;
+
+    public function __construct($userService, $userSubscriptionsService, $sessionService)
     {
         $this->userService = $userService;
         $this->userSubscriptionsService = $userSubscriptionsService;
+        $this->sessionService = $sessionService;
     }
 
     public function index()
@@ -29,6 +33,8 @@ class ProfileController
         $this->userSubscriptionsService->checkAndReactivateSuspensions($userId);
 
         $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
+
+        $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingBookingsByUserId($userId);
 
         if (!$user) {
             session_destroy();

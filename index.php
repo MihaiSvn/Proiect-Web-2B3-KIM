@@ -7,9 +7,11 @@ require_once 'core/Router.php';
 
 require_once 'models/User.php';
 require_once 'models/UserSubscription.php';
+require_once 'models/Session.php';
 
 require_once 'services/UserService.php';
 require_once 'services/UserSubscriptionsService.php';
+require_once 'services/SessionService.php';
 
 require_once 'controllers/AuthController.php';
 require_once 'controllers/ProfileController.php';
@@ -17,6 +19,7 @@ require_once 'controllers/UserSubscriptionController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
+use services\SessionService;
 
 use controllers\ProfileController;
 use controllers\AuthController;
@@ -31,7 +34,8 @@ $router->get('/register','views/register.php');
 $router->get('/profile',function(){
     $userService = new UserService();
     $userSubscriptionsService = new UserSubscriptionsService();
-    $profileController = new ProfileController($userService, $userSubscriptionsService);
+    $sessionService = new SessionService();
+    $profileController = new ProfileController($userService, $userSubscriptionsService, $sessionService);
     $profileController->index();
 });
 
