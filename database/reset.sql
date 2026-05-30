@@ -1,0 +1,1 @@
+DROP DATABASE kim_db;
