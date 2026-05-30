@@ -8,9 +8,9 @@ INSERT INTO USERS (first_name, last_name, email, password_hash, role) VALUES
 ('Anna', 'Davis', 'anna@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
 ('William', 'Test', 'william@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member');
 
-INSERT INTO TRAINERS (user_id, specialization, bio, work_schedule) VALUES 
-(2, 'fitness', 'Personal trainer with 5 years of experience in hypertrophy.', 'Mon-Fri: 08:00 - 16:00'),
-(3, 'physiotherapy', 'Physiotherapist specialized in post-operative recovery.', 'Tue-Sat: 10:00 - 18:00');
+INSERT INTO TRAINERS (user_id, specialization) VALUES 
+(2, 'fitness'),
+(3, 'physiotherapy');
 
 INSERT INTO SUBSCRIPTIONS (name, type, price, validity_days, description, max_suspending_days) VALUES 
 ('Standard Fitness Plan', 'fitness', 150.00, 30, 'Unlimited access to the weight room.', 5),
@@ -39,8 +39,7 @@ INSERT INTO SESSIONS (trainer_id, room_id, title, type, start_time, end_time, ma
 (2, 2, 'Postural Evaluation', 'physiotherapy', '2026-06-10 10:00:00', '2026-06-10 11:00:00', 1, 'planned'),
 (1, 3, 'HIIT Circuit (Cardio)', 'mixed', '2026-05-20 19:00:00', '2026-05-20 20:00:00', 15, 'completed');
 
-INSERT INTO BOOKINGS (user_id, session_id, status) VALUES 
-(4, 1, 'confirmed'), -- John goes to Leg Day
-(5, 2, 'confirmed'), -- Anna goes to Evaluation
-(4, 3, 'canceled'),  -- John canceled the past circuit
-(6, 3, 'confirmed'); -- William attended the circuit
+INSERT INTO BOOKINGS (user_id, session_id) VALUES 
+(4, 1), -- John goes to Leg Day
+(5, 2), -- Anna goes to Evaluation
+(6, 3); -- William attended the circuit

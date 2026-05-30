@@ -24,16 +24,19 @@ $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 
 
     <div class="subscription__header">
         <!--                        sa schimb dinamic icon ul in functie de abonament-->
-        <i class="<?= $iconClass ?>"></i>
+
         <p class="subscription__title"><?= htmlspecialchars($subscription->subscription_name) ?></p>
-        <p class="subscription__category"><?= htmlspecialchars(strtoupper($subscription->type)) ?></p>
+        <p class="subscription__category">
+            <i class="<?= $iconClass ?>"></i>
+            <?= htmlspecialchars(strtoupper($subscription->type)) ?>
+        </p>
 
     </div>
 
     <div class="subscription__content">
         <div class="subscription__row">
             <i class="fa-regular fa-calendar"></i>
-            <p class="subscription__text">Expires on: <?= date('d M Y', $expiryDate) ?></p>
+            <p class="subscription__text">Expires on: <?= date('d M Y, H:i', $expiryDate) ?></p>
         </div>
         <div class="subscription__row">
             <i class="fa-regular fa-hourglass"></i>
