@@ -5,7 +5,7 @@ namespace controllers;
 use services\UserService;
 use services\UserSubscriptionsService;
 use services\SessionService;
-class ProfileController
+class DashboardController
 {
     private $userService;
     private $userSubscriptionsService;
@@ -28,13 +28,11 @@ class ProfileController
 
         $userId = $_SESSION['user_id'];
 
+        $role = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'member';
+
         $user = $this->userService->getUserById($userId);
 
-        $this->userSubscriptionsService->checkAndReactivateSuspensions($userId);
 
-        $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
-
-        $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingBookingsByUserId($userId);
 
         if (!$user) {
             session_destroy();
@@ -42,6 +40,17 @@ class ProfileController
             exit;
         }
 
-        require 'views/profile.php';
+        if ($role === 'admin') {
+            require 'views/dashboards/admin_dashboard.php';
+        } elseif ($role === 'trainer') {
+            require 'views/dashboards/trainer_dashboard.php';
+        } else {
+            $this->userSubscriptionsService->checkAndReactivateSuspensions($userId);
+
+            $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
+
+            $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingBookingsByUserId($userId);
+            require 'views/dashboards/member_dashboard.php';
+        }
     }
 }
