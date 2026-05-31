@@ -1,6 +1,6 @@
 <?php
 /**
- * @var object $subscription //venit din profile.php, are toate informatiile despre un abonament, venit din foreach activeSubscriptions
+ * @var object $subscription //venit din member_dashboard.php, are toate informatiile despre un abonament, venit din foreach activeSubscriptions
  * la fiecare profile subscription card trebuie sa generezi si popup-ul (vezi popup.php)
  */
 ?>

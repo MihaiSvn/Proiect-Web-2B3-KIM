@@ -1,7 +1,7 @@
 <?php
 /**
- * @var object $user //venit din ProfileController, are toate informatiile despre utilizatorul logat in sesiune
- * @var array $activeSubscriptions //venit din ProfileController, are array de obiecte de tip UserSubscription
+ * @var object $user //venit din DashboardController, are toate informatiile despre utilizatorul logat in sesiune
+ * @var array $activeSubscriptions //venit din DashboardController, are array de obiecte de tip UserSubscription
  * @var array $plannedAndOngoingBookings //venit din ProfileControoler, are array de obiecte de tip Session
  */
 ?>
@@ -69,7 +69,7 @@
                     $submit = 'Confirm Suspend';
                     $action = '/kim/subscription/suspend?id=' . $subscription->id;
 
-                    require_once __DIR__ . '/../classes/FormField.php';
+                    require_once __DIR__ . '/../../classes/FormField.php';
 
                     $daysField = FormField::create('Days to suspend', 'suspend_days')
                             ->type('number')

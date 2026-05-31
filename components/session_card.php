@@ -1,6 +1,6 @@
 <?php
 /**
- * @var object $session //venit din profile.php, are toate informatiile despre un session, venit din foreach $plannedAndOngoingBookings
+ * @var object $session //venit din member_dashboard.php, are toate informatiile despre un session, venit din foreach $plannedAndOngoingBookings
  */
 ?>
 
