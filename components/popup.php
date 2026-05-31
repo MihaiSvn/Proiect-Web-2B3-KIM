@@ -36,7 +36,7 @@
  */
 ?>
 
-<div class="popup__overlay popup__hidden" id="<?= $popupId?>">
+<div class="popup__overlay popup__hidden" id="<?= $popupId ?>">
     <div class="popup_window">
         <div class="popup__header">
             <p class="popup__title"><?= $title ?></p>
@@ -44,26 +44,28 @@
                 <i class="fa-solid fa-x"></i>
             </button>
         </div>
-        <form action="<?= $action ?>" method="POST" class="form__body" >
+        <div class="form__container">
+            <form action="<?= $action ?>" method="POST" class="form__body">
 
-            <?php foreach ($formBody as $field): ?>
-                <div class="form__group">
-                    <label class="form__label" for="<?= $field->id ?>"><?= $field->label ?></label>
-                    <input type="<?= $field->type ?>"
-                           name="<?= $field->id ?>"
-                           id="<?= $field->id ?>"
-                           value="<?= $field->value ?>"
-                           placeholder="<?= $field->placeholder ?>"
-                           <?= $field->required ? 'required' : '' ?>
+                <?php foreach ($formBody as $field): ?>
+                    <div class="form__group">
+                        <label class="form__label" for="<?= $field->id ?>"><?= $field->label ?></label>
+                        <input type="<?= $field->type ?>"
+                               name="<?= $field->id ?>"
+                               id="<?= $field->id ?>"
+                               value="<?= $field->value ?>"
+                               placeholder="<?= $field->placeholder ?>"
+                                <?= $field->required ? 'required' : '' ?>
 
-                            <?= isset($field->min) ? 'min="' . $field->min . '"' : '' ?>
-                            <?= isset($field->max) ? 'max="' . $field->max . '"' : '' ?>
+                                <?= isset($field->min) ? 'min="' . $field->min . '"' : '' ?>
+                                <?= isset($field->max) ? 'max="' . $field->max . '"' : '' ?>
+                        >
+                    </div>
+                <?php endforeach; ?>
+                <button type="submit" class="form__submit"><?= $submit ?></button>
 
-                    >
-                </div>
-            <?php endforeach; ?>
-            <button type="submit"><?= $submit ?></button>
-        </form>
+            </form>
+        </div>
 
     </div>
 </div>

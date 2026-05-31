@@ -1,0 +1,290 @@
+.register__brand__logo {
+    position: static;
+    margin-bottom: 30px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 500;
+    color: #3a2e2e;
+}
+
+.register__page__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.register__brand__logo i {
+    color: var(--kim-dark-pink);
+}
+
+@media (min-width: 771px) and (min-height: 831px) {
+    .brand__logo {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        margin-bottom: 0;
+    }
+}
+
+
+
+/* FORMURI SI POPUP */
+
+.popup__hidden{
+    display: none !important;
+}
+.popup__overlay { /*efectl de blur si focus de la un popup*/
+    position: fixed; /* ingheta pe ecram chiar daca dai scroll */
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% din ecran */
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup_window {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.popup__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.popup__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.popup__closebutton {
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.popup__header button:hover {
+    color: #dc2626;
+}
+
+
+/* FORM */
+
+.form__welcome-banner {
+    background-color: #fcf4f4;
+    border: 1px solid #f6e6e6;
+    color: #7a6e6e;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.form__side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fffcfb;
+    padding: 40px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.image__side {
+    flex: 1;
+    background-image: url('../images/register_image.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+}
+
+/*ca sa se vada textul pun overlay*/
+.image__overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    color: #ffffff;
+}
+
+.image__title {
+    font-size: 4rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    line-height: 1.1;
+}
+
+.image__subtitle {
+    font-size: 1.5rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.form__title {
+    text-align: center;
+    color: #3a2e2e;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form__subtitle {
+    text-align: center;
+    color: #8c8282;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+
+.form__container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(200, 160, 160, 0.15);
+}
+
+.form__body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form__error {
+    background-color: #fce8e8;
+    color: #d9534f;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #f2caca;
+}
+
+.form__row{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form__label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #5c4f4f;
+}
+
+.form__group input {
+    padding: 14px 16px;
+    border: 1px solid #f0e6e7;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form__group input::placeholder {
+    color: #b5acac;
+}
+
+.form__group input:focus {
+    border-color: var(--kim-light-pink);
+    box-shadow: 0 0 0 3px rgba(211, 166, 169, 0.2);
+}
+
+.form__submit {
+    background-color: var(--kim-dark-pink);
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.form__submit:hover {
+    background-color: #b89193;
+}
+
+.form__question {
+    text-align: center;
+    font-size: 13px;
+    color: #8c8282;
+    margin-top: 5px;
+}
+
+.form__hyperlink {
+    color: var(--kim-dark-pink);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.form__hyperlink:hover {
+    color: #a88385;
+    text-decoration: underline;
+}
+
+@media (max-width: 770px) {
+    .form__row {
+        flex-direction: column;
+    }
+    .image__side{
+        display: none;
+    }
+    .form__welcome-banner{
+        display: none;
+    }
+    .form__side{
+        align-items: flex-start;
+    }
+}

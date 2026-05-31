@@ -8,20 +8,38 @@
     <title>Sign Up</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
+    <link rel="stylesheet" href="/kim/public/css/forms.css">
 
 </head>
 <body>
-<div class="page__wrapper">
+<div class="register__page__wrapper">
 
-    <div class="form__container">
+    <div class="form__side">
+
+
         <form action="/kim/register" method="POST" class="form__body">
+
+            <a href="/kim/home" class="register__brand__logo">
+                <i class="fa-solid fa-heart"></i> Serenity
+            </a>
+
+
             <!--  DACA am /register?error=' ' sa apara eroarea in form-->
-            <?php if (isset($_GET['error'])):?>
+            <?php if (isset($_GET['error'])): ?>
                 <div class="form__error">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <?php echo htmlspecialchars($_GET['error']); ?>
                 </div>
             <?php endif; ?>
+
+
+            <div class="form__welcome-banner">
+                We're so excited to have you in our family. ✨ Your journey starts today.
+            </div>
+
+            <h1 class="form__title">Personal Information</h1>
+            <p class="form__subtitle">Tell us a little about yourself to get started.</p>
 
             <!--  row pentru  nume&prenume    -->
             <div class="form__row">
@@ -39,7 +57,8 @@
             <!--  input mail -->
             <div class="form__group">
                 <label class="form__label" for="form__email">Email</label>
-                <input type="text" id="form__email" name="email" required placeholder="movieenthusiast123@gmail.com">
+                <input type="text" id="form__email" name="email" required
+                       placeholder="gymgoerenjoyer@kim.com">
             </div>
 
             <!--   input parola   -->
@@ -55,6 +74,13 @@
             </p>
         </form>
 
+
+    </div>
+    <div class="image__side">
+        <div class="image__overlay">
+            <h2 class="image__title">Begin your wellness<br>journey</h2>
+            <p class="image__subtitle">Join thousands on their path to a healthier life</p>
+        </div>
     </div>
 </div>
 
