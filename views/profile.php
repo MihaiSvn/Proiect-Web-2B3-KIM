@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/profile_subscriptions.css">
     <link rel="stylesheet" href="/kim/public/css/session_card.css">
+    <link rel="stylesheet" href="/kim/public/css/forms.css">
+
     <script src="/kim/public/js/popup.js" defer></script>
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
