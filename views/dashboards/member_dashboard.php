@@ -3,6 +3,7 @@
  * @var object $user //venit din DashboardController, are toate informatiile despre utilizatorul logat in sesiune
  * @var array $activeSubscriptions //venit din DashboardController, are array de obiecte de tip UserSubscription
  * @var array $plannedAndOngoingBookings //venit din ProfileControoler, are array de obiecte de tip Session
+ * @var array $unreadNotifications //venti din DashBoardController, are toate informatiile despre notificari
  */
 ?>
 
@@ -15,101 +16,47 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.2">
-    <link rel="stylesheet" href="/kim/public/css/profile_subscriptions.css">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.4">
+    <link rel="stylesheet" href="/kim/public/css/subscription_card.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/session_card.css">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
+    <link rel="stylesheet" href="/kim/public/css/dashboard.css?v=1.2">
 
     <script src="/kim/public/js/popup.js" defer></script>
+    <script src="/kim/public/js/sessions_carousel.js" defer></script>
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
 <body>
 
+<?php include 'components/headers/member_header.php'; ?>
 <?php include 'components/alert.php'; ?>
-<section class="profile__section">
-    <h1>Hello,
-        <?php echo htmlspecialchars($user->first_name); ?>
-    </h1>
 
-    <div class="profile__infogroup">
-        <label>First Name</label>
-        <p><?= htmlspecialchars($user->first_name) ?></p>
-    </div>
-    <div class="profile__infogroup">
-        <label>Last Name</label>
-        <p><?= htmlspecialchars($user->last_name) ?></p>
+
+<div class="member__dashboard__grid">
+
+    <div class="dashboard__card grid-full">
+        <?php include 'components/dashboard/greetings_text.php'; ?>
     </div>
 
-    <div class="profile__infogroup">
-        <label>Role</label>
-        <p><span class="profile__rolebadge"><?= htmlspecialchars($user->role) ?></span></p>
+    <div class="dashboard__card grid-full">
+        <?php include 'components/dashboard/notifications_widget.php'; ?>
     </div>
 
-    <div class="profile__infogroup">
-        <label>Member since</label>
-        <!--            d:28  M: May Y: 2026, D ar fi Thu., m ar fi 05, y ar fi 26-->
-        <p><?= date('d M Y', strtotime($user->created_at)) ?></p>
+    <div class="dashboard__card grid-span-2">
+        <?php include 'components/dashboard/sessions_widget.php'; ?>
     </div>
-</section>
 
-<?php if ($user->role == 'member'): ?>
-    <section class="subscriptions__section">
-        <h2>Active subscriptions</h2>
+    <div class="dashboard__card grid-span-1 calendar-placeholder">
+        <i class="fa-regular fa-calendar-days" style="font-size: 2rem; color: #d4a5a5; margin-bottom: 10px;"></i>
+        <h3 style="color: #31231E;">May 2026</h3>
+        <p style="color: #8c8585; font-size: 0.9rem;">Calendar integration coming soon...</p>
+    </div>
 
-        <?php if (empty($activeSubscriptions)): ?>
-            No active subscriptions
-        <?php else: ?>
-            <div class="subscription__grid">
-                <?php foreach ($activeSubscriptions as $subscription): ?>
+    <div class="dashboard__card grid-full">
+        <?php include 'components/dashboard/subscriptions_widget.php'; ?>
+    </div>
 
-                    <?php include 'components/profile_subscription_card.php'; ?>
-
-                    <?php
-                    $title = 'Suspend ' . htmlspecialchars($subscription->subscription_name);
-                    $submit = 'Confirm Suspend';
-                    $action = '/kim/subscription/suspend?id=' . $subscription->id;
-
-                    require_once __DIR__ . '/../../classes/FormField.php';
-
-                    $daysField = FormField::create('Days to suspend', 'suspend_days')
-                            ->type('number')
-                            ->required()
-                            ->placeholder('1')
-                            ->limits(1, $subscription->suspending_days_left);
-                    $formBody = [
-                            $daysField
-                    ];
-
-                    $popupId = 'popupOverlay_' . $subscription->id; //pt a o putea gasi in js
-
-                    include 'components/popup.php';
-                    ?>
-
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-    </section>
-
-<?php endif; ?>
-
-
-<?php if ($user->role == 'member'): ?>
-    <section class="bookings__sections">
-        <h2>My booked sessions</h2>
-
-        <div class="session__grid">
-
-            <?php foreach ($plannedAndOngoingBookings as $session): ?>
-
-                <?php include "components/session_card.php"; ?>
-
-            <?php endforeach; ?>
-        </div>
-
-
-    </section>
-<?php endif; ?>
+</div>
 
 </body>
 </html>

@@ -36,4 +36,15 @@ class Session
 
         return $stmt->fetchAll();
     }
+
+    public static function findById($session_id)
+    {
+        global $pdo;
+        $sql = "SELECT * FROM SESSIONS WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":id", $session_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
 }
