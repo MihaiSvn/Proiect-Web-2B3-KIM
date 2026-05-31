@@ -19,6 +19,10 @@ class NotificationService
 
     public function sendNotification($userId, $title, $message)
     {
+        if (empty($title) || empty($message)) {
+            throw new \InvalidArgumentException("Title and message cannot be empty.");
+        }
+
         return Notification::create($userId, $title, $message);
     }
 
@@ -28,6 +32,10 @@ class NotificationService
     }
 
     public function dismissNotificationById($notificationId){
+        if (empty($notificationId) || !is_numeric($notificationId) || $notificationId <= 0) {
+            throw new \Exception("Invalid or missing notification ID provided.");
+        }
+
         return Notification::markAsReadById($notificationId);
     }
 
