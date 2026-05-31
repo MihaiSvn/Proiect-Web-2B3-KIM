@@ -7,14 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign In</title>
 
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
+    <link rel="stylesheet" href="/kim/public/css/forms.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-<body>
+<body class="login__page">
 
-<div class="page__wrapper">
+<div class="register__page__wrapper">
 
     <div class="form__container">
         <form action="/kim/login" method="POST" class="form__body">
+
             <!--  DACA am /login?error=' ' sa apara eroarea in form-->
             <?php if (isset($_GET['error'])):?>
                 <div class="form__error">
@@ -22,6 +26,9 @@
                     <?php echo htmlspecialchars($_GET['error']); ?>
                 </div>
             <?php endif; ?>
+
+            <h1 class="form__title">Welcome Back</h1>
+            <p class="form__subtitle">Log in to continue your wellness journey</p>
 
             <!-- input-ul pentru mail -->
             <div class="form__group">
