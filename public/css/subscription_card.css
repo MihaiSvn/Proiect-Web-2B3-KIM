@@ -1,0 +1,154 @@
+.subscription__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.subscription__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease;
+
+    background-color: var(--card-light);
+}
+
+.subscription__card:hover {
+    transform: translateY(-2px);
+}
+
+.subscription__watermark {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 4rem;
+    opacity: 0.15;
+    color: var(--card-dark);
+    z-index: 1;
+}
+
+.subscription__top,
+.subscription__main,
+.subscription__footer-info,
+.subscription__btn {
+    position: relative;
+    z-index: 2;
+}
+
+.subscription__top-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--card-dark);
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.subscription__title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #31231E;
+    margin: 0 0 6px 0;
+}
+
+.subscription__location {
+    font-size: 0.85rem;
+    color: #8c8585;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Zile, Sesiuni etc. */
+.subscription__details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.subscription__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #5c5252;
+}
+
+.subscription__row i {
+    color: var(--card-dark);
+    width: 16px;
+}
+
+.subscription__row strong {
+    color: #31231E;
+}
+
+/* status si zi expirare */
+.subscription__footer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.subscription__status-badge {
+    background-color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--card-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--card-dark);
+    border-radius: 50%;
+}
+
+.subscription__expiry {
+    font-size: 0.85rem;
+    color: #8c8585;
+    font-weight: 500;
+}
+
+.subscription__button {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    color: var(--card-dark);
+    border: 1px solid var(--card-dark);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.subscription__button:hover:not(:disabled) {
+    background-color: var(--card-dark);
+    color: var(--kim-background-color);
+}
+
+.subscription__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #d1d5db;
+    color: #9ca3af;
+    background-color: rgba(255, 255, 255, 0.5);
+}
