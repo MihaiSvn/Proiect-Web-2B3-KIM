@@ -5,6 +5,7 @@ namespace controllers;
 use services\UserService;
 use services\UserSubscriptionsService;
 use services\SessionService;
+use services\NotificationService;
 class DashboardController
 {
     private $userService;
@@ -12,11 +13,14 @@ class DashboardController
 
     private $sessionService;
 
-    public function __construct($userService, $userSubscriptionsService, $sessionService)
+    private $notificationService;
+
+    public function __construct($userService, $userSubscriptionsService, $sessionService, $notificationService)
     {
         $this->userService = $userService;
         $this->userSubscriptionsService = $userSubscriptionsService;
         $this->sessionService = $sessionService;
+        $this->notificationService = $notificationService;
     }
 
     public function index()
@@ -50,7 +54,10 @@ class DashboardController
             $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
 
             $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingBookingsByUserId($userId);
+
+            $unreadNotifications = $this->notificationService->getUnreadUserNotifications($userId);
             require 'views/dashboards/member_dashboard.php';
         }
     }
+
 }
