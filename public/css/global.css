@@ -42,120 +42,15 @@
 }
 
 body{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Georgia', 'Times New Roman', serif;;
 }
 
 
-/* FORMURI SI POPUP */
 
-.popup__hidden{
-    display: none !important;
-}
-.popup__overlay { /*efectl de blur si focus de la un popup*/
-    position: fixed; /* ingheta pe ecram chiar daca dai scroll */
-    top: 0;
-    left: 0;
-    width: 100vw; /* 100% din ecran */
+.login__page {
     height: 100vh;
-
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-
-    z-index: 1000;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: radial-gradient(circle at center, #fdf7f7 0%, #fdf7f7 30%, var(--kim-dark-pink) 100%);
 }
-
-.popup_window {
-    background-color: #ffffff;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-}
-
-.popup__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.popup__title {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.popup__closebutton {
-    background: transparent;
-    border: none;
-    color: #6b7280;
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.2s ease;
-}
-
-.popup__header button:hover {
-    color: #dc2626;
-}
-
-.form__body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form__group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.form__label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #4b5563;
-}
-
-.form__group input {
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: #1f2937;
-    transition: border-color 0.2s ease;
-}
-
-.form__group input:focus {
-    outline: none;
-    border-color: #3b82f6;
-}
-
-.form__body button[type="submit"] {
-    margin-top: 10px;
-    padding: 12px;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.form__body button[type="submit"]:hover {
-    background-color: #2563eb;
-}
-
 
 
 /* ALERTE */
