@@ -1,98 +1,233 @@
-.session__grid{
+.session__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
     width: 100%;
 }
 
 .session__card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    width: 300px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background-color: #fff;
+    background-color: #ffffff;
+    border: 1px solid #f0e6e6;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
 
-.session__header {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
+.session__card:hover{
+    border-color: var(--kim-dark-pink);
+}
+
+
+.session__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.session__icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--card-dark);
+    background-color: var(--card-light);
+}
+
+.session__status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+.status-planned {
+    background-color: #eff6ff;
+    color: #3b82f6;
+    border: 1px solid #dbeafe;
+}
+
+.status-ongoing {
+    background-color: #fffbeb;
+    color: #f59e0b;
+    border: 1px solid #fef3c7;
+}
+
+.status-completed {
+    background-color: #f0fdf4;
+    color: #22c55e;
+    border: 1px solid #dcfce7;
+}
+
+.status-canceled {
+    background-color: #fff1f2;
+    color: #f43f5e;
+    border: 1px solid #ffe4e6;
+}
+
+.session__main {
+    margin-bottom: 20px;
 }
 
 .session__title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 0 0 8px 0;
-    color: #222;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: #31231E;
+    margin: 0 0 12px 0;
+    font-weight: 600;
 }
 
-.session__header i {
-    color: var(--card-dark);
-    margin-right: 4px;
-}
-
-.session__category,
-.session_status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #fff;
-    margin: 0 4px 0 0;
-}
-
-.session__category {
-    background-color: var(--card-light);
-    color: var(--card-dark);
-}
-
-.session_status {
-    background-color: #17a2b8;
-}
-
-.session__body {
+.session__details-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 16px;
 }
 
-.session_row {
+.session__detail-item {
     display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #8c8585;
+    font-size: 0.95rem;
+}
+
+.session__detail-item i {
+    color: #d4c4c4;
+    width: 16px;
+    text-align: center;
+}
+
+.session__divider {
+    height: 1px;
+    background-color: #f0e6e6;
+    margin: 0 0 20px 0;
+}
+
+.session__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: auto;
+}
+
+.session__capacity {
+    display: flex;
+    gap:8px;
     align-items: center;
 }
 
-.session_row i {
-    width: 20px;
-    color: #555;
-    font-size: 14px;
+.capacity__count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #31231E;
 }
 
-.session_text {
+.capacity__count i {
+    color: #d4c4c4;
+}
+
+.count__numbers {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.capacity__label {
+    color: #a39a9a;
+    font-size: 0.85rem;
+}
+
+.session__buttons-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.session__form-flex {
+    flex: 1;
     margin: 0;
-    color: #444;
-    font-size: 1.1rem;
 }
 
-.session_footer button {
+.session__form {
+    margin: 0;
+    margin-top: 8px;
+}
+
+.session__btn {
     width: 100%;
-    padding: 10px;
-    background-color: #0056b3;
-    color: #fff;
+    background-color: #fcf9f9;
+    color: #5c5252;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.session_footer button:hover {
-    background-color: #004494;
+.session__btn:hover {
+    background-color: #f0e6e6;
+    color: #31231E;
 }
 
-.session_footer button:disabled {
-    background-color: #ccc;
+.session__btn--danger {
+    background-color: #fff1f2;
+    color: #f43f5e;
+}
+
+.session__btn--danger:hover {
+    background-color: #ffe4e6;
+    color: #e11d48;
+}
+
+.session__btn:disabled {
+    opacity: 0.5;
     cursor: not-allowed;
+}
+
+/*CARUSEL */
+.carousel__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fdfcfb;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #f3f4f6;
+    margin-bottom: 10px;
+}
+
+.carousel__counter {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #8c8585;
+}
+
+.carousel__btn {
+    background: none;
+    border: none;
+    color: #31231E;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.carousel__btn:hover {
+    color: var(--kim-dark-pink);
+}
+
+.session__carousel-container {
+    width: 100%;
+    overflow: hidden;
 }
