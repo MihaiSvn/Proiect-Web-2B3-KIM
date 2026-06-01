@@ -1,6 +1,6 @@
 <?php
 /**
- * @var object $user //venit din DashboardController, obiect cu elemente user
+ * @var object $user //venit din MemberDashboardController, obiect cu elemente user
  */
 ?>
 
