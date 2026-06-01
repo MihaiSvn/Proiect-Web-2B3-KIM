@@ -1,0 +1,251 @@
+.services {
+    padding: 5rem 1.5rem;
+    background: #fdfcfb;
+}
+
+.services__header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.services__subtitle {
+    font-family: Inter, sans-serif;
+    color: #d4a5a5;
+    font-size: .75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.services__heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    line-height: 1.15;
+    color: #3a2a2a;
+}
+
+.services__heading span {
+    color: #d4a5a5;
+    font-style: italic;
+}
+
+.services__tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.services__tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 999px;
+    background: white;
+    color: #7a6a6a;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.services__tab--active {
+    background: #3a2a2a;
+    color: white;
+    box-shadow: 0 10px 25px rgba(58,42,42,.15);
+}
+
+.services__tab:hover {
+    transform: translateY(-2px);
+}
+
+.services__panel {
+    display: none;
+}
+
+.services__panel--active {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.services__content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.services__image-column {
+    position: relative;
+    width: 100%;
+}
+
+.services__image {
+    overflow: hidden;
+    border-radius: 32px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.08);
+}
+
+.services__image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.services__floating-card {
+    position: absolute;
+    left: 10px;
+    bottom: -20px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #f5e8e4;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,.08);
+}
+
+.services__floating-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    color: #d4a5a5;
+}
+
+.services__floating-label {
+    font-family: 'Playfair Display', serif;
+    margin: 0;
+    color: #3a2a2a;
+    font-size: .7rem;
+    letter-spacing: 2px;
+}
+
+.services__floating-text {
+    font-family: 'Playfair Display', serif;
+    margin-top: .25rem;
+    color: #5a4a4a;
+}
+
+.services__text-column {
+    width: 100%;
+}
+
+.services__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    line-height: 1.15;
+    color: #3a2a2a;
+    margin-bottom: 1.5rem;
+}
+
+.services__description {
+    font-family: Inter, sans-serif;
+    color: #7a6a6a;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.services__list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2.5rem;
+}
+
+.services__list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #5a4a4a;
+    line-height: 1.7;
+}
+
+.services__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d4a5a5;
+}
+
+.services__button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    background: #d4a5a5;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.services__button:hover {
+    background: #c99595;
+}
+
+@media (min-width: 1024px) {
+
+    .services {
+        padding: 8rem 2rem;
+    }
+
+    .services__header {
+        margin-bottom: 5rem;
+    }
+
+    .services__heading {
+        font-size: 4rem;
+    }
+
+    .services__tabs {
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 5rem;
+    }
+
+    .services__panel--active {
+        flex-direction: row;
+        align-items: center;
+        gap: 5rem;
+    }
+
+    .services__content {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4rem;
+    }
+
+    .services__image-column {
+        width: 50%;
+    }
+
+    .services__text-column {
+        width: 50%;
+    }
+
+    .services__title {
+        font-size: 4rem;
+    }
+
+    .services__description {
+        font-size: 1.35rem;
+        line-height: 1.9;
+        margin-bottom: 2.5rem;
+    }
+
+    .services__floating-card {
+        left: -25px;
+        bottom: -25px;
+    }
+
+}
