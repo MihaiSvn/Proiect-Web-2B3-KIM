@@ -9,17 +9,6 @@
  */
 ?>
 
-
-<?php
-/**
- * @var object $user //venit din MemberDashboardController, are toate informatiile despre utilizatorul logat in sesiune
- * @var array $activeSubscriptions //venit din MemberDashboardController, are array de obiecte de tip UserSubscription
- * @var array $plannedAndOngoingBookings //venit din MemberDashboardController, are array de obiecte de tip Session
- * @var array $unreadNotifications //venti din MemberDashboardController, are toate informatiile despre notificari
- * @var array $allBookings //venit din MemberDashboardController, toate informatiile despre orice booking, mai putin cele canceled
- */
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -53,10 +42,18 @@
 
 <div class="trainer__dashboard__grid">
 
-    <?php include 'components/stat_card.php'; ?>
+
+
     <div class="dashboard__card grid-full">
         <?php include 'components/dashboard/greetings_text.php'; ?>
     </div>
+
+    <div class="dashboard__card grid-full">
+
+        <?php include 'components/dashboard/trainer_stats_widget.php'; ?>
+
+    </div>
+
 
     <div class="dashboard__card grid-span-2">
         <?php include 'components/dashboard/notifications_widget.php'; ?>
@@ -69,7 +66,6 @@
     <div class="dashboard__card grid-full">
         <?php include 'components/dashboard/sessions_widget.php'; ?>
     </div>
-
 
 
 </div>

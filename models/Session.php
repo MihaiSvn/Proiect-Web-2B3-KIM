@@ -1,11 +1,14 @@
 <?php
 
 namespace models;
+
 use PDO;
+
 class Session
 {
 
-    public static function findAllPlannedAndOngoingBookingsByUserId($user_id){
+    public static function findAllPlannedAndOngoingBookingsByUserId($user_id)
+    {
         global $pdo;
 
         $sql = "SELECT 
@@ -48,7 +51,8 @@ class Session
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public static function findAllBookingsByUserId($user_id){
+    public static function findAllBookingsByUserId($user_id, $includeCanceled = false)
+    {
         global $pdo;
 
         $sql = "SELECT 
@@ -68,10 +72,13 @@ class Session
             JOIN ROOMS r ON s.room_id = r.id
             JOIN TRAINERS t ON s.trainer_id = t.id
             JOIN USERS u ON t.user_id = u.id
-            WHERE my_booking.user_id = :current_user_id 
-              AND s.status != 'canceled'
-            
-            ORDER BY s.start_time ASC";
+            WHERE my_booking.user_id = :current_user_id";
+
+        if (!$includeCanceled) {
+            $sql .= " AND s.status != 'canceled'";
+        }
+
+        $sql .= " ORDER BY s.start_time ASC";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":current_user_id", $user_id, PDO::PARAM_INT);
@@ -80,7 +87,8 @@ class Session
         return $stmt->fetchAll();
     }
 
-    public static function findAllSessionsByTrainerId($trainer_id){
+    public static function findAllSessionsByTrainerId($trainer_id, $includeCanceled = false)
+    {
         global $pdo;
         $sql = "SELECT 
                 s.id AS session_id,
@@ -98,10 +106,14 @@ class Session
             JOIN ROOMS r ON s.room_id = r.id
             JOIN TRAINERS t ON s.trainer_id = t.id
             JOIN USERS u ON t.user_id = u.id
-            WHERE s.trainer_id = :current_trainer_id 
-              AND s.status != 'canceled'
-            
-            ORDER BY s.start_time ASC";
+            WHERE s.trainer_id = :current_trainer_id";
+
+
+        if (!$includeCanceled) {
+            $sql .= " AND s.status != 'canceled'";
+        }
+
+        $sql .= " ORDER BY s.start_time ASC";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":current_trainer_id", $trainer_id, PDO::PARAM_INT);
@@ -109,7 +121,8 @@ class Session
         return $stmt->fetchAll();
     }
 
-    public static function findAllPlannedAndOngoingSessionsByTrainerId($trainer_id){
+    public static function findAllPlannedAndOngoingSessionsByTrainerId($trainer_id)
+    {
         global $pdo;
         $sql = "SELECT 
                 s.id AS session_id,
@@ -136,6 +149,15 @@ class Session
         $stmt->bindParam(":current_trainer_id", $trainer_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public static function updateStatusToCanceled($session_id)
+    {
+        global $pdo;
+        $sql = "UPDATE SESSIONS SET status = 'canceled' WHERE id = :session_id AND status!='canceled'";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":session_id", $session_id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 
 }

@@ -25,6 +25,7 @@ require_once 'controllers/TrainerDashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
 require_once 'controllers/NotificationController.php';
 require_once 'controllers/BookingController.php';
+require_once 'controllers/SessionController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -39,6 +40,7 @@ use controllers\AuthController;
 use controllers\UserSubscriptionController;
 use controllers\NotificationController;
 use controllers\BookingController;
+use controllers\SessionController;
 
 $router = new Router();
 
@@ -89,12 +91,14 @@ $router->get('/test', 'config/test_db.php');
 
 $router->post('/login', function () {
     $userService = new UserService();
-    $authController = new AuthController($userService);
+    $trainerService = new TrainerService();
+    $authController = new AuthController($userService, $trainerService);
     $authController->login();
 });
 $router->post('/register', function () {
     $userService = new UserService();
-    $authController = new AuthController($userService);
+    $trainerService = new TrainerService();
+    $authController = new AuthController($userService, $trainerService);
     $authController->register();
 });
 
@@ -123,6 +127,13 @@ $router->post('/sessions/cancel-booking', function () {
     $bookingController = new BookingController($bookingService);
 
     $bookingController->cancel();
+});
+
+$router->post('/sessions/cancel-session', function () {
+    $sessionService = new SessionService();
+    $sessionController = new SessionController($sessionService);
+
+    $sessionController->cancel();
 });
 
 
