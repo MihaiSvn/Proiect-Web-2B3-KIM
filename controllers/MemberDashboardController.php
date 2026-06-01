@@ -6,7 +6,8 @@ use services\UserService;
 use services\UserSubscriptionsService;
 use services\SessionService;
 use services\NotificationService;
-class DashboardController
+
+class MemberDashboardController
 {
     private $userService;
     private $userSubscriptionsService;
@@ -32,10 +33,8 @@ class DashboardController
 
         $userId = $_SESSION['user_id'];
 
-        $role = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'member';
 
         $user = $this->userService->getUserById($userId);
-
 
 
         if (!$user) {
@@ -44,20 +43,16 @@ class DashboardController
             exit;
         }
 
-        if ($role === 'admin') {
-            require 'views/dashboards/admin_dashboard.php';
-        } elseif ($role === 'trainer') {
-            require 'views/dashboards/trainer_dashboard.php';
-        } else {
-            $this->userSubscriptionsService->checkAndReactivateSuspensions($userId);
+        $this->userSubscriptionsService->checkAndReactivateSuspensions($userId); // UNDE REACTIV ASTEA SUSPENDATE !!!!
 
-            $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
+        $activeSubscriptions = $this->userSubscriptionsService->getActiveSubscriptionsByUserId($userId);
 
-            $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingBookingsByUserId($userId);
+        $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingBookingsByUserId($userId);
 
-            $unreadNotifications = $this->notificationService->getUnreadUserNotifications($userId);
-            require 'views/dashboards/member_dashboard.php';
-        }
+        $allBookings = $this->sessionService->getAllBookingsByUserId($userId);
+
+        $unreadNotifications = $this->notificationService->getUnreadUserNotifications($userId);
+        require 'views/dashboards/member_dashboard.php';
     }
 
 }
