@@ -1,0 +1,219 @@
+.experts{
+    padding:5rem 1.5rem;
+    background:#faf8f6;
+}
+
+.experts__header{
+    margin-bottom:4rem;
+}
+
+.experts__subtitle{
+    color:#d4a5a5;
+    font-size:.9rem;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+
+    margin-bottom:1rem;
+}
+
+.experts__heading{
+    font-family:'Playfair Display', serif;
+    font-size:3rem;
+    line-height:1.1;
+    font-weight:500;
+
+    color:#3a2a2a;
+
+    margin-bottom:2rem;
+}
+
+.experts__heading span{
+    color:#d4a5a5;
+}
+
+.experts__controls{
+    display:flex;
+    gap:1rem;
+}
+
+.experts__button{
+    width:55px;
+    height:55px;
+
+    border:none;
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+
+    cursor:pointer;
+
+    color:#7a6a6a;
+    font-size:1.1rem;
+}
+
+.experts__carousel{
+    overflow:hidden;
+}
+
+.experts__track{
+    display:flex;
+    gap:1.5rem;
+
+    transition:transform .5s ease-in-out;
+}
+
+.expert-card{
+    position:relative;
+
+    height:420px;
+
+    overflow:hidden;
+
+    border-radius:2rem;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    flex:0 0 100%;
+}
+
+.expert-card__image{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.expert-card__overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+
+    padding:2rem;
+
+    background:linear-gradient(
+            to top,
+            rgba(26,15,15,.95),
+            rgba(26,15,15,.45),
+            transparent
+    );
+}
+
+.expert-card__name{
+    font-family:'Playfair Display', serif;
+    font-size:1.8rem;
+
+    color:white;
+
+    margin-bottom:.5rem;
+}
+
+.expert-card__role{
+    color:white;
+
+    font-size:1.1rem;
+
+    margin-bottom:1rem;
+}
+
+.expert-card__specialty{
+    display:flex;
+    align-items:center;
+    gap:.7rem;
+
+    color:rgba(255,255,255,.9);
+
+    line-height:1.5;
+}
+
+.experts__dots{
+    display:flex;
+    justify-content:center;
+
+    gap:.6rem;
+
+    margin-top:2rem;
+}
+
+.experts__dot{
+    width:10px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:#e5cfcf;
+}
+
+.experts__dot--active{
+    width:38px;
+
+    border-radius:999px;
+
+    background:#d4a5a5;
+}
+
+@media (min-width:1024px){
+
+    .experts{
+        padding:8rem 2rem;
+    }
+
+    .experts__header{
+        max-width:1400px;
+        margin:0 auto 4rem;
+
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-end;
+    }
+
+    .experts__heading{
+        font-size:5rem;
+        line-height:1.05;
+    }
+
+    .experts__controls{
+        margin-bottom:1rem;
+    }
+
+    .experts__button{
+        width:60px;
+        height:60px;
+
+        font-size:1.2rem;
+    }
+
+    .experts__carousel{
+        max-width:1400px;
+        margin:0 auto;
+    }
+
+    .experts__track{
+        gap:2rem;
+    }
+
+    .expert-card{
+        height:530px;
+
+        flex:0 0 calc(25% - 1.5rem);
+    }
+
+    .expert-card__name{
+        font-size:2rem;
+    }
+
+    .expert-card__role{
+        font-size:1.4rem;
+    }
+
+    .experts__dots{
+        margin-top:3rem;
+    }
+
+}

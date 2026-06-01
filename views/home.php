@@ -5,82 +5,37 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="/kim/public/css/home.css">
+    <link rel="stylesheet" href="/kim/public/css/home/home_hero.css">
+    <link rel="stylesheet" href="/kim/public/css/home/home_services.css">
+    <link rel="stylesheet" href="/kim/public/css/home/home_howitworks.css">
+    <link rel="stylesheet" href="/kim/public/css/home/home_specialists.css">
+    <link rel="stylesheet" href="/kim/public/css/home_footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
+<script src="/kim/public/js/services.js" defer></script>
+<script src="/kim/public/js/specialists_carousel.js" defer></script>
+
 <body>
 
-<div class="home__wrapper">
+<?php include 'components/headers/unauth_header.php'; ?>
 
-    <section class="hero">
+<?php include 'components/alert.php'; ?>
 
-        <span class="hero__badge">
-            Premium Wellness Platform
-        </span>
+<div class="homepage__wrapper">
 
-        <h1 class="hero__title">
-            Transform Your
-            <span>Body & Mind</span>
-        </h1>
+    <?php include 'components/homepage/home_hero.php'; ?>
 
-        <p class="hero__description">
-            Elite fitness training, strength conditioning and physiotherapy
-            programs designed to help you reach your full potential.
-        </p>
+    <?php include 'components/homepage/home_services.php'; ?>
 
-        <div class="hero__buttons">
+    <?php include 'components/homepage/home_howitworks.php'; ?>
 
-            <a href="/kim/register"
-               class="hero__button hero__button--primary">
-                Join Now
-            </a>
-
-            <a href="#services"
-               class="hero__button hero__button--secondary">
-                Explore Services
-            </a>
-
-        </div>
-
-    </section>
-
-    <section id="services" class="services">
-
-        <h2 class="services__title">
-            Our Services
-        </h2>
-
-        <div class="services__grid">
-
-            <article class="services__card">
-                <h3>Fitness Training</h3>
-                <p>
-                    Personalized fitness programs.
-                </p>
-            </article>
-
-            <article class="services__card">
-                <h3>Strength Training</h3>
-                <p>
-                    Professional strength programs.
-                </p>
-            </article>
-
-            <article class="services__card">
-                <h3>Physiotherapy</h3>
-                <p>
-                    Recovery and rehabilitation sessions.
-                </p>
-            </article>
-
-        </div>
-
-    </section>
+    <?php include 'components/homepage/home_specialists.php'; ?>
 
 </div>
 
-<?php require 'components/footer.php'; ?>
+
+    <?php include 'components/footers/home_footer.php'; ?>
 
 </body>
 </html>
