@@ -1,7 +1,7 @@
 <?php
 /**
  * @var array $unreadNotifications //venti din DashBoardController, are toate informatiile despre notificari
- * @var object $user //venit din DashboardController, are toate informatiile despre utilizatorul logat in sesiune
+ * @var object $user //venit din MemberDashboardController, are toate informatiile despre utilizatorul logat in sesiune
  */
 ?>
 

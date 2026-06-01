@@ -2,19 +2,27 @@
 
 namespace controllers;
 
-class BookingController
-{
-    private $bookingService;
+use services\SessionService;
 
-    public function __construct($bookingService)
+class SessionController
+{
+    private $sessionService;
+
+    public function __construct(SessionService $sessionService)
     {
-        $this->bookingService = $bookingService;
+        $this->sessionService = $sessionService;
     }
 
     public function cancel()
     {
+
         if (!isset($_SESSION['user_id'])) {
             header('Location: /kim/login?error=You must be logged in');
+            exit;
+        }
+
+        if (!isset($_SESSION['trainer_id'])) {
+            header('Location: /kim/login?error=You must be a trainer to access this');
             exit;
         }
 
@@ -22,18 +30,16 @@ class BookingController
         $message = '';
 
         if (isset($_POST['session_id'])) {
-            $sessionId = (int)$_POST['session_id'];
-            $userId = $_SESSION['user_id'];
 
+            $sessionId = $_POST['session_id'];
             try {
-                $this->bookingService->cancelUserBooking($userId, $sessionId);
-
+                $this->sessionService->cancelSession($sessionId, $_SESSION['trainer_id']);
                 $statusType = 'success';
-                $message = 'Your booking was successfully canceled.';
+                $message = 'Session cancelled';
 
-            } catch (\Exception $e) {
+            } catch (\Exception $ex) {
                 $statusType = 'error';
-                $message = $e->getMessage();
+                $message = $ex->getMessage();
             }
         }
 
@@ -47,5 +53,6 @@ class BookingController
 
         header('Location: ' . $referer . $queryString);
         exit;
+
     }
 }
