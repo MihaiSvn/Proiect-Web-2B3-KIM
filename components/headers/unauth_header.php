@@ -8,9 +8,9 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
 <header class="kim__header">
     <div class="header__container">
 
-        <?php include 'components/logo.php';  ?>
+        <?php include 'components/logo.php'; ?>
 
-        <nav class="header__nav">
+        <nav class="header__nav" id="mobile-nav">
             <a href="" class="nav__link">
                 Home
             </a>
@@ -20,7 +20,7 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
             </a>
 
             <a href="" class="nav__link">
-                 Experts
+                Experts
             </a>
         </nav>
 

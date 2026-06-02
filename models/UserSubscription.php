@@ -69,4 +69,43 @@ class UserSubscription
         $stmt->bindParam(':user_id', $userId);
         return $stmt->execute();
     }
+
+
+    public static function getCurrentPeriodRevenue() { //din ultimele 30 zile
+        global $pdo;
+        $sql = "SELECT SUM(s.price) 
+            FROM USER_SUBSCRIPTIONS us
+            JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+            WHERE us.start_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+
+        return (float) $pdo->query($sql)->fetchColumn();
+    }
+
+    public static function getPreviousPeriodRevenue() { //acum intre 60 si 30 zile
+        global $pdo;
+        $sql = "SELECT SUM(s.price) 
+            FROM USER_SUBSCRIPTIONS us
+            JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+            WHERE us.start_date >= DATE_SUB(NOW(), INTERVAL 60 DAY) 
+              AND us.start_date < DATE_SUB(NOW(), INTERVAL 30 DAY)";
+
+        return (float) $pdo->query($sql)->fetchColumn();
+    }
+
+    public static function getActiveSubscriptionsCountByType() {
+        global $pdo;
+
+        $sql = "SELECT 
+                s.type AS subscription_type, 
+                COUNT(us.id) AS total_active
+            FROM USER_SUBSCRIPTIONS us
+            JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+            WHERE us.status = 'active'
+            GROUP BY s.type
+            ORDER BY total_active DESC";
+
+        $stmt = $pdo->query($sql);
+
+        return $stmt->fetchAll();
+    }
 }

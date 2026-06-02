@@ -151,13 +151,52 @@ class Session
         return $stmt->fetchAll();
     }
 
-    public static function updateStatusToCanceled($session_id)
-    {
+    public static function cancelByAdmin($sessionId) {
         global $pdo;
-        $sql = "UPDATE SESSIONS SET status = 'canceled' WHERE id = :session_id AND status!='canceled'";
+        $sql = "UPDATE SESSIONS SET status = 'canceled' WHERE id = :id AND status != 'canceled'";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(":session_id", $session_id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $sessionId, \PDO::PARAM_INT);
         return $stmt->execute();
+    }
+
+    public static function cancelByTrainer($sessionId, $trainerId) {
+        global $pdo;
+        $sql = "UPDATE SESSIONS 
+            SET status = 'canceled' 
+            WHERE id = :id 
+              AND trainer_id = :trainer_id 
+              AND status != 'canceled'";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $sessionId, \PDO::PARAM_INT);
+        $stmt->bindParam(':trainer_id', $trainerId, \PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public static function findAllPlannedAndOngoingSessions(){
+        global $pdo;
+        $sql = "SELECT 
+                s.id AS session_id,
+                s.title,
+                s.type AS session_type,
+                s.status,
+                s.start_time,
+                s.end_time,
+                s.max_capacity,
+                r.name AS room_name,
+                u.first_name AS trainer_first_name,
+                u.last_name AS trainer_last_name,
+                (SELECT COUNT(*) FROM BOOKINGS b WHERE b.session_id = s.id) AS booked_spots
+            FROM SESSIONS s
+            JOIN ROOMS r ON s.room_id = r.id
+            JOIN TRAINERS t ON s.trainer_id = t.id
+            JOIN USERS u ON t.user_id = u.id
+            WHERE
+            (s.status = 'planned' OR s.status = 'ongoing') 
+              AND s.end_time > NOW()
+            ORDER BY s.start_time ASC";
+
+        return $pdo->query($sql)->fetchAll();
     }
 
 }

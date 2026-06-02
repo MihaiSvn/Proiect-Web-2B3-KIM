@@ -40,4 +40,34 @@ class UserSubscriptionsService
     public function checkAndReactivateSuspensions($userId) {
         return UserSubscription::reactivateExpiredSuspensions($userId);
     }
+
+    public function getMonthlyRevenueStats() {
+        $currentRevenue = UserSubscription::getCurrentPeriodRevenue();
+        $previousRevenue = UserSubscription::getPreviousPeriodRevenue();
+
+        if ($previousRevenue == 0) {
+            $trend = $currentRevenue > 0 ? 100 : 0;
+        } else {
+            $trend = round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100);
+        }
+
+        // formatam ( 24800 devine 24.8K)
+        if ($currentRevenue >= 1000) {
+            // impart la 1000 si pastrez o singura zecimala
+            $formattedValue = '€' . number_format($currentRevenue / 1000, 1) . 'K';
+        } else {
+            // afisez normal daca nu e asa mare
+            $formattedValue = '€' . number_format($currentRevenue, 0);
+        }
+
+        // returnez si trend si value pentru stat card
+        return [
+            'displayValue' => $formattedValue,
+            'trend' => $trend
+        ];
+    }
+
+    public function getSubscriptionTypeStats() {
+        return UserSubscription::getActiveSubscriptionsCountByType();
+    }
 }
