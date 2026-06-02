@@ -53,4 +53,31 @@ class UserService
 
         return $user;
     }
+
+
+    public function getActiveMembersTrend(){
+        $currentPeriodCount = User::getNewMembersCountCurrentPeriod();
+        $previousPeriodCount = User::getNewMembersCountPreviousPeriod();
+
+
+        if ($previousPeriodCount === 0) {
+            return $currentPeriodCount > 0 ? 100 : 0;
+        }
+
+        return round((($currentPeriodCount - $previousPeriodCount) / $previousPeriodCount) * 100);
+    }
+
+    public function getAllUsersCount(){
+        return User::getAllUsersCount();
+    }
+
+    public function getActiveMembersStats(){
+        $trend = $this->getActiveMembersTrend();
+        $displayValue = $this->getAllUsersCount();
+
+        return [
+            'displayValue' => $displayValue,
+            'trend' => $trend
+        ];
+    }
 }

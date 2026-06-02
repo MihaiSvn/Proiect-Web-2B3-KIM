@@ -27,25 +27,31 @@ class SessionService
         return Session::findAllPlannedAndOngoingSessionsByTrainerId($trainerId);
     }
 
-    public function cancelSession($sessionId, $trainerId){
-        $sessions = Session::findAllSessionsByTrainerId($trainerId);
-        $isSessionHeldByTrainer = false;
-        foreach($sessions as $session){
-            if($session->session_id == $sessionId){
-                $isSessionHeldByTrainer = true;
-            }
+    public function cancelSession($sessionId, $userRole, $trainerId = null){
+        if (empty($sessionId)) {
+            throw new \InvalidArgumentException("Invalid session ID.");
         }
 
-        if(!$isSessionHeldByTrainer){
-            throw new \Exception("Session doesn't belong to trainer");
+        $success = false;
+
+        if ($userRole === 'admin') {
+            $success = Session::cancelByAdmin($sessionId);
+        }
+        else if ($userRole === 'trainer' && $trainerId !== null) {
+            $success = Session::cancelByTrainer($sessionId, $trainerId);
+        }
+        else {
+            throw new \Exception("Unauthorized role.");
         }
 
-        $success = Session::updateStatusToCanceled($sessionId);
-
-        if(!$success){
-            throw new \Exception("Session cannot be canceled");
+        if (!$success) {
+            throw new \Exception("Could not cancel session. It may not exist, already be canceled, or you lack permissions.");
         }
 
-        return $success;
+        return true;
+    }
+
+    public function getAllPlannedAndOngoingSessions(){
+        return Session::findAllPlannedAndOngoingSessions();
     }
 }

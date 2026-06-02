@@ -16,8 +16,15 @@ class SessionController
     public function cancel()
     {
 
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /kim/login?error=You must be logged in');
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
+            header('Location: /kim/login?error=Unauthorized');
+            exit;
+        }
+
+        $userRole = $_SESSION['user_role'];
+
+        if ($userRole !== 'trainer' && $userRole !== 'admin') {
+            header('Location: /kim/dashboard?error=You do not have permission.');
             exit;
         }
 
@@ -30,10 +37,11 @@ class SessionController
         $message = '';
 
         if (isset($_POST['session_id'])) {
+            $trainerId = isset($_SESSION['trainer_id']) ? $_SESSION['trainer_id'] : null;
 
             $sessionId = $_POST['session_id'];
             try {
-                $this->sessionService->cancelSession($sessionId, $_SESSION['trainer_id']);
+                $this->sessionService->cancelSession($sessionId, $userRole, $trainerId);
                 $statusType = 'success';
                 $message = 'Session cancelled';
 

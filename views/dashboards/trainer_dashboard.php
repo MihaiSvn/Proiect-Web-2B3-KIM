@@ -18,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.4">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.5">
     <link rel="stylesheet" href="/kim/public/css/subscription_card.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/session_card.css">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
@@ -32,6 +32,9 @@
     <script src="/kim/public/js/sessions_carousel.js" defer></script>
 
     <script src="/kim/public/js/calendar.js" defer></script>
+    <script src="/kim/public/js/header.js"></script>
+
+
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
 <body>
@@ -48,7 +51,7 @@
         <?php include 'components/dashboard/greetings_text.php'; ?>
     </div>
 
-    <div class="dashboard__card grid-full">
+    <div class="dashboard__card grid-full no-bg-card">
 
         <?php include 'components/dashboard/trainer_stats_widget.php'; ?>
 

@@ -45,5 +45,24 @@ class User
         return $stmt->fetch();
     }
 
+    public static function getNewMembersCountCurrentPeriod() { //cati s-au inscris in ultimele 30 de zile
+        global $pdo;
+        $sql = "SELECT COUNT(*) FROM USERS WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        return (int) $pdo->query($sql)->fetchColumn();
+    }
+
+    public static function getNewMembersCountPreviousPeriod() { //cati s-au inscris intre acum 60 si 30 de zile
+        global $pdo;
+        $sql = "SELECT COUNT(*) FROM USERS WHERE created_at >= DATE_SUB(NOW(), INTERVAL 60 DAY) AND created_at < DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        return (int) $pdo->query($sql)->fetchColumn();
+    }
+
+    public static function getAllUsersCount(){
+        global $pdo;
+
+        $sql = "SELECT COUNT(*) FROM USERS";
+        return (int) $pdo->query($sql)->fetchColumn();
+    }
+
 
 }

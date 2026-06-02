@@ -8,4 +8,8 @@ class TrainerService
     public function getTrainerByUserId($userId){
         return Trainer::findTrainerByUserId($userId);
     }
+
+    public function getAllTrainersCount(){
+        return Trainer::getAllTrainersCount();
+    }
 }
