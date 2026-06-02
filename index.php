@@ -26,6 +26,7 @@ require_once 'controllers/UserSubscriptionController.php';
 require_once 'controllers/NotificationController.php';
 require_once 'controllers/BookingController.php';
 require_once 'controllers/SessionController.php';
+require_once 'controllers/AdminDashboardController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -41,6 +42,7 @@ use controllers\UserSubscriptionController;
 use controllers\NotificationController;
 use controllers\BookingController;
 use controllers\SessionController;
+use controllers\AdminDashboardController;
 
 $router = new Router();
 
@@ -57,8 +59,13 @@ $router->get('/dashboard', function () {
 
     if ($role === 'admin') {
 
+        $userService = new UserService();
+        $sessionService = new SessionService();
+        $trainingService = new TrainerService();
+        $userSubscriptionsService = new UserSubscriptionsService();
+        $notificationService = new NotificationService();
 
-        $dashboardController = new AdminDashboardController();
+        $dashboardController = new AdminDashboardController($userService, $sessionService, $trainingService, $userSubscriptionsService, $notificationService);
         $dashboardController->index();
 
     } elseif ($role === 'trainer') {

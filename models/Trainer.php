@@ -13,4 +13,10 @@ class Trainer
         $stmt->execute();
         return $stmt->fetch();
     }
+
+    public static function getAllTrainersCount(){
+        global $pdo;
+        $query = "SELECT COUNT(*) FROM TRAINERS";
+        return (int)$pdo->query($query)->fetchColumn();
+    }
 }

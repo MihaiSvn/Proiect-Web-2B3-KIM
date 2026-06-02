@@ -43,6 +43,7 @@ $workingHoursCount = round($totalSecondsWorking / 3600);
     $iconBgColor = 'rgba(212, 165, 165, 0.15)';
     $statTitle = "UPCOMING SESSIONS";
     $statText = $upcomingSessionsCount;
+    $trend = null;
 
     include 'components/stat_card.php';
     ?>
@@ -54,6 +55,8 @@ $workingHoursCount = round($totalSecondsWorking / 3600);
     $iconBgColor = 'rgba(184, 169, 201, 0.15)';
     $statTitle = "UPCOMING CLIENTS";
     $statText = $upcomingClientsCount;
+    $trend = null;
+
     include 'components/stat_card.php';
     ?>
 
@@ -63,6 +66,8 @@ $workingHoursCount = round($totalSecondsWorking / 3600);
     $iconBgColor = 'rgba(168, 199, 186, 0.15)';
     $statTitle = "ASSIGNED ROOMS";
     $statText = $assignedRoomsCount;
+    $trend = null;
+
     include 'components/stat_card.php';
     ?>
 
@@ -72,6 +77,8 @@ $workingHoursCount = round($totalSecondsWorking / 3600);
     $iconBgColor = 'rgba(240, 177, 130, 0.15)';
     $statTitle = "WORKING HOURS";
     $statText = $workingHoursCount;
+    $trend = null;
+
     include 'components/stat_card.php';
     ?>
 
