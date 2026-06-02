@@ -137,6 +137,62 @@
     gap: 12px;
 }
 
+.admin__subscription-stats-container{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+.admin__subscription-stats-card {
+    background-color: #FFFFFF;
+    border: 1px solid #F3EAEA;
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+/*row ul care in stanga are iconita si in dreapta numarul*/
+.admin__subscription-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #F3EAEA;
+}
+
+/* iconita si text */
+.admin__subscription-row__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+
+.admin__subscription-row__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--card-dark);
+    background-color: var(--card-light);
+}
+
+/* Textul */
+.admin__subscription-row__name {
+    color: #31231E;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Numărul */
+.admin__subscription-row__count {
+    color: #2D4C73;
+    font-size: 1.15rem;
+    font-weight: 400;
+}
+
 /* DIFERENTA PE ROLURI */
 
 /*mobile first*/
@@ -160,6 +216,43 @@
     padding: 20px 0;
 }
 
+.admin__dashboard__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.no-bg-card {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+@media (min-width: 1024px) {
+    .admin__dashboard__grid {
+        /* layout 65% / 35% */
+        grid-template-columns: 1.8fr 1fr;
+        align-items: start;
+    }
+
+    .admin-grid-full {
+        grid-column: 1 / -1;
+    }
+
+    .admin-grid-span-left {
+        grid-column: 1;
+        grid-row: span 2;
+    }
+
+    .admin-grid-span-right {
+        grid-column: 2;
+    }
+}
 
 @media (min-width: 992px) {
     .member__dashboard__grid {
