@@ -173,6 +173,13 @@ $router->post('/sessions/create', function () {
     $sessionController->create();
 });
 
+$router->post('/sessions/edit', function () {
+    $sessionService = new SessionService();
+    $trainerService = new TrainerService();
+    $sessionController = new SessionController($sessionService, $trainerService);
+    $sessionController->edit();
+});
+
 $router->get('/hash', 'hash.php');
 
 $router->resolve();
