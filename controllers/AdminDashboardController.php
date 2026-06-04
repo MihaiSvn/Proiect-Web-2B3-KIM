@@ -52,6 +52,15 @@ class AdminDashboardController
 
         $unreadNotifications = $this->notificationService->getUnreadUserNotifications($userId);
 
+        $sessionParticipantsMap = [];
+
+        // map care are id sesiune ca key si lista useri ca value
+        foreach ($plannedAndOngoingBookings as $session) {
+            $usersForThisSession = $this->sessionService->getAllUsersBookedBySessionId($session->session_id);
+
+            $sessionParticipantsMap[$session->session_id] = $usersForThisSession;
+        }
+
         require 'views/dashboards/admin_dashboard.php';
     }
 }

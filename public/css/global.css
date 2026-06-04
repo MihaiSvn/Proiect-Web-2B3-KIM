@@ -92,6 +92,8 @@ body{
 /*sa nu existe text pe mobile doar logo*/
 .header__logo-text {
     display: none;
+    text-decoration: none;
+    color: #5c4f4b;
 }
 
 
@@ -152,7 +154,7 @@ body{
 }
 
 .header__link-simple:hover {
-    color: #31231E; /* Se închide la hover */
+    color: #31231E;
 }
 
 /* Butonul principal (Join Now) */

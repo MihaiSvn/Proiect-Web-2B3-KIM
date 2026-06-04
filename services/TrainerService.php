@@ -12,4 +12,12 @@ class TrainerService
     public function getAllTrainersCount(){
         return Trainer::getAllTrainersCount();
     }
+
+    public function getAllTrainers(){
+        return Trainer::findAllTrainers();
+    }
+
+    public function getTrainerById($trainerId){
+        return Trainer::findTrainerById($trainerId);
+    }
 }

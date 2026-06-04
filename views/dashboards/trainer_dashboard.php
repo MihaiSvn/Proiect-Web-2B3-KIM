@@ -5,7 +5,20 @@
  * @var array $plannedAndOngoingBookings //venit din TrainerDashboardController, are array de obiecte de tip Session
  * @var array $allBookings //venit din TrainerDashboardController, toate informatiile despre orice booking, mai putin cele canceled
  * @var array $unreadNotifications //venti din TrainerDashboardController, are toate informatiile despre notificari
- *
+ * @var array $sessionParticipantsMap map care asociaza id sesiune cu participantii lui
+ *  [
+ *   (int) $session_id => [
+ *   0 => object(stdClass) {
+ *   ->id,
+ *   ->first_name,
+ *   ->last_name,
+ *   ->email,
+ *   ->profile_picture,
+ *   ->booked_at
+ *   },
+ *   1 => object(stdClass) { ... }
+ *   ]
+ *   ]
  */
 ?>
 
