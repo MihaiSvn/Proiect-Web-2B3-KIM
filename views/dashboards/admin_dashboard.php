@@ -41,6 +41,21 @@
  *
  * @var array $unreadNotifications //venti din AdminDashboardController, are toate informatiile despre notificari
  *
+ * @var array $sessionParticipantsMap map care asociaza id sesiune cu participantii lui
+ *  [
+ *   (int) $session_id => [
+ *   0 => object(stdClass) {
+ *   ->id,
+ *   ->first_name,
+ *   ->last_name,
+ *   ->email,
+ *   ->profile_picture,
+ *   ->booked_at
+ *   },
+ *   1 => object(stdClass) { ... }
+ *   ]
+ *   ]
+ *
  */
 ?>
 

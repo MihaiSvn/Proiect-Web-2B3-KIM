@@ -64,5 +64,31 @@ class User
         return (int) $pdo->query($sql)->fetchColumn();
     }
 
+    public static function findActiveSubscriptionsByUserId($user_id){
+        global $pdo;
+
+        $sql = "SELECT 
+                s.id as subscription_id,
+                s.name as subscription_name,
+                s.type,
+                us.id as user_subscription_id,
+                us.sessions_left,
+                us.start_date,
+                us.end_date
+            FROM USER_SUBSCRIPTIONS us
+            JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+            WHERE us.user_id = :user_id
+              AND us.status = 'active'
+              AND us.sessions_left > 0
+              AND us.end_date >= NOW()
+            ORDER BY us.end_date ASC";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+
+    }
+
 
 }

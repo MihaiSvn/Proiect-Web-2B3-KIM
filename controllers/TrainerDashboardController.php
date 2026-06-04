@@ -59,6 +59,13 @@ class TrainerDashboardController
 
         $unreadNotifications = $this->notificationService->getUnreadUserNotifications($userId);
 
+        // map care are id sesiune ca key si lista useri ca value
+        foreach ($plannedAndOngoingBookings as $session) {
+            $usersForThisSession = $this->sessionService->getAllUsersBookedBySessionId($session->session_id);
+
+            $sessionParticipantsMap[$session->session_id] = $usersForThisSession;
+        }
+
         require 'views/dashboards/trainer_dashboard.php';
 
     }

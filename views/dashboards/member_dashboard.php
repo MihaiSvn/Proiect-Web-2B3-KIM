@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.5">
     <link rel="stylesheet" href="/kim/public/css/subscription_card.css?v=1.1">
-    <link rel="stylesheet" href="/kim/public/css/session_card.css">
+    <link rel="stylesheet" href="/kim/public/css/session_card.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
     <link rel="stylesheet" href="/kim/public/css/dashboard.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/notifications.css">
