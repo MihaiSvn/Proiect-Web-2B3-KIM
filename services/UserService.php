@@ -80,4 +80,33 @@ class UserService
             'trend' => $trend
         ];
     }
+
+    public function getActiveSubscriptionsByUserId($user_id){
+
+        $activeSubscriptions = User::findActiveSubscriptionsByUserId($user_id);
+
+        $result = [
+            'can_book_anything' => false, //devine true daca are o sesiune la all
+            'sessions_by_type' => [
+                'fitness' => 0,
+                'physiotherapy' => 0,
+                'strength' => 0,
+                'all' => 0
+            ]
+        ];
+
+        if (empty($activeSubscriptions)) {
+            return $result;
+        }
+
+        foreach ($activeSubscriptions as $sub) {
+            $result['sessions_by_type'][$sub->type] += $sub->sessions_left;
+
+            if($sub->sessions_left > 0 && $sub->type == 'all'){
+                $result['can_book_anything'] = true;
+            }
+        }
+
+        return $result;
+    }
 }
