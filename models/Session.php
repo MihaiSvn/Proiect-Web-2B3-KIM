@@ -19,6 +19,7 @@ class Session
                 s.start_time,
                 s.end_time,
                 s.max_capacity,
+                s.room_id,
                 r.name AS room_name,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
@@ -63,6 +64,7 @@ class Session
                 s.start_time,
                 s.end_time,
                 s.max_capacity,
+                s.room_id,
                 r.name AS room_name,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
@@ -98,6 +100,7 @@ class Session
                 s.start_time,
                 s.end_time,
                 s.max_capacity,
+                s.room_id,
                 r.name AS room_name,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
@@ -134,6 +137,7 @@ class Session
                 s.end_time,
                 s.max_capacity,
                 r.name AS room_name,
+                s.room_id,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
                 (SELECT COUNT(*) FROM BOOKINGS b WHERE b.session_id = s.id) AS booked_spots
@@ -192,6 +196,8 @@ class Session
                 s.end_time,
                 s.max_capacity,
                 r.name AS room_name,
+                s.trainer_id,
+                s.room_id,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
                 (SELECT COUNT(*) FROM BOOKINGS b WHERE b.session_id = s.id) AS booked_spots
@@ -220,6 +226,7 @@ class Session
                 s.end_time,
                 s.max_capacity,
                 s.trainer_id,
+                s.room_id,
                 r.name AS room_name,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
@@ -327,8 +334,54 @@ class Session
         return $stmt->execute();
     }
 
+    public static function update($sessionId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity, $trainerId = null)
+    {
+        global $pdo;
+
+        $sql = "UPDATE SESSIONS 
+                SET room_id = :room_id, 
+                    title = :title, 
+                    start_time = :start_time, 
+                    end_time = :end_time, 
+                    max_capacity = :max_capacity
+                WHERE id = :id";
+
+        if ($trainerId !== null) {
+            $sql .= " AND trainer_id = :trainer_id";
+        }
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindParam(':id', $sessionId, \PDO::PARAM_INT);
+        $stmt->bindParam(':room_id', $roomId, \PDO::PARAM_INT);
+        $stmt->bindParam(':title', $title, \PDO::PARAM_STR);
+        $stmt->bindParam(':start_time', $startTimeRaw, \PDO::PARAM_STR);
+        $stmt->bindParam(':end_time', $endTimeRaw, \PDO::PARAM_STR);
+        $stmt->bindParam(':max_capacity', $maxCapacity, \PDO::PARAM_INT);
+
+        if ($trainerId !== null) {
+            $stmt->bindParam(':trainer_id', $trainerId, \PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+//    ca sa putem verifica daca e valid nr nou de capacitate
+    public static function getBookedSpotsCount($sessionId)
+    {
+        global $pdo;
+        $sql = "SELECT COUNT(*) FROM BOOKINGS WHERE session_id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $sessionId, \PDO::PARAM_INT);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+
 //    verific daca o sala e ocupata in acel interval
-    public static function hasRoomOverlap($roomId, $startTime, $endTime)
+    public static function hasRoomOverlap($roomId, $startTime, $endTime, $excludeSessionId)
     {
         global $pdo;
         $sql = "SELECT COUNT(*) FROM SESSIONS 
@@ -337,17 +390,25 @@ class Session
                   AND start_time < :end_time 
                   AND end_time > :start_time";
 
+        //ca sa nu verificam cu el insusi in caz de edit
+        if ($excludeSessionId) {
+            $sql .= " AND id != :exclude_id";
+        }
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':room_id', $roomId, \PDO::PARAM_INT);
         $stmt->bindParam(':start_time', $startTime, \PDO::PARAM_STR);
         $stmt->bindParam(':end_time', $endTime, \PDO::PARAM_STR);
+        if ($excludeSessionId) {
+            $stmt->bindParam(':exclude_id', $excludeSessionId, \PDO::PARAM_INT);
+        }
         $stmt->execute();
 
         return (int) $stmt->fetchColumn() > 0;
     }
 
 //verific daca un trainer are o sesiune in acel interval
-    public static function hasTrainerOverlap($trainerId, $startTime, $endTime)
+    public static function hasTrainerOverlap($trainerId, $startTime, $endTime, $excludeSessionId)
     {
         global $pdo;
         $sql = "SELECT COUNT(*) FROM SESSIONS 
@@ -356,10 +417,18 @@ class Session
                   AND start_time < :end_time 
                   AND end_time > :start_time";
 
+        //ca sa nu verificam cu el insusi in caz de edit
+        if ($excludeSessionId) {
+            $sql .= " AND id != :exclude_id";
+        }
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':trainer_id', $trainerId, \PDO::PARAM_INT);
         $stmt->bindParam(':start_time', $startTime, \PDO::PARAM_STR);
         $stmt->bindParam(':end_time', $endTime, \PDO::PARAM_STR);
+        if ($excludeSessionId) {
+            $stmt->bindParam(':exclude_id', $excludeSessionId, \PDO::PARAM_INT);
+        }
         $stmt->execute();
 
         return (int) $stmt->fetchColumn() > 0;

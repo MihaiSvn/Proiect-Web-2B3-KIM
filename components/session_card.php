@@ -3,6 +3,7 @@
 /**
  * @var object $session
  * @var bool $isSessionsPage // daca vine din session page ca sa fie cardul putin diferit
+ * @var array $availableRooms toate salile available pentru trainer de acel tip, daca nu e trainer va fi empty
  * @var array $sessionParticipantsMap map care asociaza id sesiune cu participantii lui
  *  [
  *   (int) $session_id => [
@@ -116,6 +117,85 @@ require_once __DIR__ . '/../classes/FormField.php';
         <div class="session__status-badge status-<?= $status ?>">
             <i class="<?= $currentStatusIcon ?>"></i> <?= htmlspecialchars(ucfirst($status)) ?>
         </div>
+
+<!--        buton edit pt trainer si admin-->
+        <?php if($userRole === 'trainer' || $userRole === 'admin'): ?>
+        <button type="button"
+                class="session__btn--edit  <?= $canCancelClass ? 'js-open-popup' : '' ?>"
+                data-target="popupOverlay_editClass_<?= $session->session_id ?>"
+                <?php if (!$canCancelClass): ?>
+                    disabled
+                    title="You can only edit your own classes"
+                <?php endif; ?>
+        >
+            <i class="fa-solid fa-pen" style="margin-right: 5px; font-size: 0.85em;"></i> Edit
+        </button>
+        <?php endif;?>
+
+        <?php
+        $title = 'Edit Session';
+        $submit = 'Save Changes';
+        $action = '/kim/sessions/edit';
+        $popupId = 'popupOverlay_editClass_' . $session->session_id;
+
+        $infoText = null;
+
+        $sessionIdField = FormField::create('', 'session_id')->type('hidden')->value($session->session_id);
+        $trainerIdField = FormField::create('', 'session_trainer')->type('hidden')->value($session->trainer_id);
+
+        $titleField = FormField::create('Title', 'session_title')
+                ->type('text')
+                ->value($session->title)
+                ->required(true);
+
+
+        $editRooms = \models\Room::getAllActiveRoomsByType($session->session_type);
+        $editRoomOptions = [];
+        if($editRooms) {
+            foreach($editRooms as $r) {
+                $editRoomOptions[$r->id] = $r->name . ' (Capacity: ' . $r->capacity . ')';
+            }
+        }
+
+        $roomField = FormField::create('Room', 'session_room')
+                ->type('select')
+                ->options($editRoomOptions)
+                ->value($session->room_id)
+                ->required(true);
+
+        $formattedStart = date('Y-m-d\TH:i', strtotime($session->start_time));
+        $formattedEnd = date('Y-m-d\TH:i', strtotime($session->end_time));
+
+        $startTimeField = FormField::create('Start Time', 'start_time')
+                ->type('datetime-local')
+                ->value($formattedStart)
+                ->required(true);
+
+        $endTimeField = FormField::create('End Time', 'end_time')
+                ->type('datetime-local')
+                ->value($formattedEnd)
+                ->required(true);
+
+        $capacityField = FormField::create('Max Capacity', 'max_capacity')
+                ->type('number')
+                ->limits(1, 100)
+                ->value($session->max_capacity)
+                ->required(true);
+
+        $formBody = [
+                $sessionIdField,
+                $trainerIdField,
+                $titleField,
+                $roomField,
+                $startTimeField,
+                $endTimeField,
+                $capacityField
+        ];
+        ?>
+
+        <?php include 'components/popup.php' ?>
+
+
     </div>
 
     <!--    titlu, data ora spatiu-->

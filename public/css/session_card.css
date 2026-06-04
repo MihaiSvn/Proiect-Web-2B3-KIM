@@ -195,6 +195,26 @@
     cursor: not-allowed;
 }
 
+.session__btn--edit {
+    background-color: transparent;
+    color:  #4a4a4a;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.session__btn--edit:hover:not(:disabled) {
+    background-color:#f3f4f6;
+    border-color: var(--kim-dark-pink);
+    color: var(--kim-dark-pink);
+    cursor: pointer;
+}
+
+.session__btn--edit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: transparent;
+}
+
 /*CARUSEL */
 .carousel__controls {
     display: flex;
