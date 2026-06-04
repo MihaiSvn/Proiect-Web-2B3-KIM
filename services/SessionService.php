@@ -111,8 +111,8 @@ class SessionService
         return Session::findAllUsersBookedBySessionId($sessionId);
     }
 
-    public function createSession($trainerId, $roomId, $title, $type, $startTimeRaw, $endTimeRaw, $maxCapacity){
-
+    private function validateAndFormatSessionData($trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity, $sessionId = null)
+    {
         //verific sa nu fie field uri empty
         if (empty(trim($title)) || empty($startTimeRaw) || empty($endTimeRaw) || empty($roomId) || empty($maxCapacity)) {
             throw new \Exception("All fields are required.");
@@ -153,16 +153,24 @@ class SessionService
         }
 
         //verific daca sala e ocupata in acel interval
-        $roomTaken = Session::hasRoomOverlap($roomId, $startTime, $endTime);
+        $roomTaken = Session::hasRoomOverlap($roomId, $startTime, $endTime, $sessionId);
         if ($roomTaken) {
             throw new \Exception("The selected room is busy in that interval.");
         }
 
         //verific ca trainer ul sa nu aiba ceva in intervalul ala
-        $trainerBusy = Session::hasTrainerOverlap($trainerId, $startTime, $endTime);
+        $trainerBusy = Session::hasTrainerOverlap($trainerId, $startTime, $endTime, $sessionId);
         if ($trainerBusy) {
             throw new \Exception("Trainer already has a class in that interval.");
         }
+
+        return [$startTime, $endTime];
+    }
+    public function createSession($trainerId, $roomId, $title, $type, $startTimeRaw, $endTimeRaw, $maxCapacity){
+
+        list($startTime, $endTime) = $this->validateAndFormatSessionData(
+            $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity
+        );
 
         $success = Session::create(
             $trainerId,
@@ -175,10 +183,38 @@ class SessionService
         );
 
         if (!$success) {
-            throw new Exception("A database error occurred while creating the session.");
+            throw new \Exception("A database error occurred while creating the session.");
         }
 
         return $success;
 
+    }
+
+    public function editSession($sessionId, $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity){
+        $currentSession = Session::findById($sessionId);
+
+        if (!$currentSession) {
+            throw new \Exception("The session you are trying to edit does not exist.");
+        }
+
+        if ($trainerId !== null && $currentSession->trainer_id != $trainerId) {
+            throw new \Exception("Unauthorized action: You can only edit your own classes.");
+        }
+
+        $currentBooked = Session::getBookedSpotsCount($sessionId);
+        if ($maxCapacity < $currentBooked) {
+            throw new \Exception("Cannot reduce the capacity below the current number of booked members ($currentBooked).");
+        }
+
+        list($startTime, $endTime) = $this->validateAndFormatSessionData(
+            $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity, $sessionId
+        );
+
+        $updated = Session::update($sessionId, $roomId, $title, $startTime, $endTime, $maxCapacity);
+        if (!$updated) {
+            throw new \Exception("A database error occurred while updating the session.");
+        }
+
+        return $updated;
     }
 }
