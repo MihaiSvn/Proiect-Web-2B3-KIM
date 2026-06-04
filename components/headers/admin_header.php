@@ -24,7 +24,7 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
                 <i class="fa-solid fa-location-dot"></i> Manage Facilities
             </a>
 
-            <a href="/kim/admin/sessions" class="nav__link <?= strpos($currentPath, 'sessions') !== false ? 'active' : '' ?>">
+            <a href="/kim/sessions" class="nav__link <?= strpos($currentPath, 'sessions') !== false ? 'active' : '' ?>">
                 <i class="fa-regular fa-calendar"></i> Manage Sessions
             </a>
 

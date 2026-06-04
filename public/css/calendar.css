@@ -69,6 +69,7 @@
     align-items: center;
     justify-content: center;
     height: 40px;
+    height: 40px;
     font-size: 0.9rem;
     color: #31231E;
     cursor: pointer;
@@ -84,7 +85,7 @@
 
 .dot-fitness { background-color: var(--fitness-dark-color); }
 .dot-strength { background-color: var(--strength-dark-color); }
-.dot-physio { background-color: var(--physiotherapy-dark-color); }
+.dot-physiotherapy { background-color: var(--physiotherapy-dark-color); }
 
 /* ziua curenta */
 .calendar__day.active span:first-child {

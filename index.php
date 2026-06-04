@@ -11,6 +11,7 @@ require_once 'models/Session.php';
 require_once 'models/Notification.php';
 require_once 'models/Booking.php';
 require_once 'models/Trainer.php';
+require_once 'models/Room.php';
 
 require_once 'services/UserService.php';
 require_once 'services/UserSubscriptionsService.php';
@@ -18,6 +19,7 @@ require_once 'services/SessionService.php';
 require_once 'services/NotificationService.php';
 require_once 'services/BookingService.php';
 require_once 'services/TrainerService.php';
+require_once 'services/RoomService.php';
 
 require_once 'controllers/AuthController.php';
 require_once 'controllers/MemberDashboardController.php';
@@ -27,6 +29,7 @@ require_once 'controllers/NotificationController.php';
 require_once 'controllers/BookingController.php';
 require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
+require_once 'controllers/SessionsPageController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -34,6 +37,7 @@ use services\SessionService;
 use services\NotificationService;
 use services\BookingService;
 use services\TrainerService;
+use services\RoomService;
 
 use controllers\MemberDashboardController;
 use controllers\TrainerDashboardController;
@@ -43,6 +47,7 @@ use controllers\NotificationController;
 use controllers\BookingController;
 use controllers\SessionController;
 use controllers\AdminDashboardController;
+use controllers\SessionsPageController;
 
 $router = new Router();
 
@@ -95,6 +100,16 @@ $router->get('/dashboard', function () {
 });
 
 $router->get('/test', 'config/test_db.php');
+$router->get('/sessions', function (){
+    $sessionService = new SessionService();
+    $userService = new UserService();
+    $trainerService = new TrainerService();
+    $roomService = new RoomService();
+
+    $sessionsPageController = new SessionsPageController($sessionService, $userService, $trainerService, $roomService);
+
+    $sessionsPageController->index();
+});
 
 $router->post('/login', function () {
     $userService = new UserService();
@@ -136,13 +151,27 @@ $router->post('/sessions/cancel-booking', function () {
     $bookingController->cancel();
 });
 
+$router->post('/sessions/book', function () {
+    $bookingService = new BookingService();
+    $bookingController = new BookingController($bookingService);
+
+    $bookingController->book();
+});
+
 $router->post('/sessions/cancel-session', function () {
     $sessionService = new SessionService();
-    $sessionController = new SessionController($sessionService);
+    $trainerService = new TrainerService();
+    $sessionController = new SessionController($sessionService, $trainerService);
 
     $sessionController->cancel();
 });
 
+$router->post('/sessions/create', function () {
+    $sessionService = new SessionService();
+    $trainerService = new TrainerService();
+    $sessionController = new SessionController($sessionService, $trainerService);
+    $sessionController->create();
+});
 
 $router->get('/hash', 'hash.php');
 
