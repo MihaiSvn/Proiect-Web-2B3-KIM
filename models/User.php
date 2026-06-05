@@ -90,5 +90,31 @@ class User
 
     }
 
+    public static function updateProfile($userId, $first_name, $last_name, $email, $profilePicture = null){
+        global $pdo;
+        $sql = "UPDATE USERS SET
+        first_name = :first_name,
+        last_name = :last_name,
+        email = :email";
+
+        if($profilePicture !== null){
+            $sql .= ", profile_picture = :profile_picture";
+        }
+
+        $sql .= " WHERE id = :id";
+
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':first_name', $first_name, PDO::PARAM_STR);
+        $stmt->bindParam(':last_name', $last_name, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+
+        if($profilePicture !== null){
+            $stmt->bindParam(':profile_picture', $profilePicture, PDO::PARAM_STR);
+        }
+        return $stmt->execute();
+    }
+
 
 }

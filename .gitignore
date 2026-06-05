@@ -1,0 +1,5 @@
+public/images/avatars/*
+
+!public/images/avatars/.gitkeep
+
+!public/images/avatars/default-avatar.svg

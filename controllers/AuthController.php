@@ -30,6 +30,10 @@ class AuthController
             $user = $this->userService->getUserByEmail($email);
 
             $this->setSessionVariables($user);
+
+            header('Location: /kim/profile/personal-info');
+            exit;
+
         } catch (\Exception $ex) {
             $error_message = $ex->getMessage();
 
@@ -46,6 +50,8 @@ class AuthController
         try{
             $user = $this->userService->authenticate($email, $password); //authenticate va returna un obiect cu user daca e bun
             $this->setSessionVariables($user);
+            header('Location: /kim/dashboard');
+            exit;
         } catch(\Exception $ex) {
             $error_message = $ex->getMessage();
             header('Location: /kim/login?error=' . urlencode($error_message));
@@ -71,8 +77,5 @@ class AuthController
                 $_SESSION['trainer_id'] = $trainer->id;
             }
         }
-
-        header('Location: /kim/dashboard');
-        exit;
     }
 }
