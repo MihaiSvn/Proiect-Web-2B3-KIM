@@ -3,6 +3,9 @@
 namespace services;
 
 use models\Session;
+use models\Trainer;
+use models\Room;
+
 class SessionService
 {
     public function getAllPlannedAndOngoingBookingsByUserId($userId){
@@ -11,5 +14,207 @@ class SessionService
 
     public function getBySessionId($sessionId){
         return Session::findById($sessionId);
+    }
+
+    public function getAllBookingsByUserId($sessionId, $includeCanceled = false){
+        return Session::findAllBookingsByUserId($sessionId, $includeCanceled);
+    }
+
+    public function getAllSessionsByTrainerId($trainerId, $includeCanceled = false){
+        return Session::findAllSessionsByTrainerId($trainerId, $includeCanceled);
+    }
+
+    public function getAllPlannedAndOngoingSessionsByTrainerId($trainerId){
+        return Session::findAllPlannedAndOngoingSessionsByTrainerId($trainerId);
+    }
+
+    public function cancelSession($sessionId, $userRole, $trainerId = null){
+        if (empty($sessionId)) {
+            throw new \InvalidArgumentException("Invalid session ID.");
+        }
+
+        global $pdo;
+
+        try{
+            $pdo->beginTransaction();
+
+            $success = false;
+
+            if ($userRole === 'admin') {
+                $success = Session::cancelByAdmin($sessionId);
+            }
+            else if ($userRole === 'trainer' && $trainerId !== null) {
+                $success = Session::cancelByTrainer($sessionId, $trainerId);
+            }
+            else {
+                throw new \Exception("Unauthorized role.");
+            }
+
+            if (!$success) {
+                throw new \Exception("Could not cancel session. It may not exist, already be canceled, or you lack permissions.");
+            }
+
+            Session::refundAllParticipants($sessionId);
+
+            $pdo->commit();
+
+            return true;
+        } catch(\Exception $e) {
+            if($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+
+            throw $e;
+        }
+
+
+
+        return true;
+    }
+
+    public function getAllPlannedAndOngoingSessions(){
+        return Session::findAllPlannedAndOngoingSessions();
+    }
+
+    public function getWeeklySessionsGrouped($sessionsFromDb, $startOfWeekObj, $type = null) {
+        $groupedSessions = [];
+        for ($i = 0; $i < 7; $i++) {
+            $currentDay = (clone $startOfWeekObj)->modify("+$i days");
+            $dateKey = $currentDay->format('Y-m-d'); // ex: 2026-06-01
+
+            $groupedSessions[$dateKey] = [
+                'day_name' => $currentDay->format('l'),     // 'Monday'
+                'day_short' => $currentDay->format('M j'),  // 'Jun 1'
+                'sessions' => []                            // aici pun sesiunile
+            ];
+        }
+
+        foreach ($sessionsFromDb as $session) {
+            $sessionDate = date('Y-m-d', strtotime($session->start_time));
+
+            if (isset($groupedSessions[$sessionDate])) {
+                array_push($groupedSessions[$sessionDate]['sessions'], $session);
+            }
+        }
+
+        return $groupedSessions;
+    }
+
+    public function getSessionsBetweenDates($startDate, $endDate){
+        if(empty($startDate) || empty($endDate)){
+            throw new \Exception("Invalid start and end date.");
+        }
+        return Session::findSessionsBetweenDates($startDate, $endDate);
+    }
+
+    public function getAllUsersBookedBySessionId($sessionId){
+        return Session::findAllUsersBookedBySessionId($sessionId);
+    }
+
+    private function validateAndFormatSessionData($trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity, $sessionId = null)
+    {
+        //verific sa nu fie field uri empty
+        if (empty(trim($title)) || empty($startTimeRaw) || empty($endTimeRaw) || empty($roomId) || empty($maxCapacity)) {
+            throw new \Exception("All fields are required.");
+        }
+
+        //capcacitiate sa fie nr
+        if (!is_numeric($maxCapacity) || $maxCapacity <= 0) {
+            throw new \Exception("Capacity must be a positive number.");
+        }
+
+        $startTime = str_replace('T', ' ', $startTimeRaw); //schibmam formatrea de la html pt php
+        if (strlen($startTime) === 16) $startTime .= ':00';
+
+        $endTime = str_replace('T', ' ', $endTimeRaw);
+        if (strlen($endTime) === 16) $endTime .= ':00';
+
+        $startTimestamp = strtotime($startTime);
+        $endTimestamp = strtotime($endTime);
+        $currentTimestamp = time();
+
+        // stat time tre sa nu fie in trecut
+        if ($startTimestamp < $currentTimestamp) {
+            throw new \Exception("You cannot schedule a session in the past.");
+        }
+        // nut pot ca end sa fie inainte de start
+        if ($endTimestamp <= $startTimestamp) {
+            throw new \Exception("End time must be later than Start time.");
+        }
+
+        //verific daca exista room ul
+        $room = Room::findById($roomId);
+        if (!$room) {
+            throw new \Exception("The selected room does not exist.");
+        }
+        // verific daca max capacity e bun
+        if ($maxCapacity > $room->capacity) {
+            throw new \Exception("Requested capacity ({$maxCapacity}) exceeds room limit ({$room->capacity}).");
+        }
+
+        //verific daca sala e ocupata in acel interval
+        $roomTaken = Session::hasRoomOverlap($roomId, $startTime, $endTime, $sessionId);
+        if ($roomTaken) {
+            throw new \Exception("The selected room is busy in that interval.");
+        }
+
+        //verific ca trainer ul sa nu aiba ceva in intervalul ala
+        $trainerBusy = Session::hasTrainerOverlap($trainerId, $startTime, $endTime, $sessionId);
+        if ($trainerBusy) {
+            throw new \Exception("Trainer already has a class in that interval.");
+        }
+
+        return [$startTime, $endTime];
+    }
+    public function createSession($trainerId, $roomId, $title, $type, $startTimeRaw, $endTimeRaw, $maxCapacity){
+
+        list($startTime, $endTime) = $this->validateAndFormatSessionData(
+            $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity
+        );
+
+        $success = Session::create(
+            $trainerId,
+            $roomId,
+            $title,
+            $type,
+            $startTime,
+            $endTime,
+            $maxCapacity
+        );
+
+        if (!$success) {
+            throw new \Exception("A database error occurred while creating the session.");
+        }
+
+        return $success;
+
+    }
+
+    public function editSession($sessionId, $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity){
+        $currentSession = Session::findById($sessionId);
+
+        if (!$currentSession) {
+            throw new \Exception("The session you are trying to edit does not exist.");
+        }
+
+        if ($trainerId !== null && $currentSession->trainer_id != $trainerId) {
+            throw new \Exception("Unauthorized action: You can only edit your own classes.");
+        }
+
+        $currentBooked = Session::getBookedSpotsCount($sessionId);
+        if ($maxCapacity < $currentBooked) {
+            throw new \Exception("Cannot reduce the capacity below the current number of booked members ($currentBooked).");
+        }
+
+        list($startTime, $endTime) = $this->validateAndFormatSessionData(
+            $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity, $sessionId
+        );
+
+        $updated = Session::update($sessionId, $roomId, $title, $startTime, $endTime, $maxCapacity);
+        if (!$updated) {
+            throw new \Exception("A database error occurred while updating the session.");
+        }
+
+        return $updated;
     }
 }

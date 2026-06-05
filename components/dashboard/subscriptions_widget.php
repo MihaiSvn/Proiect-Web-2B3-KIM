@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $activeSubscriptions //venit din DashboardController, are array de obiecte de tip UserSubscription
+ * @var array $activeSubscriptions //venit din MemberDashboardController, are array de obiecte de tip UserSubscription
  */
 ?>
 

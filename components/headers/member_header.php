@@ -11,7 +11,7 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
 
         <?php include 'components/logo.php';  ?>
 
-        <nav class="header__nav">
+        <nav class="header__nav" id="mobile-nav">
             <a href="/kim/dashboard" class="nav__link <?= strpos($currentPath, 'dashboard') !== false ? 'active' : '' ?>">
                 <i class="fa-solid fa-border-all"></i> Dashboard
             </a>

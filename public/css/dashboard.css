@@ -67,133 +67,131 @@
     font-weight: 500;
 }
 
-
-
-
-
-/* NOTIFICATIONS */
-
-
-.notifications__form-all {
-    margin-left: auto;
-}
-
-.notifications__btn-read-all {
-    background: transparent;
-    border: none;
-    color: var(--kim-dark-pink);
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-}
-
-.notifications__btn-read-all:hover {
-    background-color: var(--kim-light-pink);
-}
-
-.notification__actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.notification__form-single {
-    margin: 0;
-    display: flex;
-}
-
-.notification__btn-read {
-    background: transparent;
-    border: none;
-    color: #9CA3AF;
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.notification__btn-read:hover {
-    background-color: var(--kim-light-pink);
-    color: var(--kim-dark-pink);
-}
-
-
-.notifications__badge {
-    background-color: var(--kim-light-pink);
-    color: var(--kim-dark-pink);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.notifications__list {
+.stat-card {
+    background-color: white;
+    border: 1px solid #F3E8E8;
+    border-radius: 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
-.notification__item {
+/*iconita si procentaj*/
+.stat-card__header {
     display: flex;
-    align-items: center;
-    padding: 16px 20px;
-    border-radius: 16px;
-    gap: 16px;
-    background-color: var(--kim-lighter-pink);
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.notification__icon {
-    width: 40px;
-    height: 40px;
+.stat-card__icon {
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     font-size: 1.2rem;
-    flex-shrink: 0;
-    background-color: var(--kim-light-pink);
-    color: var(--kim-dark-pink);
 }
 
-.notification__content {
-    flex-grow: 1;
-}
-
-.notification__subject {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: #31231E;
-    margin: 0 0 4px 0;
+/* text cu procentaj (+12%) */
+.stat-card__trend {
+    font-size: 0.95rem;
     font-weight: 500;
 }
 
-.notification__details {
+/* trend pozitiv */
+.stat-card__trend.trend-up {
+    color: #2E8B57;
+}
+
+/* trend negativ */
+.stat-card__trend.trend-down {
+    color: #DC3545;
+}
+
+/* numar si label */
+.stat-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-card__value {
+    font-size: 2.2rem;
+    color: #31231E;
     margin: 0;
-    font-size: 0.85rem;
-    color: #6B7280;
+    font-weight: 400;
 }
 
-.notification__time {
-    font-size: 0.85rem;
-    color: #9CA3AF;
-    white-space: nowrap;
+.stat-card__label {
+    color: #7A6E6A;
+    font-size: 0.9rem;
+    margin: 0;
 }
 
-.notification__item.notification__read{
-    background-color: #e8e8e8;
-    opacity: 0.8;
+.stats__container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 12px;
 }
 
+.admin__subscription-stats-container{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+.admin__subscription-stats-card {
+    background-color: #FFFFFF;
+    border: 1px solid #F3EAEA;
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+/*row ul care in stanga are iconita si in dreapta numarul*/
+.admin__subscription-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #F3EAEA;
+}
+
+/* iconita si text */
+.admin__subscription-row__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+
+.admin__subscription-row__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--card-dark);
+    background-color: var(--card-light);
+}
+
+/* Textul */
+.admin__subscription-row__name {
+    color: #31231E;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Numarul */
+.admin__subscription-row__count {
+    color: #2D4C73;
+    font-size: 1.15rem;
+    font-weight: 400;
+}
 
 /* DIFERENTA PE ROLURI */
 
@@ -208,9 +206,60 @@
     padding: 20px 0;
 }
 
+.trainer__dashboard__grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.admin__dashboard__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.no-bg-card {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+@media (min-width: 1024px) {
+    .admin__dashboard__grid {
+        /* layout 65% / 35% */
+        grid-template-columns: 1.8fr 1fr;
+        align-items: start;
+    }
+
+    .admin-grid-full {
+        grid-column: 1 / -1;
+    }
+
+    .admin-grid-span-left {
+        grid-column: 1;
+        grid-row: span 2;
+    }
+
+    .admin-grid-span-right {
+        grid-column: 2;
+    }
+}
 
 @media (min-width: 992px) {
     .member__dashboard__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .trainer__dashboard__grid{
         grid-template-columns: repeat(3, 1fr);
     }
 

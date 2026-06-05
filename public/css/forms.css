@@ -58,11 +58,14 @@
 
 .popup_window {
     background-color: #ffffff;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     overflow: hidden;
+
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .popup__header {
@@ -118,6 +121,8 @@
     height: 100%;
     overflow-y: auto;
 }
+
+
 
 .image__side {
     flex: 1;
@@ -219,9 +224,12 @@
     color: #5c4f4f;
 }
 
-.form__group input {
+
+.form__group input,
+.form__group select{
     padding: 14px 16px;
     border: 1px solid #f0e6e7;
+    background: white;
     border-radius: 8px;
     font-size: 14px;
     color: #333333;

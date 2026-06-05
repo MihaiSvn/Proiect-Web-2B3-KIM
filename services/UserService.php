@@ -53,4 +53,60 @@ class UserService
 
         return $user;
     }
+
+
+    public function getActiveMembersTrend(){
+        $currentPeriodCount = User::getNewMembersCountCurrentPeriod();
+        $previousPeriodCount = User::getNewMembersCountPreviousPeriod();
+
+
+        if ($previousPeriodCount === 0) {
+            return $currentPeriodCount > 0 ? 100 : 0;
+        }
+
+        return round((($currentPeriodCount - $previousPeriodCount) / $previousPeriodCount) * 100);
+    }
+
+    public function getAllUsersCount(){
+        return User::getAllUsersCount();
+    }
+
+    public function getActiveMembersStats(){
+        $trend = $this->getActiveMembersTrend();
+        $displayValue = $this->getAllUsersCount();
+
+        return [
+            'displayValue' => $displayValue,
+            'trend' => $trend
+        ];
+    }
+
+    public function getActiveSubscriptionsByUserId($user_id){
+
+        $activeSubscriptions = User::findActiveSubscriptionsByUserId($user_id);
+
+        $result = [
+            'can_book_anything' => false, //devine true daca are o sesiune la all
+            'sessions_by_type' => [
+                'fitness' => 0,
+                'physiotherapy' => 0,
+                'strength' => 0,
+                'all' => 0
+            ]
+        ];
+
+        if (empty($activeSubscriptions)) {
+            return $result;
+        }
+
+        foreach ($activeSubscriptions as $sub) {
+            $result['sessions_by_type'][$sub->type] += $sub->sessions_left;
+
+            if($sub->sessions_left > 0 && $sub->type == 'all'){
+                $result['can_book_anything'] = true;
+            }
+        }
+
+        return $result;
+    }
 }

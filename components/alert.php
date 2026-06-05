@@ -3,14 +3,27 @@ $alertMessage = '';
 $alertType = '';
 $icon = '';
 
-if (isset($_GET['success'])) {
-    $alertMessage = htmlspecialchars($_GET['success']);
-    $alertType = 'alert__success';
-    $icon = 'fa-solid fa-circle-check';
-} elseif (isset($_GET['error'])) {
-    $alertMessage = htmlspecialchars($_GET['error']);
-    $alertType = 'alert__error';
-    $icon = 'fa-solid fa-circle-exclamation';
+// luam string ul query  (ex: "error=abc&success=def&error=xyz")
+$queryString = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
+
+//il spargem dupa & ca strtok
+$params = explode('&', $queryString);
+
+foreach ($params as $param) {
+    // spargem dupa = sa avem 'error' si 'abc'
+    $parts = explode('=', $param, 2);
+    $key = urldecode($parts[0]);
+    $value = isset($parts[1]) ? urldecode($parts[1]) : '';
+
+    if ($key === 'success' && $value !== '') {
+        $alertMessage = htmlspecialchars($value);
+        $alertType = 'alert__success';
+        $icon = 'fa-solid fa-circle-check';
+    } elseif ($key === 'error' && $value !== '') {
+        $alertMessage = htmlspecialchars($value);
+        $alertType = 'alert__error';
+        $icon = 'fa-solid fa-circle-exclamation';
+    }
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var object $notification //venit din DashboardController, obiect cu notification
- * @var object $user //venit din DashboardController, are toate informatiile despre utilizatorul logat in sesiune
+ * @var object $notification //venit din MemberDashboardController, obiect cu notification
+ * @var object $user //venit din MemberDashboardController, are toate informatiile despre utilizatorul logat in sesiune
  */
 ?>
 

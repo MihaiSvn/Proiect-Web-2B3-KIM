@@ -69,10 +69,11 @@ body{
 .header__container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 /* LOGO */
@@ -88,17 +89,33 @@ body{
     font-size: 1.2rem;
 }
 
+/*sa nu existe text pe mobile doar logo*/
 .header__logo-text {
-    font-size: 1.4rem;
-    color: #31231E;
+    display: none;
+    text-decoration: none;
+    color: #5c4f4b;
 }
 
 
 /*CENTRU*/
 
 .header__nav {
+    display: none; /* voi pune din js clasa is-open ca sa deschid meniu*/
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    flex-direction: column;
+    padding: 16px 24px;
+    gap: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #f1eae8;
+    z-index: 100;
+}
+
+.header__nav.is-open{
     display: flex;
-    gap: 16px;
 }
 
 .nav__link {
@@ -106,12 +123,15 @@ body{
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    border-radius: 20px;
     text-decoration: none;
     color: #7a6e6a;
     font-size: 0.95rem;
     font-weight: 500;
     transition: all 0.2s ease;
+
+    width: 100%;
+    justify-content: flex-start;
+    border-radius: 12px;
 }
 
 .nav__link:hover {
@@ -134,7 +154,7 @@ body{
 }
 
 .header__link-simple:hover {
-    color: #31231E; /* Se închide la hover */
+    color: #31231E;
 }
 
 /* Butonul principal (Join Now) */
@@ -212,6 +232,65 @@ body{
     height: 100%;
     object-fit: cover;
 }
+
+/*HAMBURGER MENU PENTRU RESPONSIVE*/
+.header__actions-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/*MOBILE FIRST*/
+.header__hamburger {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #31231E;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+.header__hamburger:hover {
+    color: var(--kim-dark-pink);
+}
+
+@media (min-width: 992px) {
+
+    .header__container {
+        padding: 0 24px;
+    }
+
+    .header__actions-wrapper {
+        gap: 16px;
+    }
+
+    .header__logo-text {
+        display: block;
+    }
+
+    .header__hamburger {
+        display: none;
+    }
+
+    /* transfomr dropdown ul in bara orizontala */
+    .header__nav {
+        display: flex;
+        position: static;
+        flex-direction: row;
+        width: auto;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+        border-top: none;
+    }
+
+    .nav__link {
+        width: auto;
+        border-radius: 20px;
+    }
+}
+
 
 
 /* ALERTE */

@@ -18,9 +18,9 @@ INSERT INTO SUBSCRIPTIONS (name, type, price, validity_days, sessions, descripti
 ('Premium Full Package', 'all', 400.00, 30, 15, 'Fitness access + 15 strength/physio sessions.', 7);
 
 INSERT INTO USER_SUBSCRIPTIONS (user_id, subscription_id, start_date, end_date, status, suspending_days_left, sessions_left) VALUES
-(4, 1, '2026-05-01 00:00:00', '2026-05-30 23:59:59', 'active', 5, 999),  -- John has active Fitness
-(5, 2, '2026-05-15 00:00:00', '2026-06-29 23:59:59', 'active', 0, 9),  -- Anna has active Physio
-(6, 3, '2026-01-10 00:00:00', '2026-02-09 23:59:59', 'expired', 0, 0); -- William has expired sub
+(4, 3, '2026-05-15 00:00:00', '2026-06-15 23:59:59', 'active', 7, 12),  -- UserSub ID 1: John are abonament Premium ("all") activ
+(5, 2, '2026-05-15 00:00:00', '2026-06-29 23:59:59', 'active', 0, 9),   -- UserSub ID 2: Anna are Physio activ
+(6, 3, '2026-01-10 00:00:00', '2026-02-09 23:59:59', 'expired', 0, 0); -- UserSub ID 3: William are un abonament Premium expirat
 
 
 INSERT INTO ROOMS (name, capacity, type, is_active) VALUES 
@@ -41,13 +41,13 @@ INSERT INTO SESSIONS (trainer_id, room_id, title, type, start_time, end_time, ma
 (1, 3, 'HIIT Circuit (Cardio)', 'strength', '2026-05-20 19:00:00', '2026-05-20 20:00:00', 15, 'completed'),
 (1, 3, 'HIIT Circuit 2 (Cardio)', 'strength', '2026-06-11 19:00:00', '2026-06-11 20:00:00', 15, 'planned');
 
-INSERT INTO BOOKINGS (user_id, session_id) VALUES
-(4, 1), -- John goes to all
-(4, 2),
-(4,3),
-(4,4),
-(5, 2), -- Anna goes to Evaluation
-(6, 3); -- William attended the circuit
+INSERT INTO BOOKINGS (user_id, session_id, user_subscription_id) VALUES
+(4, 1, 1),
+(4, 2, 1), 
+(4, 3, 1),
+(4, 4, 1), 
+(5, 2, 2),
+(6, 3, 3);
 
 
 

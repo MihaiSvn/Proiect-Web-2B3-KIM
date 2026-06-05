@@ -13,7 +13,7 @@ class BookingController
 
     public function cancel()
     {
-        if (!isset($_POST['user_id'])) {
+        if (!isset($_SESSION['user_id'])) {
             header('Location: /kim/login?error=You must be logged in');
             exit;
         }
@@ -35,6 +35,41 @@ class BookingController
                 $statusType = 'error';
                 $message = $e->getMessage();
             }
+        }
+
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/kim/dashboard';
+
+        //daca in link avem deja un parametru sau nu
+        $separator = (strpos($referer, '?') !== false) ? '&' : '?';
+
+        // ?success=Mesaj+aici)
+        $queryString = ($statusType !== '') ? $separator . $statusType . '=' . urlencode($message) : '';
+
+        header('Location: ' . $referer . $queryString);
+        exit;
+    }
+
+    public function book(){
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /kim/login?error=' . urlencode('You must be logged in to book a session.'));
+            exit;
+        }
+
+        if(isset($_POST['session_id'])) {
+            $sessionId = (int)$_POST['session_id'];
+            $userId = $_SESSION['user_id'];
+
+            try{
+                $this->bookingService->createBooking($userId, $sessionId);
+                $statusType = 'success';
+                $message = 'Session booked successfully.';
+            } catch (\Exception $e) {
+                $statusType = 'error';
+                $message = $e->getMessage();
+            }
+        } else {
+            $statusType = 'error';
+            $message = 'Session id not set.';
         }
 
         $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/kim/dashboard';

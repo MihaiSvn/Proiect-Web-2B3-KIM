@@ -3,6 +3,8 @@
  * @var string $title -> title trebuie sa fie titlul form-ului din header, de exemplu 'Edit'
  * @var string $action -> action trebuie sa fie ce endpoint apeleaza din POST, exemplu '/kim/login'
  * @var string $submit -> ce text este pe butonul de submit
+ * @var string $infoText -> daca vreau ca popup-ul sa mi scrie niste text, poate fi null
+ * @var array $
  * @var array<FormField> $formBody -> array de instante de FormField, va arata de exemplu
  * @var string $popupId -> string pentru a putea genera mai multe popup-uri, va fi de forma popupOverlay_<id>
  * CE TREBUIE SA AI IN HEAD LA FISIERUL HTML/PHP?
@@ -45,24 +47,57 @@
             </button>
         </div>
         <div class="form__container">
+            <?php if (isset($infoText)): ?>
+                <div class="form__textbox">
+                    <?= $infoText ?>
+                </div>
+
+            <?php endif; ?>
             <form action="<?= $action ?>" method="POST" class="form__body">
 
                 <?php foreach ($formBody as $field): ?>
-                    <div class="form__group">
-                        <label class="form__label" for="<?= $field->id ?>"><?= $field->label ?></label>
-                        <input type="<?= $field->type ?>"
-                               name="<?= $field->id ?>"
-                               id="<?= $field->id ?>"
-                               value="<?= $field->value ?>"
-                               placeholder="<?= $field->placeholder ?>"
-                                <?= $field->required ? 'required' : '' ?>
+                    <div class="form__group" <?= $field->type === 'hidden' ? 'style="display: none;"' : '' ?>>
 
-                                <?= isset($field->min) ? 'min="' . $field->min . '"' : '' ?>
-                                <?= isset($field->max) ? 'max="' . $field->max . '"' : '' ?>
-                        >
+                        <?php if ($field->type !== 'hidden'): ?>
+                            <label class="form__label" for="<?= $field->id ?>"><?= $field->label ?></label>
+                        <?php endif; ?>
+
+<!--                        daca e dropdown -->
+                        <?php if ($field->type === 'select'): ?>
+                            <select name="<?= $field->id ?>"
+                                    id="<?= $field->id ?>"
+                                    <?= $field->required ? 'required' : '' ?>>
+
+                                <option value="" disabled <?= $field->value === null ? 'selected' : '' ?>>
+                                    <?= $field->placeholder ?: 'Select an option' ?>
+                                </option>
+
+                                <?php foreach ($field->options as $val => $text): ?>
+                                    <option value="<?= htmlspecialchars($val) ?>" <?= ($field->value !== null && $field->value == $val) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($text) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+
+                        <?php else: ?>
+                            <input type="<?= $field->type ?>"
+                                   name="<?= $field->id ?>"
+                                   id="<?= $field->id ?>"
+                                   value="<?= $field->value ?>"
+                                   placeholder="<?= $field->placeholder ?>"
+                                    <?= $field->required ? 'required' : '' ?>
+
+                                    <?= isset($field->min) ? 'min="' . $field->min . '"' : '' ?>
+                                    <?= isset($field->max) ? 'max="' . $field->max . '"' : '' ?>
+                            >
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
-                <button type="submit" class="form__submit"><?= $submit ?></button>
+
+
+                <?php if (!empty($submit)): ?>
+                    <button type="submit" class="form__submit"><?= $submit ?></button>
+                <?php endif; ?>
 
             </form>
         </div>
