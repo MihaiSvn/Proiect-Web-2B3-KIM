@@ -31,9 +31,9 @@ class UserService
             throw new \Exception("Password must be at least 6 characters");
         }
 
-        $succes = User::create($first_name, $last_name, $email, $password, $role);
+        $success = User::create($first_name, $last_name, $email, $password, $role);
 
-        if(!$succes){
+        if(!$success){
             throw new \Exception("Unable to create user");
         }
 
@@ -108,5 +108,25 @@ class UserService
         }
 
         return $result;
+    }
+
+    public function updateUserProfile($userId, $first_name, $last_name, $email, $newAvatarName = null){
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            throw new \Exception("Email address is not valid");
+        }
+
+        //trb sa verificam daca exista deja utilizator cu acest mail
+        $existingUser = $this->getUserByEmail($email);
+
+        if($existingUser && $existingUser->id != $userId){
+            throw new \Exception("User with email $email already exists");
+        }
+
+        $success = User::updateProfile($userId, $first_name, $last_name, $email, $newAvatarName);
+
+        if(!$success){
+            throw new \Exception("Unable to update user");
+        }
+        return true;
     }
 }
