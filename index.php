@@ -22,6 +22,7 @@ require_once 'controllers/DashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
 require_once 'controllers/NotificationController.php';
 require_once 'controllers/BookingController.php';
+require_once 'controllers/NewsletterController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -34,11 +35,13 @@ use controllers\AuthController;
 use controllers\UserSubscriptionController;
 use controllers\NotificationController;
 use controllers\BookingController;
+use controllers\NewsletterController;
 
 $router = new Router();
 
 $router->get('/login','views/login.php');
 $router->get('/home','views/home.php');
+$router->get('/membership','views/membership.php');
 $router->get('/register','views/register.php');
 $router->get('/dashboard',function(){
     $userService = new UserService();
@@ -87,6 +90,15 @@ $router->post('/sessions/cancel-booking', function(){
     $bookingController = new BookingController($bookingService);
 
     $bookingController->cancel();
+});
+
+$router->post('/newsletter', function(){
+
+    $newsletterController =
+        new NewsletterController();
+
+    $newsletterController->subscribe();
+
 });
 
 

@@ -124,12 +124,12 @@
     font-size: .75rem;
 }
 
-/* Mobile view: ascundem imaginile */
+
 .hero__right {
     display: none;
 }
 
-/* Desktop view */
+
 @media (min-width: 1024px) {
     .hero {
         flex-direction: row;
