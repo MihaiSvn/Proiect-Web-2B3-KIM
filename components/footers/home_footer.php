@@ -45,7 +45,7 @@
                     Subscribe to receive wellness tips and exclusive offers
                 </p>
 
-                <form action="/kim/home" method="POST" class="footer__form">
+                <form action="/kim/newsletter" method="POST" class="footer__form">
 
                     <input
                         type="email"

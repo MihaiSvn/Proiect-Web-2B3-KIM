@@ -27,6 +27,7 @@ require_once 'controllers/TrainerDashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
 require_once 'controllers/NotificationController.php';
 require_once 'controllers/BookingController.php';
+require_once 'controllers/NewsletterController.php';
 require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
 require_once 'controllers/SessionsPageController.php';
@@ -45,6 +46,21 @@ use controllers\AuthController;
 use controllers\UserSubscriptionController;
 use controllers\NotificationController;
 use controllers\BookingController;
+use controllers\NewsletterController;
+
+$router = new Router();
+
+$router->get('/login','views/login.php');
+$router->get('/home','views/home.php');
+$router->get('/membership','views/membership.php');
+$router->get('/register','views/register.php');
+$router->get('/dashboard',function(){
+    $userService = new UserService();
+    $userSubscriptionsService = new UserSubscriptionsService();
+    $sessionService = new SessionService();
+    $notificationService = new NotificationService();
+    $dashboardController = new DashboardController($userService, $userSubscriptionsService, $sessionService, $notificationService);
+    $dashboardController->index();
 use controllers\SessionController;
 use controllers\AdminDashboardController;
 use controllers\SessionsPageController;
@@ -149,6 +165,15 @@ $router->post('/sessions/cancel-booking', function () {
     $bookingController = new BookingController($bookingService);
 
     $bookingController->cancel();
+});
+
+$router->post('/newsletter', function(){
+
+    $newsletterController =
+        new NewsletterController();
+
+    $newsletterController->subscribe();
+
 });
 
 $router->post('/sessions/book', function () {

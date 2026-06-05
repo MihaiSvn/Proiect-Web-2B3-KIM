@@ -1,0 +1,141 @@
+.membership-included{
+    padding:4rem 1.5rem;
+
+    background:
+            radial-gradient(
+                    circle at top,
+                    rgba(212,165,165,.12),
+                    transparent 55%
+            ),
+            #3a2a2a;
+}
+
+.membership-included__container{
+    max-width:1400px;
+    margin:0 auto;
+}
+
+.membership-included__subtitle{
+    text-align:center;
+
+    color:var(--kim-dark-pink);
+
+    font-size:.85rem;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+
+    margin-bottom:.8rem;
+}
+
+.membership-included__title{
+    font-family:'Playfair Display', serif;
+
+    text-align:center;
+
+    color:white;
+
+    font-size:2.4rem;
+    line-height:1.1;
+
+    margin-bottom:2.5rem;
+}
+
+.membership-included__grid{
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:1.25rem;
+}
+
+.membership-included__card{
+    padding:1.5rem;
+
+    border-radius:1.5rem;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:rgba(255,255,255,.04);
+
+    backdrop-filter:blur(10px);
+
+    transition:
+            transform .3s ease,
+            border-color .3s ease;
+}
+
+.membership-included__card:hover{
+    transform:translateY(-4px);
+
+    border-color:rgba(255,255,255,.15);
+}
+
+.membership-included__icon{
+    width:48px;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:.9rem;
+
+    background:rgba(255,255,255,.08);
+
+    margin-bottom:1rem;
+}
+
+.membership-included__icon i{
+    color:var(--kim-dark-pink);
+
+    font-size:1.15rem;
+}
+
+.membership-included__card-title{
+    font-family:'Playfair Display', serif;
+
+    color:white;
+
+    font-size:1.35rem;
+
+    margin-bottom:.75rem;
+}
+
+.membership-included__card-description{
+    color:rgba(255,255,255,.75);
+
+    font-size:.95rem;
+    line-height:1.6;
+}
+
+@media(min-width:768px){
+
+    .membership-included__grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(min-width:1200px){
+
+    .membership-included{
+        padding:5rem 2rem;
+    }
+
+    .membership-included__title{
+        font-size:3.5rem;
+
+        margin-bottom:3rem;
+    }
+
+    .membership-included__grid{
+        grid-template-columns:repeat(3,1fr);
+
+        gap:1.5rem;
+    }
+
+    .membership-included__card{
+        padding:1.75rem;
+    }
+
+}
