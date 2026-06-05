@@ -3,14 +3,17 @@
 namespace controllers;
 
 use services\UserService;
+use services\TrainerService;
 
 class AuthController
 {
     private $userService;
+    private $trainerService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, TrainerService $trainerService)
     {
         $this->userService = $userService;
+        $this->trainerService = $trainerService;
     }
 
     public function register()
@@ -26,13 +29,7 @@ class AuthController
 
             $user = $this->userService->getUserByEmail($email);
 
-            $_SESSION['user_id'] = $user->id;
-            $_SESSION['user_name'] = $user->first_name . " " . $user->last_name;
-            $_SESSION['user_role'] = $user->role;
-            $_SESSION['user_profile-picture'] = $user->profile_picture;
-
-            header('Location: /kim/home');
-            exit;
+            $this->setSessionVariables($user);
         } catch (\Exception $ex) {
             $error_message = $ex->getMessage();
 
@@ -48,16 +45,34 @@ class AuthController
 
         try{
             $user = $this->userService->authenticate($email, $password); //authenticate va returna un obiect cu user daca e bun
-            $_SESSION['user_id'] = $user->id;
-            $_SESSION['user_name'] = $user->first_name . " " . $user->last_name;
-            $_SESSION['user_role'] = $user->role;
-
-            header('Location: /kim/home');
-            exit;
+            $this->setSessionVariables($user);
         } catch(\Exception $ex) {
             $error_message = $ex->getMessage();
             header('Location: /kim/login?error=' . urlencode($error_message));
             exit;
         }
+    }
+
+    /**
+     * @param $user
+     * @return void
+     */
+    private function setSessionVariables($user)
+    {
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_name'] = $user->first_name . " " . $user->last_name;
+        $_SESSION['user_role'] = $user->role;
+        $_SESSION['user_profile-picture'] = $user->profile_picture;
+
+        if ($user->role == 'trainer') {
+            $trainer = $this->trainerService->getTrainerByUserId($user->id);
+
+            if ($trainer) {
+                $_SESSION['trainer_id'] = $trainer->id;
+            }
+        }
+
+        header('Location: /kim/dashboard');
+        exit;
     }
 }

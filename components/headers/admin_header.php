@@ -11,7 +11,11 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
 
         <?php include 'components/logo.php';  ?>
 
-        <nav class="header__nav">
+        <nav class="header__nav" id="mobile-nav">
+            <a href="/kim/dashboard" class="nav__link <?= strpos($currentPath, 'dashboard') !== false ? 'active' : '' ?>">
+                <i class="fa-solid fa-border-all"></i> Dashboard
+            </a>
+            
             <a href="/kim/admin/users" class="nav__link <?= strpos($currentPath, 'users') !== false ? 'active' : '' ?>">
                 <i class="fa-solid fa-user-group"></i> Manage Users
             </a>
@@ -24,12 +28,18 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
                 <i class="fa-solid fa-location-dot"></i> Manage Facilities
             </a>
 
-            <a href="/kim/admin/sessions" class="nav__link <?= strpos($currentPath, 'sessions') !== false ? 'active' : '' ?>">
+            <a href="/kim/sessions" class="nav__link <?= strpos($currentPath, 'sessions') !== false ? 'active' : '' ?>">
                 <i class="fa-regular fa-calendar"></i> Manage Sessions
             </a>
+
+
         </nav>
 
         <?php include 'components/header_actions.php'; ?>
+
+
+
+
 
     </div>
 </header>

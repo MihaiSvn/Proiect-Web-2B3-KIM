@@ -1,0 +1,122 @@
+/* NOTIFICATIONS */
+
+
+.notifications__form-all {
+    margin-left: auto;
+}
+
+.notifications__btn-read-all {
+    background: transparent;
+    border: none;
+    color: var(--kim-dark-pink);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.notifications__btn-read-all:hover {
+    background-color: var(--kim-light-pink);
+}
+
+.notification__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification__form-single {
+    margin: 0;
+    display: flex;
+}
+
+.notification__btn-read {
+    background: transparent;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.notification__btn-read:hover {
+    background-color: var(--kim-light-pink);
+    color: var(--kim-dark-pink);
+}
+
+
+.notifications__badge {
+    background-color: var(--kim-light-pink);
+    color: var(--kim-dark-pink);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.notifications__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notification__item {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: 16px;
+    gap: 16px;
+    background-color: var(--kim-lighter-pink);
+}
+
+.notification__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    background-color: var(--kim-light-pink);
+    color: var(--kim-dark-pink);
+}
+
+.notification__content {
+    flex-grow: 1;
+}
+
+.notification__subject {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #31231E;
+    margin: 0 0 4px 0;
+    font-weight: 500;
+}
+
+.notification__details {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6B7280;
+}
+
+.notification__time {
+    font-size: 0.85rem;
+    color: #9CA3AF;
+    white-space: nowrap;
+}
+
+.notification__item.notification__read{
+    background-color: #e8e8e8;
+    opacity: 0.8;
+}

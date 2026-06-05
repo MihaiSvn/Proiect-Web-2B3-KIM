@@ -1,0 +1,257 @@
+.booking__container{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/*gen titlul cu book a session*/
+.booking__header{
+    margin-bottom: 32px;
+}
+
+.booking__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #31231E;
+    margin-bottom: 8px;
+}
+
+.booking__subtitle {
+    color: #7A6E6A;
+    font-size: 1rem;
+}
+
+
+/*CONTROALE FILTERE SI SAPTAMANA*/
+
+.booking__controls {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.booking__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/*navigare saptamana*/
+
+.week-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.week-nav__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #EBE4E4;
+    background: white;
+    color: #7A6E6A;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.week-nav__btn:hover {
+    border-color: var(--kim-dark-pink);
+    color: var(--kim-dark-pink);
+}
+
+.week-nav__date-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.week-nav__range {
+    color: #31231E;
+    font-weight: 500;
+    text-align: center;
+}
+
+.week-nav__year {
+    color: #7A6E6A;
+    font-size: 0.85rem;
+}
+
+.btn__hover-action {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #EBE4E4;
+    background: white;
+    color: #D4A5A5;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn__hover-action:hover {
+    background: var(--kim-dark-pink);
+    color: var(--kim-lighter-pink);
+}
+
+.btn__hover-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/*linia cu filtre si create session*/
+.booking__utilities{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+}
+/* FILTRE */
+
+.booking__filters {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+
+
+/*are label si elementele in sine*/
+.filter__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter__label {
+    color: #7A6E6A;
+    font-size: 0.85rem;
+}
+
+.filter__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (min-width: 690px) {
+    .booking__filters{
+        flex-direction: row;
+    }
+    .booking__utilities{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+    .filter__buttons{
+        flex-direction: row;
+    }
+}
+
+.filter__btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #EBE4E4;
+    background: white;
+    color: #7A6E6A;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter__btn.active {
+    background-color: var(--kim-dark-pink);
+    color: white;
+    border-color: var(--kim-dark-pink);
+}
+
+.filter__select {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #EBE4E4;
+    background: white;
+    color: #31231E;
+    cursor: pointer;
+    outline: none;
+}
+
+/*grila pt saptamana*/
+.schedule__wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    border: 1px solid #F3F4F6;
+}
+
+.schedule__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 16px;
+    min-width: 1000px;
+}
+
+/*pt scrol orizontal pe ecrane mici*/
+@media (max-width: 1100px) {
+    .schedule__wrapper {
+        overflow-x: auto;
+    }
+}
+
+.schedule__column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+.schedule__column-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 2px solid transparent;
+    color: #7A6E6A;
+}
+
+/*ziua activa curenta*/
+.schedule__column-header.active {
+    border-bottom-color: var(--kim-dark-pink);
+    color: var(--kim-dark-pink);
+}
+
+
+.schedule__day-name {
+    color: #31231E;
+    font-weight: 500;
+}
+
+.schedule__column-header.active .schedule__day-name {
+    color: var(--kim-dark-pink);
+}
+
+.schedule__day-date,
+.schedule__session-count {
+    font-size: 0.85rem;
+}
+
+.schedule__column-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.schedule__column-text{
+    color: #b0adba;
+}
+

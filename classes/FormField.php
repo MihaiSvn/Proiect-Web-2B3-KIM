@@ -11,6 +11,8 @@ class FormField {
     public $min=null;  //daca type-ul meu e number
     public $max=null;
 
+    public $options = []; //aici salvam optiunile daca vreum un dropdown, index va fi id optiune, iar valoarea va fi textul
+
     private function __construct(
         $label,
         $id
@@ -46,6 +48,11 @@ class FormField {
     public function limits($min, $max) {
         $this->min = $min;
         $this->max = $max;
+        return $this;
+    }
+
+    public function options($optionsArray) {
+        $this->options = $optionsArray;
         return $this;
     }
 
