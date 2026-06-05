@@ -130,7 +130,6 @@ require_once __DIR__ . '/../classes/FormField.php';
         >
             <i class="fa-solid fa-pen" style="margin-right: 5px; font-size: 0.85em;"></i> Edit
         </button>
-        <?php endif;?>
 
         <?php
         $title = 'Edit Session';
@@ -195,6 +194,7 @@ require_once __DIR__ . '/../classes/FormField.php';
 
         <?php include 'components/popup.php' ?>
 
+        <?php endif;?>
 
     </div>
 
