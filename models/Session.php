@@ -80,7 +80,10 @@ class Session
             $sql .= " AND s.status != 'canceled'";
         }
 
-        $sql .= " ORDER BY s.start_time ASC";
+        $sql .= " ORDER BY s.start_time ASC,
+            FIELD(s.status, 'ongoing', 'planned', 'completed'), 
+            FIELD(s.type, 'fitness', 'strength', 'physiotherapy', 'all')
+        ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":current_user_id", $user_id, PDO::PARAM_INT);
@@ -101,6 +104,7 @@ class Session
                 s.end_time,
                 s.max_capacity,
                 s.room_id,
+                s.trainer_id,
                 r.name AS room_name,
                 u.first_name AS trainer_first_name,
                 u.last_name AS trainer_last_name,
@@ -116,7 +120,9 @@ class Session
             $sql .= " AND s.status != 'canceled'";
         }
 
-        $sql .= " ORDER BY s.start_time ASC";
+        $sql .= " ORDER BY s.start_time ASC, 
+            FIELD(s.status, 'ongoing', 'planned', 'completed')
+        ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":current_trainer_id", $trainer_id, PDO::PARAM_INT);
@@ -209,6 +215,40 @@ class Session
             (s.status = 'planned' OR s.status = 'ongoing') 
               AND s.end_time > NOW()
             ORDER BY s.start_time ASC";
+
+        return $pdo->query($sql)->fetchAll();
+    }
+
+    public static function findAllSessions($includeCanceled = false)
+    {
+        global $pdo;
+        $sql = "SELECT 
+                s.id AS session_id,
+                s.title,
+                s.type AS session_type,
+                s.status,
+                s.start_time,
+                s.end_time,
+                s.max_capacity,
+                r.name AS room_name,
+                s.trainer_id,
+                s.room_id,
+                u.first_name AS trainer_first_name,
+                u.last_name AS trainer_last_name,
+                (SELECT COUNT(*) FROM BOOKINGS b WHERE b.session_id = s.id) AS booked_spots
+            FROM SESSIONS s
+            JOIN ROOMS r ON s.room_id = r.id
+            JOIN TRAINERS t ON s.trainer_id = t.id
+            JOIN USERS u ON t.user_id = u.id
+            ";
+
+        if (!$includeCanceled) {
+            $sql .= " WHERE s.status != 'canceled'";
+        }
+
+        $sql .= " ORDER BY s.start_time ASC, 
+            FIELD(s.status, 'ongoing', 'planned', 'completed', 'canceled')
+        ";
 
         return $pdo->query($sql)->fetchAll();
     }

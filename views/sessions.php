@@ -54,7 +54,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sessions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/kim/public/css/global.css">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/booking_page.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/session_card.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
@@ -65,25 +65,9 @@
 </head>
 <body>
 
-<?php
-if (isset($_SESSION['user_id'])) {
-    if (isset($_SESSION['user_role'])) {
-        switch ($_SESSION['user_role']) {
-            case 'admin':
-                include 'components/headers/admin_header.php';
-                break;
-            case 'member':
-                include 'components/headers/member_header.php';
-                break;
-            case 'trainer':
-                include 'components/headers/trainer_header.php';
-                break;
-        }
-    } else {
-        include 'components/headers/unauth_header.php';
-    }
-}
+<?php include 'components/header.php'; ?>
 
+<?php
 require_once __DIR__ . '/../classes/FormField.php';
 
 ?>
@@ -92,8 +76,13 @@ require_once __DIR__ . '/../classes/FormField.php';
 <div class="booking__container">
 
     <div class="booking__header">
-        <h1 class="booking__title">Book a Session</h1>
-        <p class="booking__subtitle">Select an available session from the weekly schedule.</p>
+        <?php if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'trainer'): ?>
+            <h1 class="booking__title">Manage Sessions</h1>
+            <p class="booking__subtitle">Create, cancel or edit sessions.</p>
+        <?php else: ?>
+            <h1 class="booking__title">Book a Session</h1>
+            <p class="booking__subtitle">Select an available session from the weekly schedule.</p>
+        <?php endif; ?>
     </div>
 
     <div class="booking__controls">
@@ -166,13 +155,12 @@ require_once __DIR__ . '/../classes/FormField.php';
                     $isAdmin = $_SESSION['user_role'] === 'admin';
 
 
-
                     $titleField = FormField::create('Title', 'session_title')->type('text')
                             ->placeholder('Workout #1')->required(true);
 
                     $formBody[] = $titleField;
 
-                    if($isAdmin) {
+                    if ($isAdmin) {
                         $trainerOptions = [];
 
                         foreach ($allTrainers as $trainer) {
@@ -190,7 +178,7 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                     $roomsToIterate = $isAdmin ? \models\Room::getAllActiveRooms() : $availableRooms;
 
-                    if($roomsToIterate) {
+                    if ($roomsToIterate) {
                         foreach ($roomsToIterate as $room) {
                             $roomOptions[$room->id] = $room->name . ' (Capacity: ' . $room->capacity . ')';
 
@@ -202,7 +190,6 @@ require_once __DIR__ . '/../classes/FormField.php';
                     }
 
 
-
                     $roomField = FormField::create('Room', 'session_room')->type('select')
                             ->required('true')->placeholder('Select a room')->options($roomOptions);
 
@@ -211,7 +198,7 @@ require_once __DIR__ . '/../classes/FormField.php';
                     $startTimeField = FormField::create('Start Time', 'start_time')
                             ->type('datetime-local')
                             ->required(true)
-                            ->limits(date('Y-m-d\TH:i'),null); // min tre sa fie egal cu current time
+                            ->limits(date('Y-m-d\TH:i'), null); // min tre sa fie egal cu current time
 
                     $endTimeField = FormField::create('End Time', 'end_time')
                             ->type('datetime-local')
@@ -222,7 +209,6 @@ require_once __DIR__ . '/../classes/FormField.php';
                             ->placeholder('e.g. 15')
                             ->limits(1, 100)
                             ->required(true);
-
 
 
                     $formBody[] = $startTimeField;
@@ -240,9 +226,11 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                     ?>
 
-                    <div id="hidden_room_data" style="display: none" data-payload = "<?= htmlspecialchars(json_encode($jsRoomData)) ?>"></div>
+                    <div id="hidden_room_data" style="display: none"
+                         data-payload="<?= htmlspecialchars(json_encode($jsRoomData)) ?>"></div>
                     <?php if ($isAdmin): ?>
-                        <div id="hidden_trainer_data" style="display: none" data-payload='<?= htmlspecialchars(json_encode($jsTrainerData), ENT_QUOTES, 'UTF-8') ?>'></div>
+                        <div id="hidden_trainer_data" style="display: none"
+                             data-payload='<?= htmlspecialchars(json_encode($jsTrainerData), ENT_QUOTES, 'UTF-8') ?>'></div>
                     <?php endif; ?>
 
                     <?php include 'components/popup.php' ?>
@@ -250,10 +238,10 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                     <button type="button" class="btn__hover-action js-open-popup"
                             data-target="popupOverlay_createSession"
-                    <?php if(count($availableRooms) === 0 && !$isAdmin): ?>
-                            disabled
-                            title="Can't create session, there are no rooms active for your specialization"
-                            <?php endif;?>
+                            <?php if (count($availableRooms) === 0 && !$isAdmin): ?>
+                                disabled
+                                title="Can't create session, there are no rooms active for your specialization"
+                            <?php endif; ?>
                     >
                         Create Session
                     </button>

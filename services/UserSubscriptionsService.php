@@ -36,6 +36,7 @@ class UserSubscriptionsService
 
         return true;
     }
+  
 
     public function checkAndReactivateSuspensions($userId) {
         return UserSubscription::reactivateExpiredSuspensions($userId);
@@ -85,5 +86,29 @@ class UserSubscriptionsService
         }
 
         return true;
+    }
+  
+    public function getAllSubscriptionsByUserId($userId){
+        return UserSubscription::findAllSubscriptionsByUserId($userId);
+    }
+
+    public function getGroupedSubscriptionsByUserId($userId){
+        $allSubscriptions = $this->getAllSubscriptionsByUserId($userId);
+
+        $grouped = [
+            'active' => [],
+            'suspended' => [],
+            'expired' => []
+        ];
+
+        foreach ($allSubscriptions as $subscription) {
+            $status = strtolower($subscription->status);
+
+            if(array_key_exists($status, $grouped)){
+                array_push($grouped[$status], $subscription);
+            }
+        }
+
+        return $grouped;
     }
 }
