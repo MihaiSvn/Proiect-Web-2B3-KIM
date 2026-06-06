@@ -20,7 +20,7 @@
 
 
 
-<?php include 'components/headers/member_header.php'; ?>
+<?php include 'components/header.php'; ?>
 
 <?php include 'components/alert.php'; ?>
 
