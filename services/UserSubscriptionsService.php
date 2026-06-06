@@ -36,6 +36,7 @@ class UserSubscriptionsService
 
         return true;
     }
+  
 
     public function checkAndReactivateSuspensions($userId) {
         return UserSubscription::reactivateExpiredSuspensions($userId);
@@ -71,6 +72,22 @@ class UserSubscriptionsService
         return UserSubscription::getActiveSubscriptionsCountByType();
     }
 
+    public function purchase($userId, $subscriptionId)
+    {
+        $success = UserSubscription::create(
+            $userId,
+            $subscriptionId
+        );
+
+        if (!$success) {
+            throw new \Exception(
+                'Unable to purchase subscription!'
+            );
+        }
+
+        return true;
+    }
+  
     public function getAllSubscriptionsByUserId($userId){
         return UserSubscription::findAllSubscriptionsByUserId($userId);
     }

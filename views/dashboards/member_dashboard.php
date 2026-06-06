@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="/kim/public/css/forms.css">
     <link rel="stylesheet" href="/kim/public/css/dashboard.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/notifications.css">
+    <link rel="stylesheet" href="/kim/public/css/member_footer.css">
 
 
     <link rel="stylesheet" href="/kim/public/css/calendar.css">
@@ -64,6 +65,8 @@
     </div>
 
 </div>
+
+<?php include 'components/footers/member_footer.php'; ?>
 
 </body>
 </html>

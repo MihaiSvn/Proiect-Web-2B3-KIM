@@ -12,6 +12,8 @@ require_once 'models/Notification.php';
 require_once 'models/Booking.php';
 require_once 'models/Trainer.php';
 require_once 'models/Room.php';
+require_once 'models/Subscription.php';
+require_once 'models/SubscriptionFeatures.php';
 
 require_once 'services/UserService.php';
 require_once 'services/UserSubscriptionsService.php';
@@ -20,6 +22,8 @@ require_once 'services/NotificationService.php';
 require_once 'services/BookingService.php';
 require_once 'services/TrainerService.php';
 require_once 'services/RoomService.php';
+require_once 'services/SubscriptionService.php';
+
 
 require_once 'controllers/AuthController.php';
 require_once 'controllers/MemberDashboardController.php';
@@ -45,6 +49,7 @@ use services\NotificationService;
 use services\BookingService;
 use services\TrainerService;
 use services\RoomService;
+use services\SubscriptionService;
 
 use controllers\MemberDashboardController;
 use controllers\TrainerDashboardController;
@@ -66,20 +71,11 @@ use controllers\UserController;
 
 $router = new Router();
 
-$router->get('/login','views/login.php');
-$router->get('/home','views/home.php');
-$router->get('/membership','views/membership.php');
-$router->get('/register','views/register.php');
-
-
-
-
-$router = new Router();
-
 $router->get('/login', 'views/login.php');
 $router->get('/home', 'views/home.php');
 $router->get('/membership','views/membership.php');
 $router->get('/register', 'views/register.php');
+
 $router->get('/dashboard', function () {
     if (!isset($_SESSION['user_id'])) {
         header('Location: /kim/login?error=' . urlencode('You need to be logged in!'));
@@ -197,6 +193,14 @@ $router->post('/subscription/suspend', function () {
     $userSubscriptionService = new UserSubscriptionsService();
     $userSubscriptionController = new UserSubscriptionController($userSubscriptionService);
     $userSubscriptionController->suspend();
+});
+
+$router->post('/subscription/purchase', function () {
+
+    $userSubscriptionService = new UserSubscriptionsService();
+    $userSubscriptionController = new UserSubscriptionController($userSubscriptionService);
+    $userSubscriptionController->purchase();
+
 });
 
 $router->post('/notifications/mark-all-read', function () {
