@@ -162,6 +162,10 @@ class UserController
                 throw new \Exception('An admin cannot delete their own account.');
             }
 
+            if($userIdToDelete == $_SESSION['user_id'] && $_SESSION['user_role'] === 'trainer'){
+                throw new \Exception('A trainer cannot delete their own account.');
+            }
+
             if($_SESSION['user_role'] !== 'admin'){
                 if($userIdToDelete != $_SESSION['user_id']){
                     throw new \Exception('You are not allowed to delete this account.');
