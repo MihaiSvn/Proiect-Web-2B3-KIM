@@ -1,6 +1,7 @@
 <?php
 
 namespace models;
+use models\Subscription;
 use PDO;
 class UserSubscription
 {
@@ -107,5 +108,74 @@ class UserSubscription
         $stmt = $pdo->query($sql);
 
         return $stmt->fetchAll();
+    }
+
+    public static function create($userId, $subscriptionId)
+    {
+        global $pdo;
+
+        $subscription =
+            Subscription::findById(
+                $subscriptionId
+            );
+
+        if (!$subscription) {
+            return false;
+        }
+
+        $sql = "
+        INSERT INTO USER_SUBSCRIPTIONS
+        (
+            user_id,
+            subscription_id,
+            start_date,
+            end_date,
+            status,
+            suspending_days_left,
+            sessions_left
+        )
+        VALUES
+        (
+            :user_id,
+            :subscription_id,
+            NOW(),
+            DATE_ADD(
+                NOW(),
+                INTERVAL :validity_days DAY
+            ),
+            'active',
+            :suspending_days,
+            :sessions_left
+        )
+    ";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindParam(
+            ':user_id',
+            $userId
+        );
+
+        $stmt->bindParam(
+            ':subscription_id',
+            $subscriptionId
+        );
+
+        $stmt->bindParam(
+            ':validity_days',
+            $subscription->validity_days
+        );
+
+        $stmt->bindParam(
+            ':suspending_days',
+            $subscription->max_suspending_days
+        );
+
+        $stmt->bindParam(
+            ':sessions_left',
+            $subscription->sessions
+        );
+
+        return $stmt->execute();
     }
 }

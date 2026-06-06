@@ -46,5 +46,40 @@ class UserSubscriptionController
         }
     }
 
+    public function purchase()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /kim/login?error=' . urlencode('You need to be logged in!'));
+            exit;
+        }
+
+        if (!isset($_POST['subscription_id'])) {
+            header('Location: /kim/membership?error=' . urlencode('Invalid subscription!'));
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $subscriptionId = (int)$_POST['subscription_id'];
+
+        try {
+
+            $this->userSubscriptionService->purchase(
+                $userId,
+                $subscriptionId
+            );
+
+            header('Location: /kim/dashboard?success=' . urlencode('Membership purchased successfully!'));
+            exit;
+
+        } catch (\Exception $ex) {
+
+            header(
+                'Location: /kim/membership?error=' .
+                urlencode($ex->getMessage())
+            );
+            exit;
+        }
+    }
+
 
 }

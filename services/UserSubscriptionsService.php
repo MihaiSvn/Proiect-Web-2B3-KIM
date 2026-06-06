@@ -70,4 +70,20 @@ class UserSubscriptionsService
     public function getSubscriptionTypeStats() {
         return UserSubscription::getActiveSubscriptionsCountByType();
     }
+
+    public function purchase($userId, $subscriptionId)
+    {
+        $success = UserSubscription::create(
+            $userId,
+            $subscriptionId
+        );
+
+        if (!$success) {
+            throw new \Exception(
+                'Unable to purchase subscription!'
+            );
+        }
+
+        return true;
+    }
 }
