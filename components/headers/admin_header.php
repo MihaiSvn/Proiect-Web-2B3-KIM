@@ -40,6 +40,10 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
                 <i class="fa-solid fa-dumbbell"></i>  Equipment
             </a>
 
+            <a href="/kim/reports" class="nav__link <?= strpos($currentPath, 'reports') !== false ? 'active' : '' ?>">
+                <i class="fa-solid fa-chart-area"></i>  Reports
+            </a>
+
 
         </nav>
 
