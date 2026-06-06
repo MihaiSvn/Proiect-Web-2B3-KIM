@@ -21,8 +21,11 @@
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/profile.css?v=1.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/kim/public/css/subscription_card.css?v=1.1">
+    <link rel="stylesheet" href="/kim/public/css/forms.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/notifications.css">
     <script src="/kim/public/js/update_profile_preview.js" defer></script>
+    <script src="/kim/public/js/popup.js" defer></script>
 
 </head>
 <body>

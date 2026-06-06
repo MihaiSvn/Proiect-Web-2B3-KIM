@@ -19,6 +19,7 @@
             $title = 'Suspend ' . htmlspecialchars($subscription->subscription_name);
             $submit = 'Confirm Suspend';
             $action = '/kim/subscription/suspend?id=' . $subscription->id;
+            $infoText = "Note: You can't unfreeze a membership. You will need to wait for the suspension period.";
 
             require_once __DIR__ . '/../../classes/FormField.php';
 
