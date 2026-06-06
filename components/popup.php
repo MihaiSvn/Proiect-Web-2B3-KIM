@@ -4,7 +4,6 @@
  * @var string $action -> action trebuie sa fie ce endpoint apeleaza din POST, exemplu '/kim/login'
  * @var string $submit -> ce text este pe butonul de submit
  * @var string $infoText -> daca vreau ca popup-ul sa mi scrie niste text, poate fi null
- * @var array $
  * @var array<FormField> $formBody -> array de instante de FormField, va arata de exemplu
  * @var string $popupId -> string pentru a putea genera mai multe popup-uri, va fi de forma popupOverlay_<id>
  * CE TREBUIE SA AI IN HEAD LA FISIERUL HTML/PHP?
@@ -21,8 +20,13 @@
  *              ->type('number')
  *              ->required(true)
  *              ->limits(1,$subscription->suspending_days_left);
+ *
+     * $trainerField = FormField::create('Trainer', 'session_trainer')->type('select')       -> select care da un dropdown
+     * ->required(true)->placeholder('Select a trainer')->options($trainerOptions);
+     *
  *      $formBody = [
- *          $daysField
+ *          $daysField,
+ *          $trainerField
  *      ];
  *      $popupId = 'popupOverlay_' . $id -> unde id este o variabila luata din baza de date, id-ul utilizatorului sau ce ar mai ajuta
  *

@@ -35,6 +35,12 @@ require_once 'controllers/NewsletterController.php';
 require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
 require_once 'controllers/SessionsPageController.php';
+require_once 'controllers/UserController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileInfoController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileNotificationsController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistoryController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileActivityController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -50,17 +56,24 @@ use controllers\TrainerDashboardController;
 use controllers\AuthController;
 use controllers\UserSubscriptionController;
 use controllers\NotificationController;
+use controllers\profile_page_tabs_controllers\ProfileInfoController;
+use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
+use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
+use controllers\profile_page_tabs_controllers\ProfileActivityController;
+use controllers\profile_page_tabs_controllers\ProfileSettingsController;
 use controllers\BookingController;
 use controllers\NewsletterController;
 use controllers\SessionController;
 use controllers\AdminDashboardController;
 use controllers\SessionsPageController;
+use controllers\UserController;
+
 
 $router = new Router();
 
 $router->get('/login', 'views/login.php');
 $router->get('/home', 'views/home.php');
-$router->get('/membership', 'views/membership.php');
+$router->get('/membership','views/membership.php');
 $router->get('/register', 'views/register.php');
 
 $router->get('/dashboard', function () {
@@ -120,6 +133,49 @@ $router->get('/sessions', function (){
     $sessionsPageController->index();
 });
 
+$router->get('/profile', function (){
+    $userService = new UserService();
+    $profileInfoController = new ProfileInfoController($userService);
+    $profileInfoController->index();
+});
+
+$router->get('/profile/personal-info', function (){
+    $userService = new UserService();
+    $profileInfoController = new ProfileInfoController($userService);
+    $profileInfoController->index();
+});
+
+$router->get('/profile/notifications', function (){
+    $userService = new UserService();
+    $notificationService = new NotificationService();
+
+    $profileNotificationsController = new ProfileNotificationsController($notificationService, $userService);
+    $profileNotificationsController->index();
+});
+
+$router->get('/profile/membership-history', function (){
+    $userService = new UserService();
+    $userSubscriptionService = new UserSubscriptionsService();
+
+    $profileMembershipHistoryController = new ProfileMembershipHistoryController($userSubscriptionService,$userService);
+    $profileMembershipHistoryController->index();
+});
+
+$router->get('/profile/activity-history', function (){
+    $userService = new UserService();
+    $trainerService = new TrainerService();
+    $sessionService = new SessionService();
+
+    $profileActivityController = new ProfileActivityController($sessionService, $userService, $trainerService);
+    $profileActivityController->index();
+});
+
+$router->get('/profile/settings', function (){
+    $userService = new UserService();
+    $profileSettingsController = new ProfileSettingsController($userService);
+    $profileSettingsController->index();
+});
+
 $router->post('/login', function () {
     $userService = new UserService();
     $trainerService = new TrainerService();
@@ -149,14 +205,16 @@ $router->post('/subscription/purchase', function () {
 
 $router->post('/notifications/mark-all-read', function () {
     $notificationService = new NotificationService();
-    $notificationController = new NotificationController($notificationService);
+    $userService = new UserService();
+    $notificationController = new NotificationController($notificationService, $userService);
 
     $notificationController->markAllAsRead();
 });
 
 $router->post('/notifications/mark-read', function () {
     $notificationService = new NotificationService();
-    $notificationController = new NotificationController($notificationService);
+    $userService = new UserService();
+    $notificationController = new NotificationController($notificationService, $userService);
 
     $notificationController->markAsRead();
 });
@@ -206,6 +264,31 @@ $router->post('/sessions/edit', function () {
     $sessionController->edit();
 });
 
+$router->post('/user/update', function () {
+    $userService = new UserService();
+    $profileInfoController = new UserController($userService);
+
+    $profileInfoController->updateProfile();
+});
+
+$router->post('/user/change-password', function () {
+    $userService = new UserService();
+    $userController = new UserController($userService);
+    $userController->changePassword();
+});
+
+$router->post('/user/delete', function () {
+    $userService = new UserService();
+    $userController = new UserController($userService);
+    $userController->deleteUser();
+});
+
+$router->get('/logout', function () {
+    $userService = new UserService();
+    $trainerService = new TrainerService();
+    $authController = new AuthController($userService, $trainerService);
+    $authController->logout();
+});
 $router->get('/hash', 'hash.php');
 
 $router->resolve();

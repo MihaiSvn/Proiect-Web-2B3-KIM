@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Membership Plans</title>
 
-    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/membership/membership_hero.css">
     <link rel="stylesheet" href="/kim/public/css/membership/membership_compare.css">
     <link rel="stylesheet" href="/kim/public/css/membership/membership_packages.css">
@@ -20,7 +20,7 @@
 
 
 
-<?php include 'components/headers/member_header.php'; ?>
+<?php include 'components/header.php'; ?>
 
 <?php include 'components/alert.php'; ?>
 

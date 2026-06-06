@@ -226,6 +226,12 @@
     padding: 20px 0;
 }
 
+.session__admin-container{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .no-bg-card {
     background-color: transparent !important;
     border: none !important;

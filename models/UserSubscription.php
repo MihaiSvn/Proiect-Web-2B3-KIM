@@ -177,5 +177,34 @@ class UserSubscription
         );
 
         return $stmt->execute();
+      
+    }
+  
+    public static function findAllSubscriptionsByUserId($userId){
+        global $pdo;
+        //le orodnez in functie de stauts (active, apoi suspended, apoi expired)
+        // si apoi dupa cate zile maie e valide, de la putin la mai mult,
+        // apoi dupa tip fitness strength physio all
+        $sql = "
+        SELECT 
+            us.*, 
+            s.name AS subscription_name, 
+            s.type, 
+            s.price, 
+            s.description,
+            s.validity_days
+        FROM USER_SUBSCRIPTIONS us
+        JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+        WHERE us.user_id = :user_id 
+        ORDER BY 
+            FIELD(us.status, 'active', 'suspended', 'expired'),
+            us.end_date ASC, 
+            FIELD(s.type, 'fitness', 'strength', 'physiotherapy', 'all')
+    ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

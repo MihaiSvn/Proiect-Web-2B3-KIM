@@ -135,6 +135,31 @@ VALUES (4, 1, 1),
        (5, 2, 2),
        (6, 3, 3);
 
+INSERT INTO SESSIONS (trainer_id, room_id, title, type, start_time, end_time, max_capacity, status) VALUES
+-- Sesiuni din TRECUT (pentru a testa istoricul)
+(1, 1, 'Morning Cardio', 'fitness', '2026-06-01 08:00:00', '2026-06-01 09:30:00', 10, 'completed'),     -- ID 5
+(2, 2, 'Kineto Recovery', 'physiotherapy', '2026-06-03 14:00:00', '2026-06-03 15:00:00', 1, 'completed'), -- ID 6
+(1, 3, 'Core Strength', 'strength', '2026-06-04 18:00:00', '2026-06-04 19:00:00', 10, 'canceled'),       -- ID 7
+
+-- Sesiune "AZI" / Săptămâna curentă (pentru a testa calendarul activ)
+(1, 1, 'Zumba Class', 'fitness', '2026-06-06 19:00:00', '2026-06-06 20:00:00', 20, 'planned'),            -- ID 8
+
+-- Sesiuni în VIITOR (pentru a testa programările viitoare)
+(1, 3, 'Crossfit Intro', 'strength', '2026-06-08 17:00:00', '2026-06-08 18:30:00', 12, 'planned'),        -- ID 9
+(2, 2, 'Spine Evaluation', 'physiotherapy', '2026-06-15 10:00:00', '2026-06-15 11:00:00', 1, 'planned'),  -- ID 10
+(1, 1, 'Endurance Run', 'fitness', '2026-06-20 09:00:00', '2026-06-20 10:00:00', 15, 'planned');          -- ID 11
+
+
+-- 2. O PROGRAMĂM PE ANNA (user_id = 5) LA TOATE ACESTE SESIUNI
+-- Folosim user_subscription_id = 2 (Abonamentul de Physio din scriptul tău inițial)
+INSERT INTO BOOKINGS (user_id, session_id, user_subscription_id) VALUES
+                                                                     (5, 5, 2),  -- A participat la Fitness (Trecut)
+                                                                     (5, 6, 2),  -- A participat la Physio (Trecut)
+                                                                     (5, 7, 2),  -- Sesiunea de Strength a fost anulată (Trecut)
+                                                                     (5, 8, 2),  -- Are o programare "Azi" la Fitness
+                                                                     (5, 9, 2),  -- Urmează Strength (Viitor)
+                                                                     (5, 10, 2), -- Urmează Physio (Viitor)
+                                                                     (5, 11, 2); -- Urmează Fitness (Viitor)
 
 
 INSERT INTO NOTIFICATIONS (user_id, title, message)
