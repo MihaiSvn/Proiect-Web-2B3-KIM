@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/kim/public/css/home/home_howitworks.css">
     <link rel="stylesheet" href="/kim/public/css/home/home_specialists.css">
     <link rel="stylesheet" href="/kim/public/css/home_footer.css">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
