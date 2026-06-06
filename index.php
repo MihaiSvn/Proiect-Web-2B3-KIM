@@ -27,6 +27,7 @@ require_once 'controllers/TrainerDashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
 require_once 'controllers/NotificationController.php';
 require_once 'controllers/BookingController.php';
+require_once 'controllers/NewsletterController.php';
 require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
 require_once 'controllers/SessionsPageController.php';
@@ -37,35 +38,47 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistory
 require_once 'controllers/profile_page_tabs_controllers/ProfileActivityController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 
-use controllers\AdminDashboardController;
-use controllers\AuthController;
-use controllers\BookingController;
+use services\UserService;
+use services\UserSubscriptionsService;
+use services\SessionService;
+use services\NotificationService;
+use services\BookingService;
+use services\TrainerService;
+use services\RoomService;
+
 use controllers\MemberDashboardController;
+use controllers\TrainerDashboardController;
+use controllers\AuthController;
+use controllers\UserSubscriptionController;
 use controllers\NotificationController;
 use controllers\profile_page_tabs_controllers\ProfileInfoController;
 use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
 use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
 use controllers\profile_page_tabs_controllers\ProfileActivityController;
 use controllers\profile_page_tabs_controllers\ProfileSettingsController;
+use controllers\BookingController;
+use controllers\NewsletterController;
 use controllers\SessionController;
+use controllers\AdminDashboardController;
 use controllers\SessionsPageController;
-use controllers\TrainerDashboardController;
 use controllers\UserController;
-use controllers\UserSubscriptionController;
 
-use services\BookingService;
-use services\NotificationService;
-use services\RoomService;
-use services\SessionService;
-use services\TrainerService;
-use services\UserService;
-use services\UserSubscriptionsService;
+
+$router = new Router();
+
+$router->get('/login','views/login.php');
+$router->get('/home','views/home.php');
+$router->get('/membership','views/membership.php');
+$router->get('/register','views/register.php');
+
+
 
 
 $router = new Router();
 
 $router->get('/login', 'views/login.php');
 $router->get('/home', 'views/home.php');
+$router->get('/membership','views/membership.php');
 $router->get('/register', 'views/register.php');
 $router->get('/dashboard', function () {
     if (!isset($_SESSION['user_id'])) {
@@ -207,6 +220,15 @@ $router->post('/sessions/cancel-booking', function () {
     $bookingController = new BookingController($bookingService);
 
     $bookingController->cancel();
+});
+
+$router->post('/newsletter', function(){
+
+    $newsletterController =
+        new NewsletterController();
+
+    $newsletterController->subscribe();
+
 });
 
 $router->post('/sessions/book', function () {
