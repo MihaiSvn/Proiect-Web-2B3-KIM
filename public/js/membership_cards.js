@@ -88,13 +88,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
             }else{
 
-                window.location.href =
-                    '/kim/dashboard?success=' +
-                    encodeURIComponent(
-                        'Membership purchased successfully!'
-                    );
-            }
+                const subscriptionId =
+                    button.dataset.subscriptionId;
 
+                const form =
+                    document.createElement('form');
+
+                form.method = 'POST';
+
+                form.action =
+                    '/kim/subscription/purchase';
+
+                const input =
+                    document.createElement('input');
+
+                input.type = 'hidden';
+
+                input.name =
+                    'subscription_id';
+
+                input.value =
+                    subscriptionId;
+
+                form.appendChild(input);
+
+                document.body.appendChild(
+                    form
+                );
+
+                form.submit();
+            }
         });
 
     });

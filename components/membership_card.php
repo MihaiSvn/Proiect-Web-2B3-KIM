@@ -2,6 +2,7 @@
 
 /**
  * @var string $packageTitle
+ * @var int $subscriptionId
  * @var string $price
  * @var string $oldPrice
  * @var string $sessions
@@ -69,7 +70,8 @@
 
     <button
             type="button"
-            class="membership-card__button">
+            class="membership-card__button"
+            data-subscription-id="<?= $subscriptionId ?>">
 
         <?= $buttonText ?>
 
