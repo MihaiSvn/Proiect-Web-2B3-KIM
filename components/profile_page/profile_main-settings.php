@@ -43,6 +43,7 @@
 
 </div>
 
+<?php if($userRole==='member'): ?>
 <div class="divider"></div>
 
 <div class="profile__list">
@@ -77,4 +78,4 @@
     </button>
 </div>
 
-
+<?php endif;?>
