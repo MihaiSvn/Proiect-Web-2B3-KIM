@@ -6,6 +6,7 @@
 ?>
 
 <?php
+$startDate = strtotime($subscription->start_date);
 $expiryDate = strtotime($subscription->end_date);
 $daysLeft = floor(($expiryDate - time()) / (60 * 60 * 24));
 //                expiryDate - time e diferenta de timp in secunde, imparit la 60 secunde pe minute, *60 minute obtii 3600 secunde intr o ora, *24 de ore, ai 86400 de secunde intr o zi
@@ -34,10 +35,6 @@ $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 
 
     <div class="subscription__main">
         <h3 class="subscription__title"><?= htmlspecialchars($subscription->subscription_name) ?></h3>
-        <p class="subscription__location">
-            <i class="fa-solid fa-location-dot"></i>
-            <?= htmlspecialchars(ucfirst($subscription->type)) ?> Zone
-        </p>
 
         <div class="subscription__details-list">
             <div class="subscription__row">
@@ -64,24 +61,34 @@ $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 
                 <i class="fa-regular fa-snowflake"></i>
                 <span>Suspending days: <strong><?= $suspending_days_left ?></strong></span>
             </div>
+
+            <?php if ($subscription->status === 'suspended'): ?>
+                <div class="subscription__row">
+                    <i class="fa-regular fa-snowflake"></i>
+                    <span>Suspended until: <strong><?= date('d M Y', $subscription->suspended_until) ?></strong></span>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
     <div class="subscription__footer-info">
         <div class="subscription__status-badge">
-            <span class="status-dot"></span> Active
+            <span class="status-dot"></span> <?= ucfirst($subscription->status) ?>
         </div>
         <div class="subscription__expiry">
+            <?= date('d M Y', $startDate) ?> -
             <?= date('d M Y', $expiryDate) ?>
         </div>
     </div>
 
-    <!--        data-target = popupOverlay_id pentru a putea sa gasesc popup-ul specific in js-->
-    <button class="subscription__button js-open-popup"
-            data-target="popupOverlay_<?= $subscription->id ?>"
-            <?php if ($suspending_days_left <= 0): ?>disabled<?php endif; ?>>
-        <i class="fa-solid fa-pause"></i>
-        Suspend subscription
-    </button>
+    <?php if ($subscription->status === 'active' && $suspending_days_left > 0): ?>
+        <!--        data-target = popupOverlay_id pentru a putea sa gasesc popup-ul specific in js-->
+        <button class="subscription__button js-open-popup"
+                data-target="popupOverlay_<?= $subscription->id ?>"
+                <?php if ($suspending_days_left <= 0): ?>disabled title="Can't suspend this membership"<?php endif; ?>>
+            <i class="fa-solid fa-pause"></i>
+            Suspend subscription
+        </button>
+    <?php endif; ?>
 </div>
 

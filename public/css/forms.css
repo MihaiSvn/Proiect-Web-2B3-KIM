@@ -175,6 +175,9 @@
     margin-bottom: 30px;
 }
 
+.form__textbox{
+    margin-bottom: 12px;
+}
 
 .form__container {
     background-color: #ffffff;

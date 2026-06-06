@@ -2,19 +2,31 @@
 
 namespace controllers;
 
+use services\NotificationService;
+use services\UserService;
+
 class NotificationController
 {
+    private $userService;
     private $notificationService;
 
-    public function __construct($notificationService)
+    public function __construct(NotificationService $notificationService, UserService  $userService)
     {
         $this->notificationService = $notificationService;
+        $this->userService = $userService;
     }
 
     public function markAllAsRead()
     {
         if (!isset($_SESSION['user_id'])) {
             header('Location: /kim/login?error=You have to be logged in to see this page');
+            exit;
+        }
+
+        $user = $this->userService->getUserById($_SESSION['user_id']);
+        if(!$user){
+            session_destroy();
+            header('Location: /kim/login?error=User not found');
             exit;
         }
 
@@ -28,6 +40,12 @@ class NotificationController
     {
         if (!isset($_SESSION['user_id'])) {
             header('Location: /kim/login?error=You have to be logged in to see this page');
+            exit;
+        }
+        $user = $this->userService->getUserById($_SESSION['user_id']);
+        if(!$user){
+            session_destroy();
+            header('Location: /kim/login?error=User not found');
             exit;
         }
 

@@ -29,7 +29,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Profile</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.5">
     <link rel="stylesheet" href="/kim/public/css/subscription_card.css?v=1.1">
@@ -52,7 +52,7 @@
 </head>
 <body>
 
-<?php include 'components/headers/trainer_header.php'; ?>
+<?php include 'components/header.php'; ?>
 <?php include 'components/alert.php'; ?>
 
 
