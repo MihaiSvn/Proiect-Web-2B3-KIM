@@ -34,6 +34,8 @@ require_once 'controllers/UserController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileInfoController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileNotificationsController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistoryController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileActivityController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 
 use controllers\AdminDashboardController;
 use controllers\AuthController;
@@ -43,6 +45,8 @@ use controllers\NotificationController;
 use controllers\profile_page_tabs_controllers\ProfileInfoController;
 use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
 use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
+use controllers\profile_page_tabs_controllers\ProfileActivityController;
+use controllers\profile_page_tabs_controllers\ProfileSettingsController;
 use controllers\SessionController;
 use controllers\SessionsPageController;
 use controllers\TrainerDashboardController;
@@ -148,6 +152,20 @@ $router->get('/profile/membership-history', function (){
     $profileMembershipHistoryController->index();
 });
 
+$router->get('/profile/activity-history', function (){
+    $userService = new UserService();
+    $trainerService = new TrainerService();
+    $sessionService = new SessionService();
+
+    $profileActivityController = new ProfileActivityController($sessionService, $userService, $trainerService);
+    $profileActivityController->index();
+});
+
+$router->get('/profile/settings', function (){
+    $userService = new UserService();
+    $profileSettingsController = new ProfileSettingsController($userService);
+    $profileSettingsController->index();
+});
 
 $router->post('/login', function () {
     $userService = new UserService();
@@ -225,6 +243,25 @@ $router->post('/user/update', function () {
     $profileInfoController = new UserController($userService);
 
     $profileInfoController->updateProfile();
+});
+
+$router->post('/user/change-password', function () {
+    $userService = new UserService();
+    $userController = new UserController($userService);
+    $userController->changePassword();
+});
+
+$router->post('/user/delete', function () {
+    $userService = new UserService();
+    $userController = new UserController($userService);
+    $userController->deleteUser();
+});
+
+$router->get('/logout', function () {
+    $userService = new UserService();
+    $trainerService = new TrainerService();
+    $authController = new AuthController($userService, $trainerService);
+    $authController->logout();
 });
 $router->get('/hash', 'hash.php');
 

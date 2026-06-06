@@ -21,8 +21,8 @@
 
 ?>
 
+<div class="profile__list">
 
-<div class="profile__subscriptions_list">
 
     <?php if (count($groupedSubs['active']) > 0): ?>
         <h3>Active Memberships</h3>

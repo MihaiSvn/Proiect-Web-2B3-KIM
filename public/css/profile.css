@@ -259,16 +259,13 @@
     background-color: #ae8888;
 }
 
-.profile__subscriptions_list{
+.profile__list{
     display: flex;
     flex-direction: column;
     gap:20px;
 }
 
 
-/* =========================================
-   RESPONSIVE (MOBILE)
-========================================= */
 @media (max-width: 900px) {
     .profile-page {
         grid-template-columns: 1fr;
