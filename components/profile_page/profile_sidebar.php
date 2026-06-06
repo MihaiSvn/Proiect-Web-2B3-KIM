@@ -8,6 +8,7 @@
  */
 
 //ignoram parametrii si luam url pentru a vedea pe care sa pun active
+// adica /kim/profile/personal-info
 $currentUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
@@ -31,11 +32,6 @@ $currentUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         <li class="profile-nav__item <?= ($currentUrl === '/kim/profile/membership-history') ? 'active' : '' ?>">
             <a href="/kim/profile/membership-history" class="profile-nav__link">
                 <i class="fa-regular fa-credit-card"></i> Membership History
-            </a>
-        </li>
-        <li class="profile-nav__item <?= ($currentUrl === '/kim/profile/suspended-memberships') ? 'active' : '' ?>">
-            <a href="/kim/profile/suspended-memberships" class="profile-nav__link">
-                <i class="fa-regular fa-snowflake"></i> Suspended Memberships
             </a>
         </li>
         <li class="profile-nav__item <?= ($currentUrl === '/kim/profile/activity-history') ? 'active' : '' ?>">

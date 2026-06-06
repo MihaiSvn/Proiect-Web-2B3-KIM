@@ -259,17 +259,23 @@
     background-color: #ae8888;
 }
 
+.profile__subscriptions_list{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
 
 /* =========================================
    RESPONSIVE (MOBILE)
 ========================================= */
 @media (max-width: 900px) {
     .profile-page {
-        grid-template-columns: 1fr; /* Trece pe o singură coloană */
+        grid-template-columns: 1fr;
     }
 
     .profile-form__grid {
-        grid-template-columns: 1fr; /* Inputurile trec pe o coloană */
+        grid-template-columns: 1fr;
     }
 
     .main-card {

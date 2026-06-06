@@ -124,8 +124,8 @@
 }
 
 
-/*hover peste o zi care nu e activa si dau target la primul span adica numarul datei*/
-.calendar__day:hover:not(.active) span:first-child {
+/* hover peste o zi care nu e activa si dau target la primul span adica numarul datei (DOAR copil direct) */
+.calendar__day:hover:not(.active) > span:first-child{
     background-color: var(--kim-light-pink);
     border-radius: 50%;
     width: 32px;

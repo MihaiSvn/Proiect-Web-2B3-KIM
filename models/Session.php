@@ -80,7 +80,9 @@ class Session
             $sql .= " AND s.status != 'canceled'";
         }
 
-        $sql .= " ORDER BY s.start_time ASC";
+        $sql .= " ORDER BY s.start_time ASC, 
+            FIELD(s.type, 'fitness', 'strength', 'physiotherapy', 'all')
+        ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":current_user_id", $user_id, PDO::PARAM_INT);

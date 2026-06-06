@@ -33,6 +33,7 @@ require_once 'controllers/SessionsPageController.php';
 require_once 'controllers/UserController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileInfoController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileNotificationsController.php';
+require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistoryController.php';
 
 use controllers\AdminDashboardController;
 use controllers\AuthController;
@@ -41,6 +42,7 @@ use controllers\MemberDashboardController;
 use controllers\NotificationController;
 use controllers\profile_page_tabs_controllers\ProfileInfoController;
 use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
+use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
 use controllers\SessionController;
 use controllers\SessionsPageController;
 use controllers\TrainerDashboardController;
@@ -136,6 +138,14 @@ $router->get('/profile/notifications', function (){
 
     $profileNotificationsController = new ProfileNotificationsController($notificationService, $userService);
     $profileNotificationsController->index();
+});
+
+$router->get('/profile/membership-history', function (){
+    $userService = new UserService();
+    $userSubscriptionService = new UserSubscriptionsService();
+
+    $profileMembershipHistoryController = new ProfileMembershipHistoryController($userSubscriptionService,$userService);
+    $profileMembershipHistoryController->index();
 });
 
 
