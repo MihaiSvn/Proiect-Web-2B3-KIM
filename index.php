@@ -41,6 +41,7 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileNotificationsCont
 require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistoryController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileActivityController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
+require_once 'controllers/MembershipPageController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -67,13 +68,21 @@ use controllers\SessionController;
 use controllers\AdminDashboardController;
 use controllers\SessionsPageController;
 use controllers\UserController;
+use controllers\MembershipPageController;
+
 
 
 $router = new Router();
 
 $router->get('/login', 'views/login.php');
 $router->get('/home', 'views/home.php');
-$router->get('/membership','views/membership.php');
+
+$router->get('/membership', function () {
+    $subscriptionService = new SubscriptionService();
+    $controller = new MembershipPageController($subscriptionService);
+    $controller->index();
+});
+
 $router->get('/register', 'views/register.php');
 
 $router->get('/dashboard', function () {
@@ -174,6 +183,12 @@ $router->get('/profile/settings', function (){
     $userService = new UserService();
     $profileSettingsController = new ProfileSettingsController($userService);
     $profileSettingsController->index();
+});
+
+$router->get('/admin/users', function () {
+    $userService = new UserService();
+    $controller = new AdminUsersController($userService);
+    $controller->index();
 });
 
 $router->post('/login', function () {
