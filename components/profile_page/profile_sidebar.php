@@ -29,11 +29,14 @@ $currentUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                 <i class="fa-regular fa-user"></i> Personal Information
             </a>
         </li>
+
+        <?php if($userRole==='member'): ?>
         <li class="profile-nav__item <?= ($currentUrl === '/kim/profile/membership-history') ? 'active' : '' ?>">
             <a href="/kim/profile/membership-history" class="profile-nav__link">
                 <i class="fa-regular fa-credit-card"></i> Membership History
             </a>
         </li>
+        <?php endif;?>
         <li class="profile-nav__item <?= ($currentUrl === '/kim/profile/activity-history') ? 'active' : '' ?>">
             <a href="/kim/profile/activity-history" class="profile-nav__link">
                 <i class="fa-solid fa-clock-rotate-left"></i> Activity History

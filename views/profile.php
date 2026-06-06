@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="/kim/public/css/subscription_card.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/forms.css?v=1.2">
     <link rel="stylesheet" href="/kim/public/css/notifications.css">
+    <link rel="stylesheet" href="/kim/public/css/session_card.css">
     <script src="/kim/public/js/update_profile_preview.js" defer></script>
     <script src="/kim/public/js/popup.js" defer></script>
 

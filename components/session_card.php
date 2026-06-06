@@ -376,7 +376,7 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                     <button type="button" class="session__btn session__btn--danger js-open-popup"
                             data-target="popupOverlay_cancelBooking_<?= $session->session_id ?>"
-                            <?php if (!($status === 'planned')): ?>
+                            <?php if (!($status === 'planned' || $status === 'ongoing')): ?>
                                 disabled
                                 title="Can't cancel this booking anymore"
                             <?php endif; ?>

@@ -67,6 +67,11 @@
                 <input type="password" id="form__password" name="password" required placeholder="••••••••">
             </div>
 
+            <div class="form__group">
+                <label class="form__label" for="form__confirm__password">Confirm Password</label>
+                <input type="password" id="form__confirm__password" name="confirm_password" required placeholder="••••••••">
+            </div>
+
             <button type="submit" class="form__submit">Create Account</button>
 
             <p class="form__question">Already have an account?

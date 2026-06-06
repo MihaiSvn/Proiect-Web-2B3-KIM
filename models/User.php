@@ -5,10 +5,9 @@ use PDO;
 class User
 {
 
-    public static function create($first_name, $last_name, $email, $password, $role){ //role poate fi null daca dau register, sau poate sa existe daca e facut de admin
+    public static function create($first_name, $last_name, $email, $password_hash, $role){ //role poate fi null daca dau register, sau poate sa existe daca e facut de admin
         global $pdo;
 
-        $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO USERS (first_name, last_name, email, password_hash, role) VALUES
         (:first_name, :last_name, :email, :password_hash, :role)";
@@ -113,6 +112,27 @@ class User
         if($profilePicture !== null){
             $stmt->bindParam(':profile_picture', $profilePicture, PDO::PARAM_STR);
         }
+        return $stmt->execute();
+    }
+
+    public static function updatePassword($userId, $newPasswordHash){
+        global $pdo;
+
+        $sql = "UPDATE USERS SET
+        password_hash = :password_hash
+        WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':password_hash', $newPasswordHash, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+
+    }
+
+    public static function deleteUser($userId){
+        global $pdo;
+        $sql = "DELETE FROM USERS WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         return $stmt->execute();
     }
 

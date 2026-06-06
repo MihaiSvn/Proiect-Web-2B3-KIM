@@ -13,9 +13,9 @@ class UserService
         return User::findById($id);
     }
 
-    public function createUser($first_name, $last_name, $email, $password, $role){
+    public function createUser($first_name, $last_name, $email, $password, $confirm_password, $role){
 
-        if (empty($first_name) || empty($last_name) || empty($email) || empty($password)) {
+        if (empty($first_name) || empty($last_name) || empty($email) || empty($password) || empty($confirm_password)) {
             throw new \Exception("All fields are required");
         }
 
@@ -31,7 +31,12 @@ class UserService
             throw new \Exception("Password must be at least 6 characters");
         }
 
-        $success = User::create($first_name, $last_name, $email, $password, $role);
+        if($password != $confirm_password){
+            throw new \Exception("Passwords do not match");
+        }
+
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $success = User::create($first_name, $last_name, $email, $password_hash, $role);
 
         if(!$success){
             throw new \Exception("Unable to create user");
@@ -126,6 +131,40 @@ class UserService
 
         if(!$success){
             throw new \Exception("Unable to update user");
+        }
+        return true;
+    }
+
+    public function updateUserPassword($userId, $oldPassword, $newPassword){
+        $user = $this->getUserById($userId);
+        if(!$user || !password_verify($oldPassword, $user->password_hash)){
+            throw new \Exception("Old password is incorrect");
+        }
+
+        if(strlen($newPassword) < 6){
+            throw new \Exception("Password must be at least 6 characters");
+        }
+
+        $new_password_hash = password_hash($newPassword, PASSWORD_DEFAULT);
+        if(password_verify($newPassword, $user->password_hash)){
+            throw new \Exception("New password is the same as the old password");
+        }
+        $success = User::updatePassword($userId, $new_password_hash);
+        if(!$success){
+            throw new \Exception("Unable to update user");
+        }
+        return true;
+    }
+
+    public function deleteUser($userId){
+        $user = $this->getUserById($userId);
+        if(!$user){
+            throw new \Exception("User not found");
+        }
+
+        $success = User::deleteUser($userId);
+        if(!$success){
+            throw new \Exception("Unable to delete user");
         }
         return true;
     }
