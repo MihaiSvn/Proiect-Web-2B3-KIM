@@ -54,7 +54,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sessions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/kim/public/css/global.css">
+    <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/booking_page.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/session_card.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
@@ -65,25 +65,9 @@
 </head>
 <body>
 
-<?php
-if (isset($_SESSION['user_id'])) {
-    if (isset($_SESSION['user_role'])) {
-        switch ($_SESSION['user_role']) {
-            case 'admin':
-                include 'components/headers/admin_header.php';
-                break;
-            case 'member':
-                include 'components/headers/member_header.php';
-                break;
-            case 'trainer':
-                include 'components/headers/trainer_header.php';
-                break;
-        }
-    } else {
-        include 'components/headers/unauth_header.php';
-    }
-}
+<?php include 'components/header.php'; ?>
 
+<?php
 require_once __DIR__ . '/../classes/FormField.php';
 
 ?>

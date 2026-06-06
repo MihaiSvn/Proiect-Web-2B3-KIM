@@ -70,4 +70,28 @@ class UserSubscriptionsService
     public function getSubscriptionTypeStats() {
         return UserSubscription::getActiveSubscriptionsCountByType();
     }
+
+    public function getAllSubscriptionsByUserId($userId){
+        return UserSubscription::findAllSubscriptionsByUserId($userId);
+    }
+
+    public function getGroupedSubscriptionsByUserId($userId){
+        $allSubscriptions = $this->getAllSubscriptionsByUserId($userId);
+
+        $grouped = [
+            'active' => [],
+            'suspended' => [],
+            'expired' => []
+        ];
+
+        foreach ($allSubscriptions as $subscription) {
+            $status = strtolower($subscription->status);
+
+            if(array_key_exists($status, $grouped)){
+                array_push($grouped[$status], $subscription);
+            }
+        }
+
+        return $grouped;
+    }
 }

@@ -73,10 +73,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //verific daca am programari
             if (bookingsData[dateString]) {
+                const dotRow = document.createElement('span');
+                dotRow.style.display='flex';
+                dotRow.style.flexDirection='row';
+                dotRow.style.gap = '2px';
+                dayDiv.appendChild(dotRow);
                 bookingsData[dateString].forEach(type => {
                     const dotSpan = document.createElement('span');
                     dotSpan.classList.add('day__dot', `dot-${type}`);
-                    dayDiv.appendChild(dotSpan);
+                    dotRow.appendChild(dotSpan);
                 });
             }
             calendarDays.appendChild(dayDiv);

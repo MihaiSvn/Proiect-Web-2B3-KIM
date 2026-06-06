@@ -15,13 +15,10 @@
             <?php endif; ?>
         </button>
 
-        <?php
-        $userAvatar = isset($_SESSION['user_profile-picture']) ? $_SESSION['user_profile-picture'] : 'default-avatar.svg';
-        ?>
 
-        <div class="header__profile">
-            <img src="<?= AVATAR_PATH . htmlspecialchars($userAvatar) ?>" alt="Profile" class="profile__avatar">
-        </div>
+        <a href="/kim/profile">
+            <?php include 'components/profile_pic-circle.php'; ?>
+        </a>
     </div>
 
     <button class="header__hamburger" id="hamburger-btn">

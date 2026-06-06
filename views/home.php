@@ -21,7 +21,7 @@
 
 <body>
 
-<?php include 'components/headers/unauth_header.php'; ?>
+<?php include 'components/header.php'; ?>
 
 <?php include 'components/alert.php'; ?>
 

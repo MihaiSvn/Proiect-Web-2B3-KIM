@@ -24,6 +24,10 @@ class SessionService
         return Session::findAllSessionsByTrainerId($trainerId, $includeCanceled);
     }
 
+    public function getAllSessions($includeCanceled = false){
+        return Session::findAllSessions($includeCanceled);
+    }
+
     public function getAllPlannedAndOngoingSessionsByTrainerId($trainerId){
         return Session::findAllPlannedAndOngoingSessionsByTrainerId($trainerId);
     }
