@@ -2,26 +2,10 @@
 
 namespace controllers;
 
+use core\ApiClient;
+
 class AdminDashboardController
 {
-    private $userService;
-
-    private $sessionService;
-
-    private $trainerService;
-
-    private $userSubscriptionService;
-
-    private $notificationService;
-
-    public function __construct($userService, $sessionService, $trainerService, $userSubscriptionService, $notificationService) {
-        $this->userService = $userService;
-        $this->sessionService = $sessionService;
-        $this->trainerService = $trainerService;
-        $this->userSubscriptionService = $userSubscriptionService;
-        $this->notificationService = $notificationService;
-    }
-
     public function index(){
         if (!isset($_SESSION['user_id'])) {
             header('Location: /kim/login?error=' . urlencode('You need to be logged in to access this page!'));
@@ -30,36 +14,35 @@ class AdminDashboardController
 
         $userId = $_SESSION['user_id'];
 
-
-        $user = $this->userService->getUserById($userId);
-
-
-        if (!$user) {
-            session_destroy();
-            header('Location: /kim/login?error=' . urlencode('User not found!'));
+        $apiUrl = "http://localhost/kim/api/admin-dashboard";
+        $apiData = ApiClient::get($apiUrl);
+        if(isset($apiData->error)){
+            header('Location: /kim/profile?error='. urlencode($apiData->error));
             exit;
         }
 
-        $trainersCount = $this->trainerService->getAllTrainersCount();
+        if($apiData){
+            $user = $apiData->user;
 
-        $usersStats = $this->userService->getActiveMembersStats();
+            $trainersCount = $apiData->trainersCount;
 
-        $plannedAndOngoingBookings = $this->sessionService->getAllPlannedAndOngoingSessions();
+            $usersStats = (array)$apiData->userStats;
 
-        $monthlyRevenueStats = $this->userSubscriptionService->getMonthlyRevenueStats();
+            $plannedAndOngoingBookings = (array)$apiData->plannedAndOngoingBookings;
 
-        $subscriptionTypesStats = $this->userSubscriptionService->getSubscriptionTypeStats();
+            $monthlyRevenueStats = (array)$apiData->monthlyRevenueStats;
 
-        $unreadNotifications = $this->notificationService->getUnreadUserNotifications($userId);
+            $subscriptionTypesStats = (array)$apiData->subscriptionTypesStats;
 
-        $sessionParticipantsMap = [];
+            $unreadNotifications = (array)$apiData->unreadNotifications;
 
-        // map care are id sesiune ca key si lista useri ca value
-        foreach ($plannedAndOngoingBookings as $session) {
-            $usersForThisSession = $this->sessionService->getAllUsersBookedBySessionId($session->session_id);
-
-            $sessionParticipantsMap[$session->session_id] = $usersForThisSession;
+            $sessionParticipantsMap = (array)$apiData->sessionParticipantsMap;
+        } else {
+            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
+            exit;
         }
+
+
 
         require 'views/dashboards/admin_dashboard.php';
     }

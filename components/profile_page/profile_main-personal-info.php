@@ -11,7 +11,7 @@
  */
 ?>
 
-<form action="/kim/user/update" method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" id="updateProfileForm">
     <div class="photo-upload">
         <!--                    NU FOLSOESC COMPONENTA CA SA POT PUNE ID-UL DORIT PT PREVIEW si sa fie mai mare-->
         <?php

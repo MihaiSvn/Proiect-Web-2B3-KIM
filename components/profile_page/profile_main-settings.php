@@ -13,7 +13,7 @@
 
 <div class="profile__list">
     <h3><i class="fa-solid fa-lock"></i> Change password</h3>
-    <form action="/kim/user/change-password" method="POST">
+    <form id="changePasswordForm"  method="POST">
         <div class="profile__list">
 
             <div class="form-group">
@@ -56,7 +56,7 @@
 
     $title = 'Delete Account';
     $submit = 'Yes';
-    $action = '/kim/user/delete';
+    $action = '/kim/api/user/delete';
     $popupId = 'popupOverlay_deleteUser_' . $userId;
     $infoText = "Are you sure you want to delete your account? This action is permanent and cannot be undone.";
     require_once __DIR__ . '/../../classes/FormField.php';
