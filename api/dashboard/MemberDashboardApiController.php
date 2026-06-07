@@ -1,0 +1,34 @@
+<?php
+
+namespace api\dashboard;
+
+use services\UserService;
+use services\UserSubscriptionsService;
+use services\SessionService;
+use services\NotificationService;
+
+class MemberDashboardApiController
+{
+    public function getData()
+    {
+        $userId = $_SESSION['user_id'];
+
+        $userService = new UserService();
+        $subService = new UserSubscriptionsService();
+        $sessionService = new SessionService();
+        $notifService = new NotificationService();
+
+        // logica de bussiness sa reactivez ce trb reactivat
+        $subService->checkAndReactivateSuspensions($userId);
+
+
+        http_response_code(200);
+        echo json_encode([
+            'user' => $userService->getUserById($userId),
+            'activeSubscriptions' => $subService->getActiveSubscriptionsByUserId($userId),
+            'plannedAndOngoingBookings' => $sessionService->getAllPlannedAndOngoingBookingsByUserId($userId),
+            'allBookings' => $sessionService->getAllBookingsByUserId($userId),
+            'unreadNotifications' => $notifService->getUnreadUserNotifications($userId)
+        ]);
+    }
+}

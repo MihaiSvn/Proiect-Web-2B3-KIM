@@ -3,6 +3,8 @@
 namespace controllers\profile_page_tabs_controllers;
 
 
+use core\ApiClient;
+
 class ProfileNotificationsController
 {
 
@@ -18,36 +20,22 @@ class ProfileNotificationsController
         $apiUrl = 'http://localhost/kim/api/profile_notifications?user_id='.$userId;
 
 
+        $apiData = ApiClient::get($apiUrl);
 
-        //daca n am asta, da mereu sesson temporaly unavailable in loc sa mi zica ce e gresit
-        $options = [
-            'http' => [
-                'ignore_errors' => true,
-                'header' => "Cookie: PHPSESSID=" . session_id() . "\r\n"
-            ]
-        ];
-
-        $context = stream_context_create($options);
-
-        //daca vreodata dau session start in api tre sa am asta
-        session_write_close();
-
-        $json_response = file_get_contents($apiUrl, false, $context);
-
-        if(!$json_response){
-            header('Location: /kim/profile?error=' .urlencode('Service temporarily unavailable'));
+        if($apiData){
+            $user = $apiData->user;
+            $allNotifications = (array)$apiData->allNotifications;
+            $unreadNotifications = (array)$apiData->unreadNotifications;
+        } else {
+            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
             exit;
         }
-
-        $apiData = json_decode($json_response);
         if(isset($apiData->error)){
             header('Location: /kim/profile?error=' .urlencode($apiData->error));
             exit;
         }
 
-        $user = $apiData->user;
-        $allNotifications = (array)$apiData->allNotifications;
-        $unreadNotifications = (array)$apiData->unreadNotifications;
+
 
         $headerMainTitle = 'Notifications';
         $headerMainSubtitle = 'Stay updated with your latest alerts and account activity.';

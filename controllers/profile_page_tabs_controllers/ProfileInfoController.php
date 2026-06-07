@@ -2,16 +2,10 @@
 
 namespace controllers\profile_page_tabs_controllers;
 
-use services\UserService;
+use core\ApiClient;
 
 class ProfileInfoController
 {
-    private $userService;
-
-    public function __construct(UserService $userService){
-        $this->userService = $userService;
-    }
-
     public function index()
     {
         if(!isset($_SESSION['user_id'])){
@@ -20,13 +14,23 @@ class ProfileInfoController
         }
 
         $userId = $_SESSION['user_id'];
-        $user = $this->userService->getUserById($userId);
 
-        if (!$user) {
-            session_destroy();
-            header('Location: /kim/login?error=' . urlencode('User not found!'));
+        $apiUrl = "http://localhost/kim/api/user-data?user_id=" . $userId;
+
+        //apelam api ul
+        $apiData = ApiClient::get($apiUrl);
+
+        if($apiData){
+            $user = $apiData->user;
+        } else {
+            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
             exit;
         }
+        if(isset($apiData->error)){
+            header('Location: /kim/profile?error='. urlencode($apiData->error));
+            exit;
+        }
+
 
         $headerMainTitle = 'Personal Information';
         $headerMainSubtitle = 'Update your personal details and contact information.';

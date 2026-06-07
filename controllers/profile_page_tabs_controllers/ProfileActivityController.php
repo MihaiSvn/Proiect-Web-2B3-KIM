@@ -2,6 +2,8 @@
 
 namespace controllers\profile_page_tabs_controllers;
 
+use core\ApiClient;
+
 class ProfileActivityController
 {
     public function index(){
@@ -16,41 +18,23 @@ class ProfileActivityController
 
         $apiUrl = "http://localhost/kim/api/profile_activity?user_id={$userId}&user_role={$userRole}";
 
-
-
-
-        //daca n am asta, da mereu sesson temporaly unavailable in loc sa mi zica ce e gresit
-        $options = [
-            'http' => [
-                'ignore_errors' => true,
-                'header' => "Cookie: PHPSESSID=" . session_id() . "\r\n"
-            ]
-        ];
-
-        $context = stream_context_create($options);
-
-
-        //daca vreodata dau session start in api tre sa am asta
-        session_write_close();
-
-        $jsonResponse = file_get_contents($apiUrl, false, $context);
-
-        if(!$jsonResponse){
-            header("location: /kim/profile?error=" . urlencode("Service temporarily unavailable"));
-            exit;
-        }
-
-        $apiData = json_decode($jsonResponse);
+        $apiData = ApiClient::get($apiUrl);
 
         if(isset($apiData->error)){
             header("location: /kim/profile?error=" . urlencode($apiData->error));
             exit;
         }
 
-        $user=$apiData->user;
-        $allSessions=$apiData->allSessions;
-        $groupedSessions=(array)$apiData->groupedSessions;
-        $sessionParticipantsMap=(array)$apiData->sessionParticipantsMap;
+        if($apiData){
+            $user=$apiData->user;
+            $allSessions=$apiData->allSessions;
+            $groupedSessions=(array)$apiData->groupedSessions;
+            $sessionParticipantsMap=(array)$apiData->sessionParticipantsMap;
+        } else {
+            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
+            exit;
+        }
+
 
         $headerMainTitle = 'Activity History';
         $headerMainSubtitle = 'Your past sessions across all KIM facilities.';
