@@ -41,6 +41,8 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistory
 require_once 'controllers/profile_page_tabs_controllers/ProfileActivityController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 require_once 'controllers/MembershipPageController.php';
+require_once 'controllers/HomePageController.php';
+
 
 require_once 'api/profile/ProfileActivityApiController.php';
 require_once 'api/profile/ProfileNotificationsApiController.php';
@@ -50,6 +52,8 @@ require_once 'api/auth/AuthApiController.php';
 require_once 'api/dashboard/MemberDashboardApiController.php';
 require_once 'api/dashboard/AdminDashboardApiController.php';
 require_once 'api/dashboard/TrainerDashboardApiController.php';
+require_once 'api/membership/MembershipApiController.php';
+require_once 'api/trainer/TrainerApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
 require_once 'middleware/ApiAdminMiddleware.php';
@@ -59,10 +63,12 @@ use api\profile\ProfileActivityApiController;
 use api\profile\ProfileNotificationsApiController;
 use api\user\UserApiController;
 use api\membership\UserSubscriptionApiController;
+use api\membership\MembershipApiController;
 use api\auth\AuthApiController;
 use api\dashboard\MemberDashboardApiController;
 use api\dashboard\AdminDashboardApiController;
 use api\dashboard\TrainerDashboardApiController;
+use api\trainer\TrainerApiController;
 
 use controllers\AdminDashboardController;
 use controllers\BookingController;
@@ -79,6 +85,8 @@ use controllers\SessionController;
 use controllers\SessionsPageController;
 use controllers\TrainerDashboardController;
 use controllers\UserSubscriptionController;
+use controllers\HomePageController;
+
 
 use services\BookingService;
 use services\NotificationService;
@@ -97,12 +105,25 @@ use middleware\ApiTrainerMiddleware;
 $router = new Router();
 
 $router->get('/login', 'views/login.php');
-$router->get('/home', 'views/home.php');
+
+$router->get('/home', function () {
+    $controller = new HomePageController();
+    $controller->index();
+
+});
+
+$router->get('/api/trainers', function () {
+
+    $controller = new TrainerApiController();
+    $controller->getAll();
+
+});
 
 $router->get('/membership', function () {
-    $subscriptionService = new SubscriptionService();
-    $controller = new MembershipPageController($subscriptionService);
+
+    $controller = new MembershipPageController();
     $controller->index();
+
 });
 
 $router->get('/register', 'views/register.php');
@@ -180,6 +201,21 @@ $router->get('/admin/users', function () {
     $controller->index();
 });
 
+$router->get('/api/memberships', function () {
+
+    $controller = new MembershipApiController();
+    $controller->getMemberships();
+
+});
+
+$router->post('/api/subscription/purchase', function () {
+
+    ApiAuthMiddleware::checkAccess();
+
+    $controller = new UserSubscriptionApiController();
+    $controller->purchase();
+
+});
 
 $router->post('/subscription/suspend', function () {
     $userSubscriptionService = new UserSubscriptionsService();
