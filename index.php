@@ -281,22 +281,22 @@ $router->post('/sessions/edit', function () {
     $sessionController->edit();
 });
 
-$router->post('/user/update', function () {
-    $userService = new UserService();
-    $profileInfoController = new UserController($userService);
+$router->post('/api/user/update', function () {
+    \middleware\ApiAuthMiddleware::checkAccess();
+    $profileInfoController = new UserController();
 
     $profileInfoController->updateProfile();
 });
 
-$router->post('/user/change-password', function () {
-    $userService = new UserService();
-    $userController = new UserController($userService);
+$router->post('/api/user/change-password', function () {
+    \middleware\ApiAuthMiddleware::checkAccess();
+    $userController = new UserController();
     $userController->changePassword();
 });
 
-$router->post('/user/delete', function () {
-    $userService = new UserService();
-    $userController = new UserController($userService);
+$router->post('/api/user/delete', function () {
+    \middleware\ApiAuthMiddleware::checkAccess();
+    $userController = new UserController();
     $userController->deleteUser();
 });
 

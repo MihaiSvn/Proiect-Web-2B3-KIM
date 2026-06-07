@@ -7,18 +7,8 @@ use services\UserService;
 
 class UserController
 {
-
-    private $userService;
-
-    public function __construct(UserService $userService){
-        $this->userService = $userService;
-    }
-
     public function updateProfile(){
-        if(!isset($_SESSION['user_id'])){
-            header('Location: /kim/login?error=You have to be logged in to update your profile');
-            exit;
-        }
+
         $userId = $_SESSION['user_id'];
 
         $firstName = isset($_POST['first_name']) ? trim($_POST['first_name']) : '';
@@ -26,9 +16,6 @@ class UserController
         $email     = isset($_POST['email']) ? trim($_POST['email']) : '';
 
         $newAvatarName = null;
-
-        $statusType = '';
-        $message = '';
 
         try{
             //e ok sa fie err no file in caz de nu si a dorit sa updateze poza
@@ -78,7 +65,9 @@ class UserController
                 }
             }
 
-            $this->userService->updateUserProfile($userId, $firstName, $lastName, $email, $newAvatarName);
+            $userService = new UserService();
+
+            $userService->updateUserProfile($userId, $firstName, $lastName, $email, $newAvatarName);
 
             $_SESSION['user_name'] = $firstName . ' ' . $lastName;
 
@@ -86,61 +75,53 @@ class UserController
                 $_SESSION['user_profile-picture'] = $newAvatarName;
             }
 
-            $statusType = 'success';
-            $message = 'Your profile was successfully updated';
+            http_response_code(200);
+            echo json_encode(["status" => "success", "message" => 'Your profile has been updated!']);
         } catch(\Exception $e){
-            $statusType = 'error';
-            $message = $e->getMessage();
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => $e->getMessage()]);
         }
-
-        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/kim/dashboard';
-
-        //daca in link avem deja un parametru sau nu
-        $separator = (strpos($referer, '?') !== false) ? '&' : '?';
-
-        // ?success=Mesaj+aici)
-        $queryString = ($statusType !== '') ? $separator . $statusType . '=' . urlencode($message) : '';
-
-        header('Location: ' . $referer . $queryString);
-        exit;
     }
 
     public function changePassword(){
-        if (!isset($_SESSION['user_id'])) {
-            session_destroy();
-            header('Location: /kim/login?error=' . urlencode("You must be logged in to change your password."));
-            exit;
-        }
-
+        //verificarea se va face din middleware
         $userId = $_SESSION['user_id'];
 
-        $user = $this->userService->getUserById($userId);
+        $data = json_decode(file_get_contents('php://input'), true); //luam body ul de post
+
+        $userService = new \services\UserService();
+
+        $user = $userService->getUserById($userId);
+
         if(!$user){
-            session_destroy();
-            header('Location: /kim/login?error=' . urlencode("User not found."));
+            http_response_code(404);
+            echo json_encode(["status" => "error", "message" => "User not found."]);
             exit;
         }
-        $currentPassword = isset($_POST['current_password']) ? $_POST['current_password'] : '';
-        $newPassword = isset($_POST['new_password']) ? $_POST['new_password'] : '';
-        $confirmPassword = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
+        $currentPassword = isset($data['current_password']) ? $data['current_password'] : '';
+        $newPassword = isset($data['new_password']) ? $data['new_password'] : '';
+        $confirmPassword = isset($data['confirm_password']) ? $data['confirm_password'] : '';
 
         if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
-            header('Location: /kim/profile/settings?error=' . urlencode("All fields are required."));
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "All fields are required."]);
             exit;
         }
 
         if ($newPassword !== $confirmPassword) {
-            header('Location: /kim/profile/settings?error=' . urlencode("New passwords do not match."));
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "New passwords do not match."]);
             exit;
         }
 
         try{
-            $this->userService->updateUserPassword($userId, $currentPassword, $newPassword);
-            header('Location: /kim/profile/settings?success=' . urlencode("Your password has been updated."));
-            exit;
+            $userService->updateUserPassword($userId, $currentPassword, $newPassword);
+
+            http_response_code(200);
+            echo json_encode(["status" => "success", 'message' => "Password successfully changed."]);
         } catch(\Exception $ex) {
-            $error_message = $ex->getMessage();
-            header('Location: /kim/profile/settings?error=' . urlencode($error_message));
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => $ex->getMessage()]);
         }
     }
 
@@ -148,51 +129,58 @@ class UserController
         $statusType = '';
         $message = '';
 
-        try{
-            if (!isset($_SESSION['user_id'])) {
-                throw new \Exception("You are unauthorized.");
-            }
+        $currentUserId = $_SESSION['user_id'];
+        $currentUserRole = $_SESSION['user_role'];
 
-            $userIdToDelete = isset($_POST['user_id']) ? trim($_POST['user_id']) : '';
-            if (empty($userIdToDelete)) {
-                throw new \Exception('User ID cannot be empty.');
-            }
+        $data = json_decode(file_get_contents('php://input'), true);
+        $userIdToDelete = isset($data['user_id']) ? trim($data['user_id']) : '';
 
-            if($userIdToDelete == $_SESSION['user_id'] && $_SESSION['user_role'] === 'admin'){
-                throw new \Exception('An admin cannot delete their own account.');
-            }
-
-            if($userIdToDelete == $_SESSION['user_id'] && $_SESSION['user_role'] === 'trainer'){
-                throw new \Exception('A trainer cannot delete their own account.');
-            }
-
-            if($_SESSION['user_role'] !== 'admin'){
-                if($userIdToDelete != $_SESSION['user_id']){
-                    throw new \Exception('You are not allowed to delete this account.');
-                }
-            }
-
-            $this->userService->deleteUser($userIdToDelete);
-            $message = 'Your account was successfully deleted';
-            session_destroy();
-
-            header('Location: /kim/register?success=' . urlencode($message));
+        if (empty($userIdToDelete)) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "User ID cannot be empty."]);
             exit;
-        } catch(\Exception $ex) {
-            $statusType = 'error';
-            $message = $ex->getMessage();
         }
 
-        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/kim/dashboard';
+        if ($userIdToDelete == $currentUserId && $currentUserRole === 'admin') {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => "An admin cannot delete their own account."]);
+            exit;
+        }
 
-        //daca in link avem deja un parametru sau nu
-        $separator = (strpos($referer, '?') !== false) ? '&' : '?';
+        if ($userIdToDelete == $currentUserId && $currentUserRole === 'trainer') {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => "A trainer cannot delete their own account."]);
+            exit;
+        }
 
-        // ?success=Mesaj+aici)
-        $queryString = ($statusType !== '') ? $separator . $statusType . '=' . urlencode($message) : '';
+        if ($currentUserRole !== 'admin' && $userIdToDelete != $currentUserId) {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => "You are not allowed to delete this account."]);
+            exit;
+        }
 
-        header('Location: ' . $referer . $queryString);
-        exit;
+        if ($currentUserRole !== 'admin' && $userIdToDelete != $currentUserId) {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => "You are not allowed to delete this account."]);
+            exit;
+        }
+
+        try {
+            $userService = new \services\UserService();
+            $userService->deleteUser($userIdToDelete);
+
+
+            if ($userIdToDelete == $currentUserId) {
+                session_destroy();
+            }
+
+            http_response_code(200);
+            echo json_encode(["status" => "success", "message" => "Account successfully deleted."]);
+
+        } catch (\Exception $ex) {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => $ex->getMessage()]);
+        }
 
     }
 }

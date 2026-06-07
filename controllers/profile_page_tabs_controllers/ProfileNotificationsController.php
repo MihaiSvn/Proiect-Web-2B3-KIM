@@ -18,12 +18,19 @@ class ProfileNotificationsController
         $apiUrl = 'http://localhost/kim/api/profile_notifications?user_id='.$userId;
 
 
+
+        //daca n am asta, da mereu sesson temporaly unavailable in loc sa mi zica ce e gresit
+        $options = [
+            'http' => [
+                'ignore_errors' => true,
+                'header' => "Cookie: PHPSESSID=" . session_id() . "\r\n"
+            ]
+        ];
+
+        $context = stream_context_create($options);
+
         //daca vreodata dau session start in api tre sa am asta
         session_write_close();
-        //daca n am asta, da mereu sesson temporaly unavailable in loc sa mi zica ce e gresit
-        $context = stream_context_create([
-            'http' => ['ignore_errors' => true]
-        ]);
 
         $json_response = file_get_contents($apiUrl, false, $context);
 
