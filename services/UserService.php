@@ -13,6 +13,10 @@ class UserService
         return User::findById($id);
     }
 
+    public function getAllMembers(){
+        return User::findAllMembers();
+    }
+
     public function createUser($first_name, $last_name, $email, $password, $confirm_password, $role){
 
         if (empty($first_name) || empty($last_name) || empty($email) || empty($password) || empty($confirm_password)) {

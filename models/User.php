@@ -44,6 +44,13 @@ class User
         return $stmt->fetch();
     }
 
+    public static function findAllMembers(){
+        global $pdo;
+        $sql = "SELECT * FROM USERS WHERE role = 'member' ORDER BY created_at DESC";
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll();
+    }
+
     public static function getNewMembersCountCurrentPeriod() { //cati s-au inscris in ultimele 30 de zile
         global $pdo;
         $sql = "SELECT COUNT(*) FROM USERS WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
