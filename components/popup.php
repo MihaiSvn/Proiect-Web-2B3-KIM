@@ -57,7 +57,7 @@
                 </div>
 
             <?php endif; ?>
-            <form id="<?= $popupId ?>"action="<?= $action ?>" method="POST" class="form__body js-api-form">
+            <form id="<?= $popupId ?>" action="<?= $action ?>" method="POST" class="form__body js-api-form">
 
                 <?php foreach ($formBody as $field): ?>
                     <div class="form__group" <?= $field->type === 'hidden' ? 'style="display: none;"' : '' ?>>

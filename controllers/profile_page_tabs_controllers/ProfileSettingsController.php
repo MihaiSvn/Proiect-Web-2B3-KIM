@@ -25,7 +25,7 @@ class ProfileSettingsController
         if($apiData){
             $user = $apiData->user;
         } else {
-            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
+            header('Location: /kim/404?error=' . urlencode('There was a problem retrieving your data!'));
             exit;
         }
         if(isset($apiData->error)){

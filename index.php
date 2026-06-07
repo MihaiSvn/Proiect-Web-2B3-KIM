@@ -29,10 +29,7 @@ require_once 'services/SubscriptionService.php';
 require_once 'controllers/MemberDashboardController.php';
 require_once 'controllers/TrainerDashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
-require_once 'controllers/NotificationController.php';
-require_once 'controllers/BookingController.php';
 require_once 'controllers/NewsletterController.php';
-require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
 require_once 'controllers/SessionsPageController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileInfoController.php';
@@ -50,10 +47,15 @@ require_once 'api/auth/AuthApiController.php';
 require_once 'api/dashboard/MemberDashboardApiController.php';
 require_once 'api/dashboard/AdminDashboardApiController.php';
 require_once 'api/dashboard/TrainerDashboardApiController.php';
+require_once 'api/sessions/SessionsApiController.php';
+require_once 'api/booking/BookingApiController.php';
+require_once 'api/notification/NotificationsApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
 require_once 'middleware/ApiAdminMiddleware.php';
 require_once 'middleware/ApiTrainerMiddleware.php';
+require_once 'middleware/ApiTrainerAdminMiddleware.php';
+require_once 'middleware/ApiMemberMiddleware.php';
 
 use api\profile\ProfileActivityApiController;
 use api\profile\ProfileNotificationsApiController;
@@ -63,19 +65,19 @@ use api\auth\AuthApiController;
 use api\dashboard\MemberDashboardApiController;
 use api\dashboard\AdminDashboardApiController;
 use api\dashboard\TrainerDashboardApiController;
+use api\sessions\SessionsApiController;
+use api\booking\BookingApiController;
+use api\notification\NotificationsApiController;
 
 use controllers\AdminDashboardController;
-use controllers\BookingController;
 use controllers\MemberDashboardController;
 use controllers\MembershipPageController;
 use controllers\NewsletterController;
-use controllers\NotificationController;
 use controllers\profile_page_tabs_controllers\ProfileActivityController;
 use controllers\profile_page_tabs_controllers\ProfileInfoController;
 use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
 use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
 use controllers\profile_page_tabs_controllers\ProfileSettingsController;
-use controllers\SessionController;
 use controllers\SessionsPageController;
 use controllers\TrainerDashboardController;
 use controllers\UserSubscriptionController;
@@ -92,6 +94,8 @@ use services\UserSubscriptionsService;
 use middleware\ApiAuthMiddleware;
 use middleware\ApiAdminMiddleware;
 use middleware\ApiTrainerMiddleware;
+use middleware\ApiTrainerAdminMiddleware;
+use middleware\ApiMemberMiddleware;
 
 
 $router = new Router();
@@ -132,12 +136,9 @@ $router->get('/dashboard', function () {
 
 $router->get('/test', 'config/test_db.php');
 $router->get('/sessions', function (){
-    $sessionService = new SessionService();
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $roomService = new RoomService();
 
-    $sessionsPageController = new SessionsPageController($sessionService, $userService, $trainerService, $roomService);
+
+    $sessionsPageController = new SessionsPageController();
 
     $sessionsPageController->index();
 });
@@ -181,12 +182,6 @@ $router->get('/admin/users', function () {
 });
 
 
-$router->post('/subscription/suspend', function () {
-    $userSubscriptionService = new UserSubscriptionsService();
-    $userSubscriptionController = new UserSubscriptionController($userSubscriptionService);
-    $userSubscriptionController->suspend();
-});
-
 $router->post('/subscription/purchase', function () {
 
     $userSubscriptionService = new UserSubscriptionsService();
@@ -195,28 +190,6 @@ $router->post('/subscription/purchase', function () {
 
 });
 
-$router->post('/notifications/mark-all-read', function () {
-    $notificationService = new NotificationService();
-    $userService = new UserService();
-    $notificationController = new NotificationController($notificationService, $userService);
-
-    $notificationController->markAllAsRead();
-});
-
-$router->post('/notifications/mark-read', function () {
-    $notificationService = new NotificationService();
-    $userService = new UserService();
-    $notificationController = new NotificationController($notificationService, $userService);
-
-    $notificationController->markAsRead();
-});
-
-$router->post('/sessions/cancel-booking', function () {
-    $bookingService = new BookingService();
-    $bookingController = new BookingController($bookingService);
-
-    $bookingController->cancel();
-});
 
 $router->post('/newsletter', function(){
 
@@ -225,35 +198,6 @@ $router->post('/newsletter', function(){
 
     $newsletterController->subscribe();
 
-});
-
-$router->post('/sessions/book', function () {
-    $bookingService = new BookingService();
-    $bookingController = new BookingController($bookingService);
-
-    $bookingController->book();
-});
-
-$router->post('/sessions/cancel-session', function () {
-    $sessionService = new SessionService();
-    $trainerService = new TrainerService();
-    $sessionController = new SessionController($sessionService, $trainerService);
-
-    $sessionController->cancel();
-});
-
-$router->post('/sessions/create', function () {
-    $sessionService = new SessionService();
-    $trainerService = new TrainerService();
-    $sessionController = new SessionController($sessionService, $trainerService);
-    $sessionController->create();
-});
-
-$router->post('/sessions/edit', function () {
-    $sessionService = new SessionService();
-    $trainerService = new TrainerService();
-    $sessionController = new SessionController($sessionService, $trainerService);
-    $sessionController->edit();
 });
 
 $router->post('/api/user/update', function () {
@@ -334,5 +278,59 @@ $router->get('/api/trainer-dashboard', function (){
     ApiTrainerMiddleware::checkAccess();
     $apiController = new TrainerDashboardApiController();
     $apiController->getData();
+});
+
+$router->get('/api/sessions-data', function (){
+    ApiAuthMiddleware::checkAccess();
+    $apiController = new SessionsApiController();
+    $apiController->getSessionsData();
+});
+
+$router->post('/api/sessions/cancel', function (){
+    ApiTrainerAdminMiddleware::checkAccess();
+    $apiController = new SessionsApiController();
+    $apiController->cancel();
+});
+
+$router->post('/api/sessions/create', function (){
+    ApiTrainerAdminMiddleware::checkAccess();
+    $apiController = new SessionsApiController();
+    $apiController->create();
+});
+
+$router->post('/api/sessions/edit', function (){
+    ApiTrainerAdminMiddleware::checkAccess();
+    $apiController = new SessionsApiController();
+    $apiController->edit();
+});
+
+$router->post('/api/bookings/book', function (){
+    ApiMemberMiddleware::checkAccess();
+    $apiController = new BookingApiController();
+    $apiController->book();
+});
+
+$router->post('/api/bookings/cancel', function (){
+    ApiMemberMiddleware::checkAccess();
+    $apiController = new BookingApiController();
+    $apiController->cancel();
+});
+
+$router->post('/api/notifications/dismiss', function (){
+    ApiAuthMiddleware::checkAccess();
+    $apiController = new NotificationsApiController();
+    $apiController->markAsRead();
+});
+
+$router->post('/api/notifications/dismiss-all', function (){
+   ApiAuthMiddleware::checkAccess();
+   $apiController = new NotificationsApiController();
+   $apiController->markAllAsRead();
+});
+
+$router->post('/api/membership/suspend', function (){
+    ApiMemberMiddleware::checkAccess();
+    $apiController = new UserSubscriptionApiController();
+    $apiController->suspend();
 });
 $router->resolve();
