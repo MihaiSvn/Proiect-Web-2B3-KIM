@@ -43,6 +43,11 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileActivityControlle
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 require_once 'controllers/MembershipPageController.php';
 
+require_once 'api/ProfileActivityApiController.php';
+require_once 'api/ProfileNotificationsApiController.php';
+
+require_once 'middleware/ApiAuthMiddleware.php';
+
 use services\UserService;
 use services\UserSubscriptionsService;
 use services\SessionService;
@@ -69,6 +74,9 @@ use controllers\AdminDashboardController;
 use controllers\SessionsPageController;
 use controllers\UserController;
 use controllers\MembershipPageController;
+
+use api\ProfileActivityApiController;
+use api\ProfileNotificationsApiController;
 
 
 
@@ -155,10 +163,7 @@ $router->get('/profile/personal-info', function (){
 });
 
 $router->get('/profile/notifications', function (){
-    $userService = new UserService();
-    $notificationService = new NotificationService();
-
-    $profileNotificationsController = new ProfileNotificationsController($notificationService, $userService);
+    $profileNotificationsController = new ProfileNotificationsController();
     $profileNotificationsController->index();
 });
 
@@ -171,11 +176,8 @@ $router->get('/profile/membership-history', function (){
 });
 
 $router->get('/profile/activity-history', function (){
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $sessionService = new SessionService();
 
-    $profileActivityController = new ProfileActivityController($sessionService, $userService, $trainerService);
+    $profileActivityController = new ProfileActivityController();
     $profileActivityController->index();
 });
 
@@ -305,5 +307,20 @@ $router->get('/logout', function () {
     $authController->logout();
 });
 $router->get('/hash', 'hash.php');
+
+
+
+
+$router->get('/api/profile_activity', function (){
+    \middleware\ApiAuthMiddleware::checkAccess();
+    $apiController = new ProfileActivityApiController();
+    $apiController->getActivities();
+});
+
+$router->get('/api/profile_notifications', function (){
+    \middleware\ApiAuthMiddleware::checkAccess();
+    $apiController = new ProfileNotificationsApiController();
+    $apiController->getNotifications();
+});
 
 $router->resolve();
