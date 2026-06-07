@@ -8,8 +8,8 @@ class ApiAuthMiddleware
 
 
         header('content-type: application/json');
-        $requestedUserId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
-        $loggedInUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+        $requestedUserId = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
+        $loggedInUserId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
         $loggedInUserRole = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : null;
 
         if(!$loggedInUserId){

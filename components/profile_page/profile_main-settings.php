@@ -13,7 +13,7 @@
 
 <div class="profile__list">
     <h3><i class="fa-solid fa-lock"></i> Change password</h3>
-    <form action="/kim/user/change-password" method="POST">
+    <form id="changePasswordForm"  method="POST">
         <div class="profile__list">
 
             <div class="form-group">
@@ -41,6 +41,31 @@
 
     </form>
 
+    <script>
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('/kim/api/user/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+
+                    const redirectUrl = '/kim/profile/settings?' + result.status + '=' + encodeURIComponent(result.message);
+
+                    window.location.href = redirectUrl;
+                })
+                .catch(error => {
+                    window.location.href = '/kim/profile/settings?error=Service unavailable';
+                });
+        });
+    </script>
+
 </div>
 
 <?php if($userRole==='member'): ?>
@@ -56,7 +81,7 @@
 
     $title = 'Delete Account';
     $submit = 'Yes';
-    $action = '/kim/user/delete';
+    $action = '/kim/api/user/delete';
     $popupId = 'popupOverlay_deleteUser_' . $userId;
     $infoText = "Are you sure you want to delete your account? This action is permanent and cannot be undone.";
     require_once __DIR__ . '/../../classes/FormField.php';
