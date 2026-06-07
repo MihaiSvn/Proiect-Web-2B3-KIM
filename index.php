@@ -43,6 +43,9 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileActivityControlle
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 require_once 'controllers/MembershipPageController.php';
 
+require_once 'controllers/api_controllers/MembershipApiController.php';
+require_once 'controllers/api_controllers/UserSubscriptionApiController.php';
+
 use services\UserService;
 use services\UserSubscriptionsService;
 use services\SessionService;
@@ -70,6 +73,9 @@ use controllers\SessionsPageController;
 use controllers\UserController;
 use controllers\MembershipPageController;
 
+use controllers\api_controllers\MembershipApiController;
+use controllers\api_controllers\UserSubscriptionApiController;
+
 
 
 $router = new Router();
@@ -78,9 +84,9 @@ $router->get('/login', 'views/login.php');
 $router->get('/home', 'views/home.php');
 
 $router->get('/membership', function () {
-    $subscriptionService = new SubscriptionService();
-    $controller = new MembershipPageController($subscriptionService);
+    $controller = new MembershipPageController();
     $controller->index();
+
 });
 
 $router->get('/register', 'views/register.php');
@@ -191,6 +197,12 @@ $router->get('/admin/users', function () {
     $controller->index();
 });
 
+$router->get('/api/memberships', function () {
+    $subscriptionService = new SubscriptionService();
+    $controller = new MembershipApiController($subscriptionService);
+    $controller->getMemberships();
+});
+
 $router->post('/login', function () {
     $userService = new UserService();
     $trainerService = new TrainerService();
@@ -296,6 +308,13 @@ $router->post('/user/delete', function () {
     $userService = new UserService();
     $userController = new UserController($userService);
     $userController->deleteUser();
+});
+
+$router->post('/api/subscription/purchase', function () {
+    $userSubscriptionService = new UserSubscriptionsService();
+    $controller = new UserSubscriptionApiController($userSubscriptionService);
+    $controller->purchase();
+
 });
 
 $router->get('/logout', function () {

@@ -91,32 +91,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subscriptionId =
                     button.dataset.subscriptionId;
 
-                const form =
-                    document.createElement('form');
+                const formData =
+                    new FormData();
 
-                form.method = 'POST';
-
-                form.action =
-                    '/kim/subscription/purchase';
-
-                const input =
-                    document.createElement('input');
-
-                input.type = 'hidden';
-
-                input.name =
-                    'subscription_id';
-
-                input.value =
-                    subscriptionId;
-
-                form.appendChild(input);
-
-                document.body.appendChild(
-                    form
+                formData.append(
+                    'subscription_id',
+                    subscriptionId
                 );
 
-                form.submit();
+                fetch(
+                    '/kim/api/subscription/purchase',
+                    {
+                        method: 'POST',
+                        body: formData
+                    }
+                )
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if(data.status === 'success'){
+
+                            window.location.href =
+                                '/kim/dashboard?success=' +
+                                encodeURIComponent(
+                                    data.message
+                                );
+
+                        }else{
+
+                            window.location.href =
+                                '/kim/membership?error=' +
+                                encodeURIComponent(
+                                    data.message
+                                );
+                        }
+
+                    })
+                    .catch(() => {
+
+                        window.location.href =
+                            '/kim/membership?error=' +
+                            encodeURIComponent(
+                                'Unexpected error'
+                            );
+
+                    });
+
             }
         });
 
