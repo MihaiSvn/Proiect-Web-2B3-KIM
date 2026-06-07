@@ -4,6 +4,7 @@ session_start();
 
 require_once 'config/database.php';
 require_once 'core/Router.php';
+require_once 'core/ApiClient.php';
 
 require_once 'models/User.php';
 require_once 'models/UserSubscription.php';
@@ -25,7 +26,7 @@ require_once 'services/RoomService.php';
 require_once 'services/SubscriptionService.php';
 
 
-require_once 'controllers/AuthController.php';
+require_once 'api/auth/AuthApiController.php';
 require_once 'controllers/MemberDashboardController.php';
 require_once 'controllers/TrainerDashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
@@ -35,13 +36,20 @@ require_once 'controllers/NewsletterController.php';
 require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
 require_once 'controllers/SessionsPageController.php';
-require_once 'controllers/UserController.php';
+require_once 'api/user/UserApiController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileInfoController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileNotificationsController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistoryController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileActivityController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 require_once 'controllers/MembershipPageController.php';
+require_once 'api/membership/MembershipApiController.php';
+require_once 'api/membership/UserSubscriptionApiController.php';
+require_once 'api/dashboard/AdminDashboardApiController.php';
+require_once 'api/dashboard/MemberDashboardApiController.php';
+require_once 'api/dashboard/TrainerDashboardApiController.php';
+require_once 'api/profile/ProfileActivityApiController.php';
+require_once 'api/profile/ProfileNotificationsApiController.php';
 
 use services\UserService;
 use services\UserSubscriptionsService;
@@ -54,7 +62,9 @@ use services\SubscriptionService;
 
 use controllers\MemberDashboardController;
 use controllers\TrainerDashboardController;
-use controllers\AuthController;
+use api\auth\AuthApiController;
+use api\membership\MembershipApiController;
+use api\membership\UserSubscriptionApiController;
 use controllers\UserSubscriptionController;
 use controllers\NotificationController;
 use controllers\profile_page_tabs_controllers\ProfileInfoController;
@@ -67,8 +77,14 @@ use controllers\NewsletterController;
 use controllers\SessionController;
 use controllers\AdminDashboardController;
 use controllers\SessionsPageController;
-use controllers\UserController;
+use api\user\UserApiController;
 use controllers\MembershipPageController;
+use api\dashboard\AdminDashboardApiController;
+use api\dashboard\MemberDashboardApiController;
+use api\dashboard\TrainerDashboardApiController;
+
+use api\profile\ProfileActivityApiController;
+use api\profile\ProfileNotificationsApiController;
 
 
 
@@ -78,9 +94,17 @@ $router->get('/login', 'views/login.php');
 $router->get('/home', 'views/home.php');
 
 $router->get('/membership', function () {
-    $subscriptionService = new SubscriptionService();
-    $controller = new MembershipPageController($subscriptionService);
+
+    $controller = new MembershipPageController();
     $controller->index();
+
+});
+
+$router->get('/api/memberships', function () {
+
+    $controller = new MembershipApiController();
+    $controller->getMemberships();
+
 });
 
 $router->get('/register', 'views/register.php');
@@ -191,17 +215,24 @@ $router->get('/admin/users', function () {
     $controller->index();
 });
 
-$router->post('/login', function () {
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $authController = new AuthController($userService, $trainerService);
-    $authController->login();
+$router->get('/api/member-dashboard', function () {
+    (new MemberDashboardApiController())->getData();
 });
-$router->post('/register', function () {
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $authController = new AuthController($userService, $trainerService);
-    $authController->register();
+
+$router->get('/api/trainer-dashboard', function () {
+    (new TrainerDashboardApiController())->getData();
+});
+
+$router->get('/api/admin-dashboard', function () {
+    (new AdminDashboardApiController())->getData();
+});
+
+$router->get('/api/profile/activity', function () {
+    (new ProfileActivityApiController())->getActivities();
+});
+
+$router->get('/api/profile/notifications', function () {
+    (new ProfileNotificationsApiController())->getNotifications();
 });
 
 $router->post('/subscription/suspend', function () {
@@ -215,6 +246,13 @@ $router->post('/subscription/purchase', function () {
     $userSubscriptionService = new UserSubscriptionsService();
     $userSubscriptionController = new UserSubscriptionController($userSubscriptionService);
     $userSubscriptionController->purchase();
+
+});
+
+$router->post('/api/subscription/purchase', function () {
+
+    $controller = new UserSubscriptionApiController();
+    $controller->purchase();
 
 });
 
@@ -279,31 +317,34 @@ $router->post('/sessions/edit', function () {
     $sessionController->edit();
 });
 
-$router->post('/user/update', function () {
-    $userService = new UserService();
-    $profileInfoController = new UserController($userService);
-
-    $profileInfoController->updateProfile();
+$router->post('/api/user/update', function () {
+    (new UserApiController())->updateProfile();
 });
 
-$router->post('/user/change-password', function () {
-    $userService = new UserService();
-    $userController = new UserController($userService);
-    $userController->changePassword();
+$router->post('/api/user/change-password', function () {
+    (new UserApiController())->changePassword();
 });
 
-$router->post('/user/delete', function () {
-    $userService = new UserService();
-    $userController = new UserController($userService);
-    $userController->deleteUser();
+$router->post('/api/user/delete', function () {
+    (new UserApiController())->deleteUser();
 });
 
-$router->get('/logout', function () {
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $authController = new AuthController($userService, $trainerService);
-    $authController->logout();
+$router->get('/api/user', function () {
+    (new UserApiController())->getUser();
 });
+
+$router->post('/api/login', function () {
+    (new AuthApiController())->login();
+});
+
+$router->post('/api/register', function () {
+    (new AuthApiController())->register();
+});
+
+$router->post('/api/logout', function () {
+    (new AuthApiController())->logout();
+});
+
 $router->get('/hash', 'hash.php');
 
 $router->resolve();

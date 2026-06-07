@@ -1,22 +1,20 @@
 <?php
 
 namespace controllers;
-
+use core\ApiClient;
 class MembershipPageController
 {
     public function index()
     {
-        $apiUrl = 'http://localhost/kim/api/memberships';
-        session_write_close();
-        $context = stream_context_create(['http' => ['ignore_errors' => true]]);
-        $jsonResponse = file_get_contents($apiUrl, false, $context);
+        $apiData = ApiClient::get('http://localhost/kim/api/memberships');
 
-        if (!$jsonResponse) {
-            header('Location: /kim/?error='.urlencode('Service temporarily unavailable'));
+        if (!$apiData) {
+            header(
+                'Location: /kim/?error=' .
+                urlencode('Service temporarily unavailable')
+            );
             exit;
         }
-
-        $apiData = json_decode($jsonResponse);
 
         if (isset($apiData->error)) {
             header('Location: /kim/?error='.urlencode($apiData->error));
