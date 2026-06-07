@@ -1,6 +1,6 @@
 <?php
 
-namespace api;
+namespace api\profile;
 
 use services\SessionService;
 use services\TrainerService;

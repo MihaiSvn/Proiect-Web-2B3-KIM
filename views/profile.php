@@ -27,7 +27,9 @@
     <link rel="stylesheet" href="/kim/public/css/session_card.css">
     <script src="/kim/public/js/update_profile_preview.js" defer></script>
     <script src="/kim/public/js/popup.js" defer></script>
-
+    <script src="/kim/public/js/auth_buttons_listeners/logout.js" defer></script>
+    <script src="/kim/public/js/profile_button_listeners/save_personal_info.js"></script>
+    <script src="/kim/public/js/profile_button_listeners/save_change_password.js"></script>
 </head>
 <body>
 <?php

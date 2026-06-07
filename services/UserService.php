@@ -54,7 +54,7 @@ class UserService
             throw new \Exception("Please enter all fields");
         }
 
-        $user = User::findByEmail($email);
+        $user = User::findByEmailWithPassword($email);
         
         if (!$user || !password_verify($password, $user->password_hash)) {
             throw new \Exception("Invalid email or password");
@@ -139,8 +139,11 @@ class UserService
         return true;
     }
 
+    public function getWithPasswordById($user_id){
+        return User::findWithPasswordById($user_id);
+    }
     public function updateUserPassword($userId, $oldPassword, $newPassword){
-        $user = $this->getUserById($userId);
+        $user = $this->getWithPasswordById($userId);
         if(!$user || !password_verify($oldPassword, $user->password_hash)){
             throw new \Exception("Old password is incorrect");
         }

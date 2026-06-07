@@ -1,11 +1,10 @@
 <?php
 
-namespace controllers;
+namespace api\user;
 
-use finfo;
 use services\UserService;
 
-class UserController
+class UserApiController
 {
     public function updateProfile(){
 
@@ -58,7 +57,7 @@ class UserController
                 //user_1_ewq1.jpg
                 $newAvatarName = 'user_' . $userId .  '_' . uniqid() .  '.' . $fileExtension;
                 // public/images/avatars/user_1_ewq1.jpg
-                $destinationPath = __DIR__ . '/../public/images/avatars/' . $newAvatarName;
+                $destinationPath = __DIR__ . '/../../public/images/avatars/' . $newAvatarName;
 
                 if(!move_uploaded_file($fileTmpPath, $destinationPath)){
                     throw new \Exception("Unable to upload file");
@@ -182,5 +181,25 @@ class UserController
             echo json_encode(["status" => "error", "message" => $ex->getMessage()]);
         }
 
+    }
+
+    public function getUser(){
+        $userId = isset($_GET['user_id']) ? $_GET['user_id'] : $_SESSION['user_id'];
+
+        if ($_SESSION['user_role'] !== 'admin' && $userId != $_SESSION['user_id']) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Unauthorized access.']);
+            exit;
+        }
+        $userService = new UserService();
+        $user= $userService->getUserById($userId);
+        if(!$user){
+            http_response_code(404);
+            echo json_encode(['error' => 'User not found.']);
+            exit;
+        }
+
+        http_response_code(200);
+        echo json_encode(['user' => $user]);
     }
 }

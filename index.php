@@ -4,6 +4,7 @@ session_start();
 
 require_once 'config/database.php';
 require_once 'core/Router.php';
+require_once 'core/ApiClient.php';
 
 require_once 'models/User.php';
 require_once 'models/UserSubscription.php';
@@ -25,7 +26,6 @@ require_once 'services/RoomService.php';
 require_once 'services/SubscriptionService.php';
 
 
-require_once 'controllers/AuthController.php';
 require_once 'controllers/MemberDashboardController.php';
 require_once 'controllers/TrainerDashboardController.php';
 require_once 'controllers/UserSubscriptionController.php';
@@ -35,7 +35,6 @@ require_once 'controllers/NewsletterController.php';
 require_once 'controllers/SessionController.php';
 require_once 'controllers/AdminDashboardController.php';
 require_once 'controllers/SessionsPageController.php';
-require_once 'controllers/UserController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileInfoController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileNotificationsController.php';
 require_once 'controllers/profile_page_tabs_controllers/ProfileMembershipHistoryController.php';
@@ -43,41 +42,56 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileActivityControlle
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 require_once 'controllers/MembershipPageController.php';
 
-require_once 'api/ProfileActivityApiController.php';
-require_once 'api/ProfileNotificationsApiController.php';
+require_once 'api/profile/ProfileActivityApiController.php';
+require_once 'api/profile/ProfileNotificationsApiController.php';
+require_once 'api/user/UserApiController.php';
+require_once 'api/membership/UserSubscriptionApiController.php';
+require_once 'api/auth/AuthApiController.php';
+require_once 'api/dashboard/MemberDashboardApiController.php';
+require_once 'api/dashboard/AdminDashboardApiController.php';
+require_once 'api/dashboard/TrainerDashboardApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
+require_once 'middleware/ApiAdminMiddleware.php';
+require_once 'middleware/ApiTrainerMiddleware.php';
 
+use api\profile\ProfileActivityApiController;
+use api\profile\ProfileNotificationsApiController;
+use api\user\UserApiController;
+use api\membership\UserSubscriptionApiController;
+use api\auth\AuthApiController;
+use api\dashboard\MemberDashboardApiController;
+use api\dashboard\AdminDashboardApiController;
+use api\dashboard\TrainerDashboardApiController;
+
+use controllers\AdminDashboardController;
+use controllers\BookingController;
+use controllers\MemberDashboardController;
+use controllers\MembershipPageController;
+use controllers\NewsletterController;
+use controllers\NotificationController;
+use controllers\profile_page_tabs_controllers\ProfileActivityController;
+use controllers\profile_page_tabs_controllers\ProfileInfoController;
+use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
+use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
+use controllers\profile_page_tabs_controllers\ProfileSettingsController;
+use controllers\SessionController;
+use controllers\SessionsPageController;
+use controllers\TrainerDashboardController;
+use controllers\UserSubscriptionController;
+
+use services\BookingService;
+use services\NotificationService;
+use services\RoomService;
+use services\SessionService;
+use services\SubscriptionService;
+use services\TrainerService;
 use services\UserService;
 use services\UserSubscriptionsService;
-use services\SessionService;
-use services\NotificationService;
-use services\BookingService;
-use services\TrainerService;
-use services\RoomService;
-use services\SubscriptionService;
 
-use controllers\MemberDashboardController;
-use controllers\TrainerDashboardController;
-use controllers\AuthController;
-use controllers\UserSubscriptionController;
-use controllers\NotificationController;
-use controllers\profile_page_tabs_controllers\ProfileInfoController;
-use controllers\profile_page_tabs_controllers\ProfileNotificationsController;
-use controllers\profile_page_tabs_controllers\ProfileMembershipHistoryController;
-use controllers\profile_page_tabs_controllers\ProfileActivityController;
-use controllers\profile_page_tabs_controllers\ProfileSettingsController;
-use controllers\BookingController;
-use controllers\NewsletterController;
-use controllers\SessionController;
-use controllers\AdminDashboardController;
-use controllers\SessionsPageController;
-use controllers\UserController;
-use controllers\MembershipPageController;
-
-use api\ProfileActivityApiController;
-use api\ProfileNotificationsApiController;
-
+use middleware\ApiAuthMiddleware;
+use middleware\ApiAdminMiddleware;
+use middleware\ApiTrainerMiddleware;
 
 
 $router = new Router();
@@ -103,37 +117,15 @@ $router->get('/dashboard', function () {
 
     if ($role === 'admin') {
 
-        $userService = new UserService();
-        $sessionService = new SessionService();
-        $trainingService = new TrainerService();
-        $userSubscriptionsService = new UserSubscriptionsService();
-        $notificationService = new NotificationService();
-
-        $dashboardController = new AdminDashboardController($userService, $sessionService, $trainingService, $userSubscriptionsService, $notificationService);
+        $dashboardController = new AdminDashboardController();
         $dashboardController->index();
 
     } elseif ($role === 'trainer') {
-
-        $userService = new UserService();
-        $sessionService = new SessionService();
-        $notificationService = new NotificationService();
-        $trainerService = new TrainerService();
-
-        $dashboardController = new TrainerDashboardController($userService, $sessionService, $notificationService, $trainerService);
+        $dashboardController = new TrainerDashboardController();
         $dashboardController->index();
 
     } else {
-        $userService = new UserService();
-        $userSubscriptionsService = new UserSubscriptionsService();
-        $sessionService = new SessionService();
-        $notificationService = new NotificationService();
-
-        $dashboardController = new MemberDashboardController(
-            $userService,
-            $userSubscriptionsService,
-            $sessionService,
-            $notificationService
-        );
+        $dashboardController = new MemberDashboardController();
         $dashboardController->index();
     }
 });
@@ -151,14 +143,12 @@ $router->get('/sessions', function (){
 });
 
 $router->get('/profile', function (){
-    $userService = new UserService();
-    $profileInfoController = new ProfileInfoController($userService);
+    $profileInfoController = new ProfileInfoController();
     $profileInfoController->index();
 });
 
 $router->get('/profile/personal-info', function (){
-    $userService = new UserService();
-    $profileInfoController = new ProfileInfoController($userService);
+    $profileInfoController = new ProfileInfoController();
     $profileInfoController->index();
 });
 
@@ -168,10 +158,7 @@ $router->get('/profile/notifications', function (){
 });
 
 $router->get('/profile/membership-history', function (){
-    $userService = new UserService();
-    $userSubscriptionService = new UserSubscriptionsService();
-
-    $profileMembershipHistoryController = new ProfileMembershipHistoryController($userSubscriptionService,$userService);
+    $profileMembershipHistoryController = new ProfileMembershipHistoryController();
     $profileMembershipHistoryController->index();
 });
 
@@ -193,18 +180,6 @@ $router->get('/admin/users', function () {
     $controller->index();
 });
 
-$router->post('/login', function () {
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $authController = new AuthController($userService, $trainerService);
-    $authController->login();
-});
-$router->post('/register', function () {
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $authController = new AuthController($userService, $trainerService);
-    $authController->register();
-});
 
 $router->post('/subscription/suspend', function () {
     $userSubscriptionService = new UserSubscriptionsService();
@@ -283,44 +258,81 @@ $router->post('/sessions/edit', function () {
 
 $router->post('/api/user/update', function () {
     \middleware\ApiAuthMiddleware::checkAccess();
-    $profileInfoController = new UserController();
+    $profileInfoController = new UserApiController();
 
     $profileInfoController->updateProfile();
 });
 
 $router->post('/api/user/change-password', function () {
     \middleware\ApiAuthMiddleware::checkAccess();
-    $userController = new UserController();
+    $userController = new UserApiController();
     $userController->changePassword();
 });
 
 $router->post('/api/user/delete', function () {
     \middleware\ApiAuthMiddleware::checkAccess();
-    $userController = new UserController();
+    $userController = new UserApiController();
     $userController->deleteUser();
 });
 
-$router->get('/logout', function () {
-    $userService = new UserService();
-    $trainerService = new TrainerService();
-    $authController = new AuthController($userService, $trainerService);
-    $authController->logout();
-});
 $router->get('/hash', 'hash.php');
 
 
 
 
 $router->get('/api/profile_activity', function (){
-    \middleware\ApiAuthMiddleware::checkAccess();
+    ApiAuthMiddleware::checkAccess();
     $apiController = new ProfileActivityApiController();
     $apiController->getActivities();
 });
 
 $router->get('/api/profile_notifications', function (){
-    \middleware\ApiAuthMiddleware::checkAccess();
+    ApiAuthMiddleware::checkAccess();
     $apiController = new ProfileNotificationsApiController();
     $apiController->getNotifications();
 });
 
+// ia toate datele despre user
+$router->get('/api/user-data', function (){
+    ApiAuthMiddleware::checkAccess();
+    $apiController = new UserApiController();
+    $apiController->getUser();
+});
+
+$router->get('/api/membership-history', function (){
+    ApiAuthMiddleware::checkAccess();
+    $apiController = new UserSubscriptionApiController();
+    $apiController->getHistory();
+});
+
+$router->post('/api/auth/login', function (){
+    $authApiController = new AuthApiController();
+    $authApiController->login();
+});
+
+$router->post('/api/auth/register', function (){
+    $authApiController = new AuthApiController();
+    $authApiController->register();
+});
+
+$router->post('/api/auth/logout', function (){
+    $authApiController = new AuthApiController();
+    $authApiController->logout();
+});
+
+$router->get('/api/member-dashboard', function (){
+    ApiAuthMiddleware::checkAccess();
+    $apiController = new MemberDashboardApiController();
+    $apiController->getData();
+});
+$router->get('/api/admin-dashboard', function (){
+    ApiAdminMiddleware::checkAccess();
+    $apiController = new AdminDashboardApiController();
+    $apiController->getData();
+});
+$router->get('/api/trainer-dashboard', function (){
+    ApiTrainerMiddleware::checkAccess();
+    $apiController = new TrainerDashboardApiController();
+    $apiController->getData();
+});
 $router->resolve();

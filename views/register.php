@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
+    <script src="/kim/public/js/auth_buttons_listeners/register.js" defer></script>
+
 
 </head>
 <body>
@@ -18,7 +20,7 @@
     <div class="form__side">
 
 
-        <form action="/kim/register" method="POST" class="form__body">
+        <form id="registerForm" method="POST" class="form__body">
 
             <a href="/kim/home" class="register__brand__logo">
                 <i class="fa-solid fa-heart"></i> Serenity
@@ -26,12 +28,10 @@
 
 
             <!--  DACA am /register?error=' ' sa apara eroarea in form-->
-            <?php if (isset($_GET['error'])): ?>
-                <div class="form__error">
+                <div class="form__error" id="formError" style="display: none;">
                     <i class="fa-solid fa-circle-exclamation"></i>
-                    <?php echo htmlspecialchars($_GET['error']); ?>
+                    <div id="errorMessage"></div>
                 </div>
-            <?php endif; ?>
 
 
             <div class="form__welcome-banner">
