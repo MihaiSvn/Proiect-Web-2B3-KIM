@@ -6,9 +6,8 @@ use models\Subscription;
 
 class SubscriptionService
 {
-    public function getByType($type)
-    {
-        return Subscription::findByType($type);
+    public function getByType($type){
+        return Subscription::findWithFeaturesByType($type);
     }
 
     public function getById($id)

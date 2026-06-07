@@ -1,26 +1,11 @@
 <?php
 
-use models\Subscription;
-
-$fitnessSubscriptions =
-        Subscription::findWithFeaturesByType(
-                'fitness'
-        );
-
-$strengthSubscriptions =
-        Subscription::findWithFeaturesByType(
-                'strength'
-        );
-
-$physioSubscriptions =
-        Subscription::findWithFeaturesByType(
-                'physiotherapy'
-        );
-
-$allSubscriptions =
-        Subscription::findWithFeaturesByType(
-                'all'
-        );
+/**
+ * @var array $fitnessSubscriptions
+ * @var array $strengthSubscriptions
+ * @var array $physiotherapySubscriptions
+ * @var array $allSubscriptions
+ */
 
 function renderMembershipCards($subscriptions)  //parcurge abonamentele si face cardurile pt fiecare tip
 {
@@ -32,6 +17,7 @@ function renderMembershipCards($subscriptions)  //parcurge abonamentele si face 
         $oldPrice = '';
         $sessions =$subscription->sessions . ' Sessions';
         $description = $subscription->description;
+        $validity = 'Valid for '.$subscription->validity_days .' days';
         $features = $subscription->features;
         $buttonText = 'Select';
         $featured = ($subscription->sessions == 12);
@@ -101,7 +87,7 @@ function renderMembershipCards($subscriptions)  //parcurge abonamentele si face 
 
             <div class="membership-packages__grid">
 
-                <?php renderMembershipCards($physioSubscriptions); ?>
+                <?php renderMembershipCards($physiotherapySubscriptions); ?>
 
             </div>
 

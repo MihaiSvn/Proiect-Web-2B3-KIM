@@ -49,7 +49,7 @@
     </div>
 
     <p class="membership-card__validity">
-        Valid for 2 months
+        <?= $validity ?>
     </p>
 
     <p class="membership-card__description">
