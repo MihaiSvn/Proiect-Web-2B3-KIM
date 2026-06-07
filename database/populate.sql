@@ -161,8 +161,33 @@ INSERT INTO BOOKINGS (user_id, session_id, user_subscription_id) VALUES
                                                                      (5, 10, 2), -- Urmează Physio (Viitor)
                                                                      (5, 11, 2); -- Urmează Fitness (Viitor)
 
+INSERT INTO NOTIFICATIONS (user_id, title, message)
+VALUES
+    (4, 'Session Confirmed', 'Strength Training • Strength Zone • Tomorrow 18:00'),
+    (4, 'Membership Expiring Soon', 'Your Fitness membership will expire in 3 days. Renew now to keep your access.'),
+    (4, 'Session Canceled', 'Unfortunately, Physiotherapy • Recovery Room • Today 16:00 has been canceled by the trainer.'),
+    (4, 'Booking Reminder', 'Don''t forget! You have a Fitness • Cardio Area session in 2 hours.'),
+    (4, 'New Trainer Available', 'Meet Alex, our new Strength specialist! Book a session today.'),
+    (4, 'Welcome to KIM', 'Thank you for joining our gym. Get ready to achieve your fitness goals!');
 
 INSERT INTO NOTIFICATIONS (user_id, title, message)
-VALUES (4,
-        'Session Confirmed',
-        'Strength Training • Strength Zone • Tomorrow 18:00');
+VALUES
+    -- Notificări pentru User 1
+    (1, 'Welcome to KIM', 'Thank you for joining our gym! Set up your profile to get started.'),
+    (1, 'Membership Active', 'Your Full Access membership is now active. Enjoy your workouts!'),
+
+    -- Notificări pentru User 2
+    (2, 'Membership Expiring Soon', 'Your Strength membership will expire in 3 days. Renew now to keep your access.'),
+    (2, 'Payment Successful', 'Your recent payment was successfully processed. Thank you!'),
+
+    -- Notificări pentru User 3
+    (3, 'Session Confirmed', 'Strength Training • Strength Zone • Tomorrow 18:00'),
+    (3, 'Booking Reminder', 'Don''t forget! You have a Fitness session in 2 hours.'),
+
+    -- Notificări pentru User 4
+    (4, 'Session Canceled', 'Unfortunately, Physiotherapy • Recovery Room • Today 16:00 has been canceled by the trainer.'),
+    (4, 'Refund Issued', 'A session has been refunded to your account due to the recent cancellation.'),
+
+    -- Notificări pentru User 5
+    (5, 'New Feature', 'You can now suspend your membership directly from your profile settings!'),
+    (5, 'Please Review', 'How was your recent session with Trainer Alex? Please leave a review.');

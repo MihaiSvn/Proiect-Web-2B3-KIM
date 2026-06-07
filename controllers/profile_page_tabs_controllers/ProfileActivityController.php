@@ -31,7 +31,7 @@ class ProfileActivityController
             $groupedSessions=(array)$apiData->groupedSessions;
             $sessionParticipantsMap=(array)$apiData->sessionParticipantsMap;
         } else {
-            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
+            header('Location: /kim/404?error=' . urlencode('There was a problem retrieving your data!'));
             exit;
         }
 
