@@ -11,7 +11,7 @@ class MembershipPageController
 
         if (!$apiData) {
             header(
-                'Location: /kim/?error=' .
+                'Location: /kim/404?error=' .
                 urlencode('Service temporarily unavailable')
             );
             exit;

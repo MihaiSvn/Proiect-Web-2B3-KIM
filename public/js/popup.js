@@ -37,8 +37,6 @@ openButtons.forEach(button => {
     button.addEventListener('click', openPopup);
 });
 
-// popup.js - Adaugă asta la finalul fișierului tău existent
-
 document.addEventListener('submit', function(e) {
     // verificam daca formularul declanseaza api
     if (e.target && e.target.classList.contains('js-api-form')) {
@@ -67,13 +65,27 @@ document.addEventListener('submit', function(e) {
             .then(response => response.json())
             .then(result => {
                 if (result.status === 'success') {
-                    window.location.href = window.location.pathname + '?success=' + encodeURIComponent(result.message);
+                    const currentUrl = new URL(window.location.href);
+
+                    currentUrl.searchParams.delete('error');
+                    currentUrl.searchParams.set('success', result.message);
+
+                    window.location.href = currentUrl.toString();
                 } else {
-                    window.location.href = window.location.pathname + '?error=' + encodeURIComponent(result.message);
+                    const currentUrl = new URL(window.location.href);
+
+                    currentUrl.searchParams.delete('success');
+                    currentUrl.searchParams.set('error', result.message);
+
+                    window.location.href = currentUrl.toString();
                 }
             })
             .catch(error => {
-                window.location.href = window.location.pathname + '?error=Service unavailable';
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.delete('success');
+                currentUrl.searchParams.set('error', 'Service unavailable');
+
+                window.location.href = currentUrl.toString();
             })
             .finally(() => {
                 submitBtn.disabled = false;

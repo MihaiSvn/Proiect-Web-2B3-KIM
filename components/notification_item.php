@@ -19,7 +19,7 @@
         </span>
 
         <?php if (!$notification->is_read) : ?>
-        <form action="/kim/notifications/mark-read" method="POST" class="notification__form-single">
+        <form method="POST" class="notification__form-single js-dismiss-form">
             <input type="hidden" name="notification_id" value="<?= $notification->id ?>">
 
             <button type="submit" class="notification__btn-read" title="Mark as read">

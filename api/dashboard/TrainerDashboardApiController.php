@@ -18,13 +18,16 @@ class TrainerDashboardApiController
         $notifService = new NotificationService();
 
         $user = $userService->getUserById($userId);
-        $trainer = $trainerService->getTrainerById($userId);
+        $trainer = $trainerService->getTrainerByUserId($userId);
         $trainerId = $trainer->id;
         $plannedAndOngoingBookings = $sessionService->getAllPlannedAndOngoingSessionsByTrainerId($trainerId);
 
         $allBookings = $sessionService->getAllSessionsByTrainerId($trainerId);
 
         $unreadNotifications = $notifService->getUnreadUserNotifications($userId);
+        foreach($unreadNotifications as $notification){
+            $notification->time_ago = $notifService->getTimeAgo($notification->created_at);
+        }
 
         $sessionParticipantsMap = [];
 
