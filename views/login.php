@@ -11,21 +11,20 @@
     <link rel="stylesheet" href="/kim/public/css/forms.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="/kim/public/js/auth_buttons_listeners/login.js" defer></script>
 </head>
 <body class="login__page">
 
 <div class="register__page__wrapper">
 
     <div class="form__container">
-        <form action="/kim/login" method="POST" class="form__body">
+        <form id="loginForm" method="POST" class="form__body">
 
-            <!--  DACA am /login?error=' ' sa apara eroarea in form-->
-            <?php if (isset($_GET['error'])):?>
-                <div class="form__error">
+<!--              PUN DINAMIC AAICI ERROR MESSAGE PRIN JS-->
+                <div id="formError" class="form__error" style="display: none;">
                     <i class="fa-solid fa-circle-exclamation"></i>
-                    <?php echo htmlspecialchars($_GET['error']); ?>
+                    <div id="errorMessage"></div>
                 </div>
-            <?php endif; ?>
 
             <h1 class="form__title">Welcome Back</h1>
             <p class="form__subtitle">Log in to continue your wellness journey</p>

@@ -51,7 +51,7 @@ $currentUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                 <i class="fa-solid fa-shield"></i> Settings </a>
         </li>
         <li class="profile-nav__item">
-            <a href="/kim/logout" class="profile-nav__link logout-link">
+            <a href="#" id="logoutLink" class="profile-nav__link logout-link">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
             </a>
         </li>

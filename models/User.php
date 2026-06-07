@@ -26,6 +26,17 @@ class User
     }
     public static function findByEmail($email){
         global $pdo;
+        $sql = "SELECT id, first_name, last_name, email, role, profile_picture, created_at  FROM USERS WHERE email = :email";
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(); //obiect sau false
+    }
+
+    public static function findByEmailWithPassword($email){
+        global $pdo;
         $sql = "SELECT * FROM USERS WHERE email = :email";
         $stmt = $pdo->prepare($sql);
 
@@ -37,7 +48,17 @@ class User
 
     public static function findById($id){
         global $pdo;
-        $sql = "SELECT * FROM USERS WHERE id = :id";
+        $sql = "SELECT id, first_name, last_name, email, role, profile_picture, created_at 
+                                FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public static function findWithPasswordById($id){
+        global $pdo;
+        $sql = "SELECT *  FROM users WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
