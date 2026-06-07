@@ -2,18 +2,11 @@
 
 namespace controllers\profile_page_tabs_controllers;
 
-use services\NotificationService;
-use services\UserService;
+
+use core\ApiClient;
 
 class ProfileNotificationsController
 {
-    private $notificationService;
-    private $userService;
-
-    public function __construct(NotificationService $notificationService, UserService $userService){
-        $this->notificationService = $notificationService;
-        $this->userService = $userService;
-    }
 
     public function index(){
         if(!isset($_SESSION['user_id'])){
@@ -22,15 +15,27 @@ class ProfileNotificationsController
             exit;
         }
 
-        $user = $this->userService->getUserById($_SESSION['user_id']);
-        if(!$user){
-            session_destroy();
-            header('Location: /kim/login?error=User not found');
+        $userId = $_SESSION['user_id'];
+
+        $apiUrl = 'http://localhost/kim/api/profile_notifications?user_id='.$userId;
+
+
+        $apiData = ApiClient::get($apiUrl);
+
+        if($apiData){
+            $user = $apiData->user;
+            $allNotifications = (array)$apiData->allNotifications;
+            $unreadNotifications = (array)$apiData->unreadNotifications;
+        } else {
+            header('Location: /kim/views/404.php?error=' . urlencode('There was a problem retrieving your data!'));
+            exit;
+        }
+        if(isset($apiData->error)){
+            header('Location: /kim/profile?error=' .urlencode($apiData->error));
             exit;
         }
 
-        $allNotifications = $this->notificationService->getUserNotifications($_SESSION['user_id']);
-        $unreadNotifications = $this->notificationService->getUnreadUserNotifications($_SESSION['user_id']);
+
 
         $headerMainTitle = 'Notifications';
         $headerMainSubtitle = 'Stay updated with your latest alerts and account activity.';

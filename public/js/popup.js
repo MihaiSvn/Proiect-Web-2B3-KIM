@@ -35,4 +35,51 @@ function openPopup(event){
 //adauc event lisntener pt fiecare buton de open
 openButtons.forEach(button => {
     button.addEventListener('click', openPopup);
-})
+});
+
+// popup.js - Adaugă asta la finalul fișierului tău existent
+
+document.addEventListener('submit', function(e) {
+    // verificam daca formularul declanseaza api
+    if (e.target && e.target.classList.contains('js-api-form')) {
+        e.preventDefault();
+
+        const form = e.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+
+        const apiUrl = form.getAttribute('action');
+
+        //extrag datele
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        //fac un loading animation
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+        // fac request la api
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    window.location.href = window.location.pathname + '?success=' + encodeURIComponent(result.message);
+                } else {
+                    window.location.href = window.location.pathname + '?error=' + encodeURIComponent(result.message);
+                }
+            })
+            .catch(error => {
+                window.location.href = window.location.pathname + '?error=Service unavailable';
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            });
+    }
+});
+
+

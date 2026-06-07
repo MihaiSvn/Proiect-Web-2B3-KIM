@@ -15,7 +15,7 @@
 
     <div class="notification__actions">
         <span class="notification__time">
-            <?= $this->notificationService->getTimeAgo($notification->created_at) ?>
+            <?= $notification->time_ago ?>
         </span>
 
         <?php if (!$notification->is_read) : ?>
