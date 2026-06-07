@@ -30,6 +30,9 @@ class AdminDashboardApiController
         $subscriptionTypesStats = $subService->getSubscriptionTypeStats();
 
         $unreadNotifications = $notifService->getUnreadUserNotifications($userId);
+        foreach($unreadNotifications as $notification){
+            $notification->time_ago = $notifService->getTimeAgo($notification->created_at);
+        }
 
         $sessionParticipantsMap = [];
 

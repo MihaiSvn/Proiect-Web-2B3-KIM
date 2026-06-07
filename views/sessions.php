@@ -150,7 +150,7 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                     $title = 'New Session';
                     $submit = 'Create Session';
-                    $action = '/kim/sessions/create';
+                    $action = '/kim/api/sessions/create';
                     $popupId = 'popupOverlay_createSession';
                     $isAdmin = $_SESSION['user_role'] === 'admin';
 

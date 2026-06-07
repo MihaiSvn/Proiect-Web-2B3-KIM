@@ -21,14 +21,17 @@ class MemberDashboardApiController
         // logica de bussiness sa reactivez ce trb reactivat
         $subService->checkAndReactivateSuspensions($userId);
 
-
+        $unreadNotifications = $notifService->getUnreadUserNotifications($userId);
+        foreach($unreadNotifications as $notification){
+            $notification->time_ago = $notifService->getTimeAgo($notification->created_at);
+        }
         http_response_code(200);
         echo json_encode([
             'user' => $userService->getUserById($userId),
             'activeSubscriptions' => $subService->getActiveSubscriptionsByUserId($userId),
             'plannedAndOngoingBookings' => $sessionService->getAllPlannedAndOngoingBookingsByUserId($userId),
             'allBookings' => $sessionService->getAllBookingsByUserId($userId),
-            'unreadNotifications' => $notifService->getUnreadUserNotifications($userId)
+            'unreadNotifications' => $unreadNotifications
         ]);
     }
 }

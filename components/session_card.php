@@ -134,7 +134,7 @@ require_once __DIR__ . '/../classes/FormField.php';
         <?php
         $title = 'Edit Session';
         $submit = 'Save Changes';
-        $action = '/kim/sessions/edit';
+        $action = '/kim/api/sessions/edit';
         $popupId = 'popupOverlay_editClass_' . $session->session_id;
 
         $infoText = null;
@@ -333,7 +333,7 @@ require_once __DIR__ . '/../classes/FormField.php';
                     $members = $session->booked_spots === 1 ? 'member has' : 'members have';
                     $title = 'Cancel Class';
                     $submit = 'Yes';
-                    $action = '/kim/sessions/cancel-session';
+                    $action = '/kim/api/sessions/cancel';
                     $popupId = 'popupOverlay_cancelClass_' . $session->session_id;
 
 
@@ -360,7 +360,7 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                     $title = 'Cancel Booking';
                     $submit = 'Yes';
-                    $action = '/kim/sessions/cancel-booking';
+                    $action = '/kim/api/bookings/cancel';
                     $popupId = 'popupOverlay_cancelBooking_' . $session->session_id;
                     $infoText = "Are you sure you want to cancel this class? ";
                     $infoText .= $start_time < strtotime('+24 hours') ? "Since there are less than 24 hours before this class, you will NOT get your session back" : "You will receive your session back on your membership.";
@@ -394,7 +394,7 @@ require_once __DIR__ . '/../classes/FormField.php';
 
                 $title = 'Book session';
                 $submit = 'Yes';
-                $action = '/kim/sessions/book';
+                $action = '/kim/api/bookings/book';
                 $popupId = 'popupOverlay_book_' . $session->session_id;
 
                 if (isset($activeSubscriptionData)) {

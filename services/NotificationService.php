@@ -28,7 +28,11 @@ class NotificationService
 
     public function dismissNotifications($userId)
     {
-        return Notification::markAllAsRead($userId);
+        try{
+            return Notification::markAllAsRead($userId);
+        } catch (\Exception $e){
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public function dismissNotificationById($notificationId){

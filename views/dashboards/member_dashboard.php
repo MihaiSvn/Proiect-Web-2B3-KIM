@@ -31,7 +31,9 @@
     <script src="/kim/public/js/popup.js" defer></script>
     <script src="/kim/public/js/sessions_carousel.js" defer></script>
     <script src="/kim/public/js/calendar.js" defer></script>
-    <script src="/kim/public/js/header.js"></script>
+    <script src="/kim/public/js/header.js" defer></script>
+    <script src="/kim/public/js/profile_button_listeners/notification_dismiss.js" defer></script>
+
 
     <script src="/kim/public/js/calendar.js" defer></script>
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->

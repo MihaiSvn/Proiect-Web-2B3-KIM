@@ -28,8 +28,9 @@
     <script src="/kim/public/js/update_profile_preview.js" defer></script>
     <script src="/kim/public/js/popup.js" defer></script>
     <script src="/kim/public/js/auth_buttons_listeners/logout.js" defer></script>
-    <script src="/kim/public/js/profile_button_listeners/save_personal_info.js"></script>
-    <script src="/kim/public/js/profile_button_listeners/save_change_password.js"></script>
+    <script src="/kim/public/js/profile_button_listeners/save_personal_info.js" defer></script>
+    <script src="/kim/public/js/profile_button_listeners/save_change_password.js" defer></script>
+    <script src="/kim/public/js/profile_button_listeners/notification_dismiss.js" defer></script>
 </head>
 <body>
 <?php
