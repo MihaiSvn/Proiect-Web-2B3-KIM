@@ -149,17 +149,19 @@ class Booking
 
     //fctii pt pagina de reports
 
-    public static function getSessionsPerDay()  //pt chart luam ultimele 7 zile
+    public static function getSessionsPerDay()
     {
         global $pdo;
 
         $query = "
         SELECT
-            DATE(booked_at) as day,
-            COUNT(*) as total
-        FROM BOOKINGS
-        WHERE booked_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
-        GROUP BY DATE(booked_at)
+            DATE(s.start_time) AS day,
+            COUNT(*) AS total
+        FROM BOOKINGS b
+        JOIN SESSIONS s
+            ON b.session_id = s.id
+        WHERE YEARWEEK(s.start_time, 1) = YEARWEEK(CURDATE(), 1)
+        GROUP BY DATE(s.start_time)
         ORDER BY day ASC
     ";
 
@@ -204,17 +206,27 @@ class Booking
 
         $query = "
         SELECT
-            CONCAT(u.first_name,' ',u.last_name) as trainer_name,
-            COUNT(b.id) as total_sessions
+            CONCAT(u.first_name,' ',u.last_name) AS trainer_name,
+
+            COUNT(b.id) AS total_sessions
+
         FROM BOOKINGS b
+
         JOIN SESSIONS s
             ON b.session_id = s.id
+
         JOIN TRAINERS t
             ON s.trainer_id = t.id
+
         JOIN USERS u
             ON t.user_id = u.id
+
+        WHERE YEARWEEK(s.start_time,1) = YEARWEEK(CURDATE(),1)
+
         GROUP BY t.id
+
         ORDER BY total_sessions DESC
+
         LIMIT 10
     ";
 
