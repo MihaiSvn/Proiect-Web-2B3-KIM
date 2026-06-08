@@ -207,4 +207,21 @@ class UserSubscription
 
         return $stmt->fetchAll();
     }
+
+    public static function getSubscriptionTypeStats()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT
+            s.type,
+            COUNT(*) as total
+        FROM USER_SUBSCRIPTIONS us
+        JOIN SUBSCRIPTIONS s
+            ON us.subscription_id = s.id
+        GROUP BY s.type
+    ";
+
+        return $pdo->query($query)->fetchAll();
+    }
 }

@@ -164,5 +164,17 @@ class User
         return $stmt->execute();
     }
 
+    public static function getActiveUsersCount()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT COUNT(*) 
+        FROM USERS
+    ";
+
+        return (int)$pdo->query($query)->fetchColumn();
+    }
+
 
 }
