@@ -61,12 +61,15 @@ foreach($sessionsPerDay as $row){
             (int)$row->total;
 }
 
-for($i = 6; $i >= 0; $i--){
+$monday =
+        strtotime('monday this week');
+
+for($i = 0; $i < 7; $i++){
 
     $date =
             date(
                     'Y-m-d',
-                    strtotime("-$i days")
+                    strtotime("+$i day", $monday)
             );
 
     $chartLabels[] =
