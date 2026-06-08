@@ -249,7 +249,7 @@ class SessionService
                             "The session '{$sessionTitle}' was moved to {$startTime}, creating a conflict with your other bookings."
                         );
 
-                        $subjectConflict = '🚨 Schedule Conflict - KIM Fitness';
+                        $subjectConflict = 'Schedule Conflict - KIM Fitness';
                         $bodyConflict = "
                                 <h2>Attention: A change in your schedule!</h2>
                                 <p>Hi,</p>
@@ -268,7 +268,7 @@ class SessionService
                             "The session '{$sessionTitle}' has been rescheduled to {$startTime}."
                         );
 
-                        $subjectUpdate = '📅 Class Time Changed - KIM Fitness';
+                        $subjectUpdate = 'Class Time Changed - KIM Fitness';
                         $bodyUpdate = "
                                 <h2>Update regarding your upcoming class!</h2>
                                 <p>Hi,</p>
