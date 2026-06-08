@@ -68,14 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     buttons.forEach(button => {
 
-        button.addEventListener('click', (event) => {
+        button.addEventListener('click', async (e) => {
 
-            event.preventDefault();
-
-            if(
+            if (
                 button.textContent.trim() ===
                 'Select'
-            ){
+            ) {
 
                 buttons.forEach(btn => {
 
@@ -96,47 +94,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } else {
 
+                e.preventDefault();
                 const subscriptionId =
                     button.dataset.subscriptionId;
 
-                const formData =
-                    new FormData();
-
-                formData.append(
-                    'subscription_id',
-                    subscriptionId
-                );
-
-                fetch(
-                    '/kim/api/subscription/purchase',
-                    {
+                console.log(subscriptionId);
+                try {
+                    const response = await fetch('/kim/api/subscription/purchase', {
                         method: 'POST',
-                        body: formData
-                    }
-                )
-                    .then(response => response.json())
-                    .then(data => {
-
-                        if(data.status === 'success') {
-
-                            window.location.href =
-                                '/kim/dashboard?success=' +
-                                encodeURIComponent(
-                                    data.message
-                                );
-
-                        } else {
-
-                            window.location.href =
-                                '/kim/membership?error=' +
-                                encodeURIComponent(
-                                    data.message
-                                );
-
-                        }
-
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({subscription_id: subscriptionId})
                     });
 
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        const dashboardUrl = new URL('/kim/dashboard', window.location.origin);
+                        dashboardUrl.searchParams.set('success', result.message);
+
+                        window.location.href = dashboardUrl.toString();
+                    } else {
+                        const currentUrl = new URL(window.location.href);
+
+                        currentUrl.searchParams.delete('success');
+                        currentUrl.searchParams.set('error', result.message);
+
+                        window.location.href = currentUrl.toString();
+                    }
+                } catch (err) {
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.delete('success');
+                    currentUrl.searchParams.set('error', 'Service unavailable');
+
+                    window.location.href = currentUrl.toString();
+                }
             }
 
         });
