@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    console.log('MEMBERSHIP JS LOADED');
+
     const membershipTabs =
         document.querySelectorAll(
             '.membership-packages__tab'
@@ -14,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         membershipTabs.length > 0 &&
         membershipPanels.length > 0
     ){
+
+
 
         function showPanel(index){
 
@@ -59,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll(
             '.membership-card__button'
         );
+
+    console.log('Buttons found:', buttons.length);
 
     buttons.forEach(button => {
 
@@ -123,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = currentUrl.toString();
                 }
             }
+
         });
 
     });
