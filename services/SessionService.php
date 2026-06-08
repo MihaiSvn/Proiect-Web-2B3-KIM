@@ -6,6 +6,7 @@ use models\Session;
 use models\Trainer;
 use models\Room;
 
+require_once __DIR__ . '/MailService.php';
 class SessionService
 {
     public function getAllPlannedAndOngoingBookingsByUserId($userId){
@@ -195,6 +196,9 @@ class SessionService
     }
 
     public function editSession($sessionId, $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity){
+
+        global $pdo;
+
         $currentSession = Session::findById($sessionId);
 
         if (!$currentSession) {
@@ -214,11 +218,92 @@ class SessionService
             $trainerId, $roomId, $title, $startTimeRaw, $endTimeRaw, $maxCapacity, $sessionId
         );
 
-        $updated = Session::update($sessionId, $roomId, $title, $startTime, $endTime, $maxCapacity);
-        if (!$updated) {
-            throw new \Exception("A database error occurred while updating the session.");
-        }
+        $timeChanged = ($currentSession->start_time !== $startTime || $currentSession->end_time !== $endTime);
+        try{
+            $pdo->beginTransaction();
 
-        return $updated;
+            $usersWithConflicts = [];
+            $allBookedUsers = [];
+
+            if($timeChanged) {
+                $usersWithConflicts = Session::findUsersWithConflictsForNewTime($sessionId, $startTime, $endTime);
+                $allBookedUsers = Session::getBookedUsersForSession($sessionId);
+            }
+            $updated = Session::update($sessionId, $roomId, $title, $startTime, $endTime, $maxCapacity);
+            if (!$updated) {
+                throw new \Exception("A database error occurred while updating the session.");
+            }
+
+            if($timeChanged && !empty($allBookedUsers)) {
+                //extragem doar id urile utilizatorilor cu conflicte
+                $conflictIds = array_map(function($u) { return $u->user_id; }, $usersWithConflicts);
+                $sessionTitle = $currentSession->title;
+                $notificationService = new NotificationService();
+
+                foreach ($allBookedUsers as $bookedUser) {
+                    if (in_array($bookedUser->id, $conflictIds)) {
+                        //CONFLICT DE ORAR, AR  TREBUI TRIMIS MAIL AICI
+                        $notificationService->createNotification(
+                            $bookedUser->id,
+                            '🚨 Schedule Conflict!',
+                            "The session '{$sessionTitle}' was moved to {$startTime}, creating a conflict with your other bookings."
+                        );
+
+                        $subjectConflict = '🚨 Schedule Conflict - KIM Fitness';
+                        $bodyConflict = "
+                                <h2>Attention: A change in your schedule!</h2>
+                                <p>Hi,</p>
+                                <p>The <strong>{$sessionTitle}</strong> class has been rescheduled to <b>{$startTime}</b>.</p>
+                                <p>This new time overlaps with another booking you already have. Please log into your account to manage your bookings and update your schedule.</p>
+                                <br>
+                                <p>The KIM Fitness Team</p>
+                            ";
+
+                        \services\MailService::sendEmail($bookedUser->email, $subjectConflict, $bodyConflict, true);
+                    } else {
+                        //INFOMARE A SCHIMBARII OREI, FARA CONFLICT
+                        $notificationService->createNotification(
+                            $bookedUser->id,
+                            '📅 Session Time Changed',
+                            "The session '{$sessionTitle}' has been rescheduled to {$startTime}."
+                        );
+
+                        $subjectUpdate = '📅 Class Time Changed - KIM Fitness';
+                        $bodyUpdate = "
+                                <h2>Update regarding your upcoming class!</h2>
+                                <p>Hi,</p>
+                                <p>We wanted to let you know that the <strong>{$sessionTitle}</strong> class you are booked for has been rescheduled.</p>
+                                <p>The new start time is <b>{$startTime}</b>. Your booking remains active, but if this new time doesn't work for you, please remember to cancel via your account.</p>
+                                <br>
+                                <p>The KIM Fitness Team</p>
+                            ";
+                        \services\MailService::sendEmail($bookedUser->email, $subjectUpdate, $bodyUpdate, true);
+                    }
+                }
+            }
+
+            $pdo->commit();
+            return $updated;
+
+        } catch(\Throwable $e) {
+            if($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            echo "<div style='background: black; color: red; padding: 20px; font-size: 20px; z-index: 9999; position: relative;'>";
+            echo "<strong>EROARE FATALĂ INTERCEPTATĂ:</strong><br><br>";
+            echo $e->getMessage();
+            echo "<br><br><strong>Fișier:</strong> " . $e->getFile() . " (Linia " . $e->getLine() . ")";
+            echo "</div>";
+
+            die();
+            throw $e;
+        }
+    }
+
+    public function updateSessionStatuses()
+    {
+        Session::updateToOngoing();
+        Session::updateToCompleted();
+        return true;
     }
 }

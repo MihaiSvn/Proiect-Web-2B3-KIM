@@ -64,8 +64,8 @@
                     </li>
 
                     <li>
-                        <a href="/kim/membership">
-                            Active Membership
+                        <a href="/kim/profile/membership-history">
+                            Membership History
                         </a>
                     </li>
 

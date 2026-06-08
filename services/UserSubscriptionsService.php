@@ -38,8 +38,30 @@ class UserSubscriptionsService
     }
   
 
-    public function checkAndReactivateSuspensions($userId) {
-        return UserSubscription::reactivateExpiredSuspensions($userId);
+    public function checkAndReactivateSuspensionsByUserId($userId) {
+        return UserSubscription::reactivateExpiredSuspensionsByUserId($userId);
+    }
+
+    public function checkAndReactivateAllSuspensions(){
+        return UserSubscription::reactivateAllExpiredSuspensions();
+    }
+
+    public function checkAndExpireMemberships($userId) {
+        return UserSubscription::checkAndExpireSubscriptionsByUserId($userId);
+    }
+
+    public function checkAndExpireAllMemberships() {
+        return UserSubscription::checkAndExpireAllSubscriptions();
+    }
+    public function updateMembershipStatusesByUserId($userId)
+    {
+        $this->checkAndReactivateSuspensionsByUserId($userId);
+        $this->checkAndExpireMemberships($userId);
+    }
+
+    public function updateAllMembershipStatuses(){
+        $this->checkAndExpireAllMemberships();
+        $this->checkAndReactivateAllSuspensions();
     }
 
     public function getMonthlyRevenueStats() {

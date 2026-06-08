@@ -369,4 +369,14 @@ $router->post('/api/membership/suspend', function (){
     $apiController = new UserSubscriptionApiController();
     $apiController->suspend();
 });
+
+
+
+
+//$userSubscriptionsService = new UserSubscriptionsService();
+//$userSubscriptionsService->updateAllMembershipStatuses();
+
+$sessionService = new SessionService();
+$sessionService->updateSessionStatuses();
+
 $router->resolve();

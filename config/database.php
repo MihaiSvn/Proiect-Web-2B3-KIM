@@ -1,9 +1,15 @@
 <?php
 
-$host = 'localhost';
-$db = 'kim_db';
-$user = 'root';
-$password = '';
+$envPath = __DIR__ . '/../.env';
+if (file_exists($envPath)) {
+    $env = parse_ini_file($envPath);
+} else {
+    $env = [];
+}
+$host     = $env['DB_HOST'] ?? 'localhost';
+$db       = $env['DB_NAME'] ?? 'kim_db';
+$user     = $env['DB_USER'] ?? 'root';
+$password = $env['DB_PASS'] ?? '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

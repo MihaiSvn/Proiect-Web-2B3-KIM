@@ -114,9 +114,16 @@
     font-size: 0.85rem;
     color: #9CA3AF;
     white-space: nowrap;
+    display: none;
 }
 
 .notification__item.notification__read{
     background-color: #e8e8e8;
     opacity: 0.8;
+}
+
+@media (min-width: 1000px) {
+    .notification__time{
+        display: block;
+    }
 }
