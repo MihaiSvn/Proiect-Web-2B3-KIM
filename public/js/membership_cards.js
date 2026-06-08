@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    console.log('MEMBERSHIP JS LOADED');
+
     const membershipTabs =
         document.querySelectorAll(
             '.membership-packages__tab'
@@ -14,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         membershipTabs.length > 0 &&
         membershipPanels.length > 0
     ){
+
+
 
         function showPanel(index){
 
@@ -60,9 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
             '.membership-card__button'
         );
 
+    console.log('Buttons found:', buttons.length);
+
     buttons.forEach(button => {
 
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (event) => {
+
+            event.preventDefault();
 
             if(
                 button.textContent.trim() ===
@@ -86,38 +94,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     'membership-card__button--active'
                 );
 
-            }else{
+            } else {
 
                 const subscriptionId =
                     button.dataset.subscriptionId;
 
-                const form =
-                    document.createElement('form');
+                const formData =
+                    new FormData();
 
-                form.method = 'POST';
-
-                form.action =
-                    '/kim/subscription/purchase';
-
-                const input =
-                    document.createElement('input');
-
-                input.type = 'hidden';
-
-                input.name =
-                    'subscription_id';
-
-                input.value =
-                    subscriptionId;
-
-                form.appendChild(input);
-
-                document.body.appendChild(
-                    form
+                formData.append(
+                    'subscription_id',
+                    subscriptionId
                 );
 
-                form.submit();
+                fetch(
+                    '/kim/api/subscription/purchase',
+                    {
+                        method: 'POST',
+                        body: formData
+                    }
+                )
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if(data.status === 'success') {
+
+                            window.location.href =
+                                '/kim/dashboard?success=' +
+                                encodeURIComponent(
+                                    data.message
+                                );
+
+                        } else {
+
+                            window.location.href =
+                                '/kim/membership?error=' +
+                                encodeURIComponent(
+                                    data.message
+                                );
+
+                        }
+
+                    });
+
             }
+
         });
 
     });
