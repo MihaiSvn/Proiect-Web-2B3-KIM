@@ -24,7 +24,7 @@ require_once 'services/BookingService.php';
 require_once 'services/TrainerService.php';
 require_once 'services/RoomService.php';
 require_once 'services/SubscriptionService.php';
-
+require_once 'services/ReportsService.php';
 
 require_once 'controllers/MemberDashboardController.php';
 require_once 'controllers/TrainerDashboardController.php';
@@ -39,7 +39,7 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileActivityControlle
 require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsController.php';
 require_once 'controllers/MembershipPageController.php';
 require_once 'controllers/HomePageController.php';
-
+require_once 'controllers/ReportsPageController.php';
 
 require_once 'api/profile/ProfileActivityApiController.php';
 require_once 'api/profile/ProfileNotificationsApiController.php';
@@ -54,6 +54,7 @@ require_once 'api/booking/BookingApiController.php';
 require_once 'api/notification/NotificationsApiController.php';
 require_once 'api/membership/MembershipApiController.php';
 require_once 'api/trainer/TrainerApiController.php';
+require_once 'api/admin_reports/ReportsApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
 require_once 'middleware/ApiAdminMiddleware.php';
@@ -207,6 +208,34 @@ $router->get('/api/memberships', function () {
     $controller = new MembershipApiController();
     $controller->getMemberships();
 
+});
+
+$router->get('/reports', function () {
+
+    $controller = new \controllers\ReportsPageController();
+    $controller->index();
+
+});
+
+$router->get('/api/reports', function () {
+
+    ApiAdminMiddleware::checkAccess();
+
+    $controller =
+        new \api\admin_reports\ReportsApiController();
+
+    $controller->getData();
+
+});
+
+$router->post('/api/reports/export', function () {
+
+    ApiAdminMiddleware::checkAccess();
+
+    $controller =
+        new \api\admin_reports\ReportsApiController();
+
+    $controller->export();
 });
 
 $router->post('/api/subscription/purchase', function () {

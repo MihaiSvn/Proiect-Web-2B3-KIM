@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="/kim/public/css/membership/membership_included.css">
     <link rel="stylesheet" href="/kim/public/css/membership/membership_journey.css">
     <link rel="stylesheet" href="/kim/public/css/member_footer.css">
-
-
+    <script src="/kim/public/js/membership_cards.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 <body>
 
@@ -40,7 +40,6 @@
 
 <?php include 'components/footers/member_footer.php'; ?>
 
-<script src="/kim/public/js/membership_cards.js" defer></script>
 
 </body>
 </html>
