@@ -1,11 +1,14 @@
 <?php
 
 namespace models;
+
 use models\Subscription;
 use PDO;
+
 class UserSubscription
 {
-    public static function findActiveSubscriptionsByUserId($userId){
+    public static function findActiveSubscriptionsByUserId($userId)
+    {
         global $pdo;
         $sql = "
             SELECT 
@@ -27,12 +30,15 @@ class UserSubscription
         return $stmt->fetchAll();
     }
 
-    public static function findSubscriptionByIdAndUser($userSubscriptionId, $userId){
+
+
+    public static function findSubscriptionByIdAndUser($userSubscriptionId, $userId)
+    {
         global $pdo;
 
         $sql = "SELECT * FROM USER_SUBSCRIPTIONS WHERE user_id = :user_id AND id = :userSubscriptionId";
 
-        $stmt= $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':userSubscriptionId', $userSubscriptionId);
         $stmt->execute();
@@ -40,7 +46,8 @@ class UserSubscription
         return $stmt->fetch();
     }
 
-    public static function applySuspension($userSubscriptionId, $daysToSuspend){
+    public static function applySuspension($userSubscriptionId, $daysToSuspend)
+    {
         global $pdo;
 
         $sql = "UPDATE user_subscriptions 
@@ -56,7 +63,8 @@ class UserSubscription
         return $stmt->execute();
     }
 
-    public static function reactivateExpiredSuspensions($userId){
+    public static function reactivateExpiredSuspensionsByUserId($userId)
+    {
         global $pdo;
 
         $sql = "UPDATE USER_SUBSCRIPTIONS 
@@ -71,18 +79,62 @@ class UserSubscription
         return $stmt->execute();
     }
 
+    public static function reactivateAllExpiredSuspensions()
+    {
+        global $pdo;
 
-    public static function getCurrentPeriodRevenue() { //din ultimele 30 zile
+        $sql = "UPDATE USER_SUBSCRIPTIONS 
+            SET status = 'active', 
+                suspended_until = NULL 
+            WHERE status = 'suspended' 
+            AND suspended_until <= NOW()";
+
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute();
+    }
+
+
+
+    public static function checkAndExpireSubscriptionsByUserId($userId)
+    {
+        global $pdo;
+        $sql = "UPDATE USER_SUBSCRIPTIONS 
+                SET status = 'expired' 
+                WHERE user_id = :user_id 
+                  AND status = 'active' 
+                  AND (end_date < NOW() OR sessions_left <= 0)";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $userId);
+        return $stmt->execute();
+    }
+
+    public static function checkAndExpireAllSubscriptions()
+    {
+        global $pdo;
+        $sql = "UPDATE USER_SUBSCRIPTIONS 
+                SET status = 'expired' 
+                WHERE status = 'active' 
+                  AND (end_date < NOW() OR sessions_left <= 0)";
+
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute();
+    }
+
+
+    public static function getCurrentPeriodRevenue()
+    { //din ultimele 30 zile
         global $pdo;
         $sql = "SELECT SUM(s.price) 
             FROM USER_SUBSCRIPTIONS us
             JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
             WHERE us.start_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
 
-        return (float) $pdo->query($sql)->fetchColumn();
+        return (float)$pdo->query($sql)->fetchColumn();
     }
 
-    public static function getPreviousPeriodRevenue() { //acum intre 60 si 30 zile
+    public static function getPreviousPeriodRevenue()
+    { //acum intre 60 si 30 zile
         global $pdo;
         $sql = "SELECT SUM(s.price) 
             FROM USER_SUBSCRIPTIONS us
@@ -90,10 +142,11 @@ class UserSubscription
             WHERE us.start_date >= DATE_SUB(NOW(), INTERVAL 60 DAY) 
               AND us.start_date < DATE_SUB(NOW(), INTERVAL 30 DAY)";
 
-        return (float) $pdo->query($sql)->fetchColumn();
+        return (float)$pdo->query($sql)->fetchColumn();
     }
 
-    public static function getActiveSubscriptionsCountByType() {
+    public static function getActiveSubscriptionsCountByType()
+    {
         global $pdo;
 
         $sql = "SELECT 
@@ -177,10 +230,11 @@ class UserSubscription
         );
 
         return $stmt->execute();
-      
+
     }
-  
-    public static function findAllSubscriptionsByUserId($userId){
+
+    public static function findAllSubscriptionsByUserId($userId)
+    {
         global $pdo;
         //le orodnez in functie de stauts (active, apoi suspended, apoi expired)
         // si apoi dupa cate zile maie e valide, de la putin la mai mult,

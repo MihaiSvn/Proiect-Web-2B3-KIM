@@ -49,7 +49,6 @@ class Notification
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
-        $stmt->bindParam(":type", $type, PDO::PARAM_STR);
         $stmt->bindParam(":title", $title, PDO::PARAM_STR);
         $stmt->bindParam(":message", $message, PDO::PARAM_STR);
 

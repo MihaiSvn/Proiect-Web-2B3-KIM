@@ -18,8 +18,6 @@ class MemberDashboardApiController
         $sessionService = new SessionService();
         $notifService = new NotificationService();
 
-        // logica de bussiness sa reactivez ce trb reactivat
-        $subService->checkAndReactivateSuspensions($userId);
 
         $unreadNotifications = $notifService->getUnreadUserNotifications($userId);
         foreach($unreadNotifications as $notification){
