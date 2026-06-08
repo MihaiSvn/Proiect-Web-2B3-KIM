@@ -132,11 +132,11 @@ class SessionsApiController
                 $type = $trainerData->specialization;
             } elseif($userRole == 'admin'){
                 $trainerIdForm = isset($data['session_trainer']) ? $data['session_trainer'] : null;
-                if($trainerIdForm){
+                if(!$trainerIdForm){
                     throw new \Exception("Please select a trainer");
                 }
 
-                $trainerData = $trainerService->getTrainerByUserId($trainerId);
+                $trainerData = $trainerService->getTrainerById($trainerIdForm);
                 if(!$trainerData){
                     throw new \Exception("Invalid trainer selected");
                 }
@@ -190,11 +190,11 @@ class SessionsApiController
                 $trainerId = $trainerData->id;
             } elseif($userRole == 'admin'){
                 $trainerIdForm = isset($data['session_trainer']) ? $data['session_trainer'] : null;
-                if($trainerIdForm){
+                if(!$trainerIdForm){
                     throw new \Exception("Please select a trainer");
                 }
 
-                $trainerData = $trainerService->getTrainerByUserId($trainerId);
+                $trainerData = $trainerService->getTrainerById($trainerIdForm);
                 if(!$trainerData){
                     throw new \Exception("Invalid trainer selected");
                 }
