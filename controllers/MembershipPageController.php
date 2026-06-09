@@ -18,7 +18,8 @@ class MembershipPageController
         }
 
         if (isset($apiData->error)) {
-            header('Location: /kim/membership?error='.urlencode($apiData->error));
+            header('Location: /kim/memberships?error='.urlencode($apiData->error));
+            header('Location: /kim/memberships?error='.urlencode($apiData->error));
             exit;
         }
 

@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/forms.css">
-    <script src="/kim/public/js/auth_buttons_listeners/register.js" defer></script>
+    <script src="/kim/public/js/auth_buttons_listeners/register.js?v=<?php echo time(); ?>" defer></script>
+
 
 
 </head>
@@ -72,7 +73,7 @@
                 <input type="password" id="form__confirm__password" name="confirm_password" required placeholder="••••••••">
             </div>
 
-            <button type="submit" class="form__submit">Create Account</button>
+            <button type="submit" class="form__submit" id="registerBtn">Create Account</button>
 
             <p class="form__question">Already have an account?
                 <a href="/kim/login" class="form__hyperlink">Sign In</a>

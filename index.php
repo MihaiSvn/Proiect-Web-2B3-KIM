@@ -61,6 +61,8 @@ require_once 'middleware/ApiAdminMiddleware.php';
 require_once 'middleware/ApiTrainerMiddleware.php';
 require_once 'middleware/ApiTrainerAdminMiddleware.php';
 require_once 'middleware/ApiMemberMiddleware.php';
+require_once 'middleware/WebAuthMiddleware.php';
+require_once 'middleware/WebAdminMiddleware.php';
 
 use api\profile\ProfileActivityApiController;
 use api\profile\ProfileNotificationsApiController;
@@ -105,6 +107,8 @@ use middleware\ApiAdminMiddleware;
 use middleware\ApiTrainerMiddleware;
 use middleware\ApiTrainerAdminMiddleware;
 use middleware\ApiMemberMiddleware;
+use middleware\WebAuthMiddleware;
+use middleware\WebAdminMiddleware;
 
 
 $router = new Router();
@@ -124,8 +128,9 @@ $router->get('/api/trainers', function () {
 
 });
 
-$router->get('/membership', function () {
+$router->get('/memberships', function () {
 
+    WebAuthMiddleware::checkAccess();
     $controller = new MembershipPageController();
     $controller->index();
 
@@ -134,6 +139,7 @@ $router->get('/membership', function () {
 $router->get('/register', 'views/register.php');
 
 $router->get('/dashboard', function () {
+    WebAuthMiddleware::checkAccess();
     if (!isset($_SESSION['user_id'])) {
         header('Location: /kim/login?error=' . urlencode('You need to be logged in!'));
         exit;
@@ -159,6 +165,7 @@ $router->get('/dashboard', function () {
 $router->get('/test', 'config/test_db.php');
 $router->get('/sessions', function (){
 
+    WebAuthMiddleware::checkAccess();
 
     $sessionsPageController = new SessionsPageController();
 
@@ -166,38 +173,45 @@ $router->get('/sessions', function (){
 });
 
 $router->get('/profile', function (){
+    WebAuthMiddleware::checkAccess();
     $profileInfoController = new ProfileInfoController();
     $profileInfoController->index();
 });
 
 $router->get('/profile/personal-info', function (){
+    WebAuthMiddleware::checkAccess();
     $profileInfoController = new ProfileInfoController();
     $profileInfoController->index();
 });
 
 $router->get('/profile/notifications', function (){
+    WebAuthMiddleware::checkAccess();
     $profileNotificationsController = new ProfileNotificationsController();
     $profileNotificationsController->index();
 });
 
 $router->get('/profile/membership-history', function (){
+    WebAuthMiddleware::checkAccess();
     $profileMembershipHistoryController = new ProfileMembershipHistoryController();
     $profileMembershipHistoryController->index();
 });
 
 $router->get('/profile/activity-history', function (){
+    WebAuthMiddleware::checkAccess();
 
     $profileActivityController = new ProfileActivityController();
     $profileActivityController->index();
 });
 
 $router->get('/profile/settings', function (){
-    $userService = new UserService();
-    $profileSettingsController = new ProfileSettingsController($userService);
+    WebAuthMiddleware::checkAccess();
+
+    $profileSettingsController = new ProfileSettingsController();
     $profileSettingsController->index();
 });
 
-$router->get('/admin/users', function () {
+$router->get('/users', function () {
+    WebAdminMiddleware::checkAccess();
     $userService = new UserService();
     $controller = new AdminUsersController($userService);
     $controller->index();
@@ -212,6 +226,7 @@ $router->get('/api/memberships', function () {
 
 $router->get('/reports', function () {
 
+    WebAdminMiddleware::checkAccess();
     $controller = new \controllers\ReportsPageController();
     $controller->index();
 
@@ -398,4 +413,12 @@ $router->post('/api/membership/suspend', function (){
     $apiController = new UserSubscriptionApiController();
     $apiController->suspend();
 });
+
+
+
+
+
+$sessionService = new SessionService();
+$sessionService->updateSessionStatuses();
+
 $router->resolve();

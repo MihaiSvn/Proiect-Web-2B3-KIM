@@ -36,10 +36,63 @@ class UserSubscriptionsService
 
         return true;
     }
-  
 
-    public function checkAndReactivateSuspensions($userId) {
-        return UserSubscription::reactivateExpiredSuspensions($userId);
+
+    public function checkAndReactivateSuspensionsByUserId($userId) {
+        return UserSubscription::reactivateExpiredSuspensionsByUserId($userId);
+    }
+
+    public function checkAndReactivateAllSuspensions(){
+        return UserSubscription::reactivateAllExpiredSuspensions();
+    }
+
+    public function checkAndExpireMemberships($userId) {
+        $subscriptionsToExpire = UserSubscription::getSubscriptionsReadyToExpire($userId);
+
+        if (empty($subscriptionsToExpire)) {
+            return true;
+        }
+
+        $success = UserSubscription::checkAndExpireSubscriptionsByUserId($userId);
+
+        if ($success) {
+            $notificationService = new NotificationService();
+            $userService = new UserService();
+            $user = $userService->getUserById($userId);
+
+            if ($user) {
+                $notificationService->createNotification(
+                    $userId,
+                    '⚠️ Subscription Expired',
+                    "Your membership has expired. Please renew it to continue booking classes."
+                );
+
+                $env = parse_ini_file(__DIR__ . "/../.env");
+                $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
+                $subject = 'Your Membership Has Expired - KIM Fitness';
+                $title   = 'Time to Renew!';
+                $text    = "Hi <b>{$user->first_name}</b>,<br/><br/>We noticed that your KIM Fitness membership has just expired.<br/>Don't lose your momentum! Renew your subscription today to keep accessing our elite classes and expert trainers.";
+                $btnText = 'Renew Membership';
+                $btnUrl  = $baseUrl . '/memberships';
+
+                MailService::sendEmail($user->email, $subject, $title, $text, $btnText, $btnUrl);
+            }
+        }
+    }
+
+    public function checkAndExpireAllMemberships() {
+        return UserSubscription::checkAndExpireAllSubscriptions();
+    }
+    public function updateMembershipStatusesByUserId($userId)
+    {
+        $this->checkAndReactivateSuspensionsByUserId($userId);
+        $this->checkAndExpireMemberships($userId);
+    }
+
+    public function updateAllMembershipStatuses(){
+        $this->checkAndExpireAllMemberships();
+        $this->checkAndReactivateAllSuspensions();
     }
 
     public function getMonthlyRevenueStats() {
@@ -85,9 +138,40 @@ class UserSubscriptionsService
             );
         }
 
+        $userService = new UserService();
+        $user = $userService->getUserById($userId);
+        $subscriptionService = new SubscriptionService();
+        $subscription = $subscriptionService->getById($subscriptionId);
+        if($user){
+
+            $notificationService = new NotificationService();
+            $notificationService->createNotification(
+                $userId,
+                '💳 Purchase Successful!',
+                "Thank you for your purchase! Your membership is now active and ready to use."
+            );
+
+
+            $env = parse_ini_file(__DIR__ . "/../.env");
+            $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
+            $subject = 'Your Subscription is Active - KIM Fitness';
+            $title   = 'Purchase Successful!';
+
+            $text    = "Hi <b>{$user->first_name}</b>,<br/><br/>
+                    Thank you for your purchase! Your <b>{$subscription->name}</b> membership is now officially active.<br/><br/>
+                    You have unlocked access to our elite facilities and expert trainers. It's time to crush your goals. Check out the schedule and book your next class!";
+
+            $btnText = 'Book a Class';
+            $btnUrl  = $baseUrl . '/sessions';
+
+            MailService::sendEmail($user->email, $subject, $title, $text, $btnText, $btnUrl);
+        }
+
+
         return true;
     }
-  
+
     public function getAllSubscriptionsByUserId($userId){
         return UserSubscription::findAllSubscriptionsByUserId($userId);
     }

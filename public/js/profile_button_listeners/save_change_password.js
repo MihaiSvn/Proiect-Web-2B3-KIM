@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
 
+        const submitBtn = document.getElementById("changePassBtn");
+        if(submitBtn){
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        }
+
+
         fetch('/kim/api/user/change-password', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
