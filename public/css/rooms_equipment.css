@@ -1,0 +1,398 @@
+.rooms{
+
+    padding:2rem 1rem;
+}
+
+.rooms__header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:2rem;
+}
+
+.rooms__title{
+
+    font-size:2.5rem;
+
+    font-weight:700;
+
+    color:#49344d;
+}
+
+.rooms__subtitle{
+
+    color:#8b7272;
+
+    margin-top:.5rem;
+
+    font-size:1rem;
+}
+
+.rooms__add-button{
+
+    border:none;
+
+    background:#d7a4a4;
+
+    color:white;
+
+    padding:1rem 1.75rem;
+
+    border-radius:999px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:
+            0 8px 20px
+            rgba(215,164,164,.25);
+
+    transition:.2s;
+}
+
+.rooms__add-button:hover{
+
+    background:#c79292;
+
+    transform:translateY(-1px);
+}
+
+.rooms__grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:2rem;
+}
+
+.room-card{
+
+    background:#fff;
+
+    border:1px solid #eadede;
+
+    border-radius:1.75rem;
+
+    padding:1.75rem;
+
+    box-shadow:
+            0 4px 16px
+            rgba(0,0,0,.06);
+
+    transition:.2s;
+}
+
+.room-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+            0 10px 24px
+            rgba(0,0,0,.08);
+}
+
+.room-card__top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:1.5rem;
+}
+
+.room-card__icon{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:1.5rem;
+}
+
+.room-card__icon--fitness{
+
+    background:#f7e7e3;
+
+    color:#d4a5a5;
+}
+
+.room-card__icon--strength{
+
+    background:#ece7f8;
+
+    color:#a899d4;
+}
+
+.room-card__icon--physiotherapy{
+
+    background:#e8f5ee;
+
+    color:#8eb79c;
+}
+
+.room-card__status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.5rem;
+
+    padding:.55rem 1rem;
+
+    border-radius:999px;
+
+    font-size:.85rem;
+
+    font-weight:600;
+}
+
+.room-card__dot{
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+}
+
+.room-card__status--active{
+
+    background:#e8f5e9;
+
+    color:#4caf50;
+}
+
+.room-card__status--active .room-card__dot{
+
+    background:#4caf50;
+}
+
+.room-card__status--inactive{
+
+    background:#fdeaea;
+
+    color:#e05a5a;
+}
+
+.room-card__status--inactive .room-card__dot{
+
+    background:#e05a5a;
+}
+
+.room-card__name{
+
+    font-size:1.5rem;
+
+    font-weight:700;
+
+    color:#49344d;
+
+    margin-bottom:.4rem;
+}
+
+.room-card__type{
+
+    color:#a18888;
+
+    font-size:.95rem;
+
+    margin-bottom:1.5rem;
+
+    text-transform:capitalize;
+}
+
+.room-card__stats{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:1rem;
+
+    margin-bottom:1.25rem;
+
+    padding:1rem;
+
+    border-radius:1rem;
+
+    background:#faf7f7;
+}
+
+.room-card__stats span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.5rem;
+
+    color:#6b5b5b;
+
+    font-size:.95rem;
+
+    font-weight:500;
+}
+
+.room-card__progress{
+
+    height:8px;
+
+    background:#efe4e4;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    margin:1rem 0;
+}
+
+.room-card__progress-fill{
+
+    height:100%;
+
+    background:#d7a4a4;
+
+    border-radius:999px;
+
+    transition:.3s;
+}
+
+.room-card__actions{
+
+    margin-top:1rem;
+
+    padding-top:1rem;
+
+    border-top:1px solid #f1e7e7;
+}
+
+.room-card__edit{
+
+    width:100%;
+
+    border:none;
+
+    background:#d7a4a4;
+
+    color:#49344d;
+
+    padding:1rem;
+
+    border-radius:999px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:.6rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.room-card__edit:hover{
+
+    background:#f0e4e4;
+}
+
+.room-card__equipment-list{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:.5rem;
+
+    margin-top:1rem;
+}
+
+.room-card__equipment-item{
+
+    background:#faf5f5;
+
+    border:1px solid #f0e4e4;
+
+    border-radius:999px;
+
+    padding:.45rem .9rem;
+
+    font-size:.85rem;
+
+    color:#6b5b5b;
+}
+
+@media(max-width:1200px){
+
+    .rooms__grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+@media(max-width:768px){
+
+    .rooms{
+
+        padding:1.5rem 1rem;
+    }
+
+    .rooms__header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:1rem;
+    }
+
+    .rooms__title{
+
+        font-size:2rem;
+    }
+
+    .rooms__grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .room-card{
+
+        padding:1.5rem;
+    }
+
+    .room-card__stats{
+
+        flex-direction:column;
+
+        gap:.75rem;
+    }
+
+    .rooms__add-button{
+
+        width:100%;
+    }
+}
