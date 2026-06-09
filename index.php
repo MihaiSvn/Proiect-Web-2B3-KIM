@@ -25,6 +25,7 @@ require_once 'services/TrainerService.php';
 require_once 'services/RoomService.php';
 require_once 'services/SubscriptionService.php';
 require_once 'services/ReportsService.php';
+require_once 'services/RoomsEquipmentService.php';
 
 require_once 'controllers/MemberDashboardController.php';
 require_once 'controllers/TrainerDashboardController.php';
@@ -40,6 +41,7 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsControlle
 require_once 'controllers/MembershipPageController.php';
 require_once 'controllers/HomePageController.php';
 require_once 'controllers/ReportsPageController.php';
+require_once 'controllers/RoomsEquipmentController.php';
 
 require_once 'api/profile/ProfileActivityApiController.php';
 require_once 'api/profile/ProfileNotificationsApiController.php';
@@ -55,6 +57,7 @@ require_once 'api/notification/NotificationsApiController.php';
 require_once 'api/membership/MembershipApiController.php';
 require_once 'api/trainer/TrainerApiController.php';
 require_once 'api/admin_reports/ReportsApiController.php';
+require_once 'api/admin_rooms/RoomsApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
 require_once 'middleware/ApiAdminMiddleware.php';
@@ -89,6 +92,7 @@ use controllers\SessionsPageController;
 use controllers\TrainerDashboardController;
 use controllers\UserSubscriptionController;
 use controllers\HomePageController;
+use controllers\RoomsEquipmentController;
 
 
 use services\BookingService;
@@ -221,12 +225,37 @@ $router->get('/api/reports', function () {
 
     ApiAdminMiddleware::checkAccess();
 
-    $controller =
-        new \api\admin_reports\ReportsApiController();
+    $controller = new \api\admin_reports\ReportsApiController();
 
     $controller->getData();
 
 });
+
+$router->get('/admin/rooms', function () {
+
+        $controller = new RoomsEquipmentController();
+        $controller->index();
+    }
+);
+
+$router->get('/api/rooms', function () {
+
+    ApiAdminMiddleware::checkAccess();
+
+    $controller = new \api\admin_rooms\RoomsApiController();
+
+    $controller->getData();
+});
+
+$router->post('/api/rooms/update', function () {
+
+        ApiAdminMiddleware::checkAccess();
+
+        $controller = new \api\admin_rooms\RoomsApiController();
+
+        $controller->update();
+    }
+);
 
 $router->post('/api/reports/export', function () {
 
@@ -237,6 +266,19 @@ $router->post('/api/reports/export', function () {
 
     $controller->export();
 });
+
+$router->post(
+    '/api/rooms/create',
+    function () {
+
+        ApiAdminMiddleware::checkAccess();
+
+        $controller =
+            new \api\admin_rooms\RoomsApiController();
+
+        $controller->create();
+    }
+);
 
 $router->post('/api/subscription/purchase', function () {
 

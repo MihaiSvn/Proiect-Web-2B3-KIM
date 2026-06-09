@@ -2,9 +2,8 @@
 
 namespace services;
 
-use models\Session;
-use models\Trainer;
 use models\Room;
+use models\Session;
 
 class SessionService
 {

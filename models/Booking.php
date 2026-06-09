@@ -160,7 +160,7 @@ class Booking
         FROM BOOKINGS b
         JOIN SESSIONS s
             ON b.session_id = s.id
-        WHERE YEARWEEK(s.start_time, 1) = YEARWEEK(CURDATE(), 1)
+        WHERE YEARWEEK(s.start_time, 1) = YEARWEEK(CURDATE(), 1) AND s.status != 'canceled'
         GROUP BY DATE(s.start_time)
         ORDER BY day ASC
     ";
@@ -222,6 +222,7 @@ class Booking
             ON t.user_id = u.id
 
         WHERE YEARWEEK(s.start_time,1) = YEARWEEK(CURDATE(),1)
+        AND s.status != 'canceled'
 
         GROUP BY t.id
 
@@ -239,8 +240,11 @@ class Booking
 
         $query = "
         SELECT COUNT(*)
-        FROM BOOKINGS
-        WHERE DATE(booked_at) = CURDATE()
+        FROM BOOKINGS b
+        JOIN SESSIONS s
+            ON b.session_id = s.id
+        WHERE DATE(s.start_time) = CURDATE()
+        AND s.status != 'canceled'
     ";
 
         return (int)$pdo->query($query)->fetchColumn();
@@ -251,12 +255,14 @@ class Booking
         global $pdo;
 
         $query = "
-        SELECT COUNT(*)
-        FROM BOOKINGS
-        WHERE YEARWEEK(booked_at,1)
-              = YEARWEEK(CURDATE(),1)
-    ";
-
+    SELECT COUNT(*)
+    FROM BOOKINGS b
+    JOIN SESSIONS s
+        ON b.session_id = s.id
+    WHERE YEARWEEK(s.start_time,1)
+          = YEARWEEK(CURDATE(),1)
+    AND s.status != 'canceled'
+";
         return (int)$pdo->query($query)->fetchColumn();
     }
 
@@ -265,11 +271,14 @@ class Booking
         global $pdo;
 
         $query = "
-        SELECT COUNT(*)
-        FROM BOOKINGS
-        WHERE YEAR(booked_at) = YEAR(CURDATE())
-          AND MONTH(booked_at) = MONTH(CURDATE())
-    ";
+    SELECT COUNT(*)
+    FROM BOOKINGS b
+    JOIN SESSIONS s
+        ON b.session_id = s.id
+    WHERE YEAR(s.start_time) = YEAR(CURDATE())
+      AND MONTH(s.start_time) = MONTH(CURDATE())
+      AND s.status != 'canceled'
+";
 
         return (int)$pdo->query($query)->fetchColumn();
     }
