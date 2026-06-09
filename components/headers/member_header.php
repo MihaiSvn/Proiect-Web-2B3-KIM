@@ -16,7 +16,7 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
                 <i class="fa-solid fa-border-all"></i> Dashboard
             </a>
 
-            <a href="/kim/membership" class="nav__link <?= strpos($currentPath, 'membership') !== false ? 'active' : '' ?>">
+            <a href="/kim/memberships" class="nav__link <?= strpos($currentPath, 'membership') !== false ? 'active' : '' ?>">
                 <i class="fa-regular fa-calendar"></i> Membership Plans
             </a>
 

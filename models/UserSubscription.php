@@ -31,7 +31,6 @@ class UserSubscription
     }
 
 
-
     public static function findSubscriptionByIdAndUser($userSubscriptionId, $userId)
     {
         global $pdo;
@@ -92,7 +91,6 @@ class UserSubscription
         $stmt = $pdo->prepare($sql);
         return $stmt->execute();
     }
-
 
 
     public static function checkAndExpireSubscriptionsByUserId($userId)
@@ -277,5 +275,31 @@ class UserSubscription
     ";
 
         return $pdo->query($query)->fetchAll();
+    }
+
+    public static function getSubscriptionsReadyToExpire($userId)
+    {
+        global $pdo;
+
+        $sql = "
+        SELECT 
+            us.*, 
+            s.name AS subscription_name, 
+            s.type, 
+            s.price, 
+            s.description,
+            s.validity_days
+        FROM USER_SUBSCRIPTIONS us
+        JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+        WHERE us.user_id = :user_id 
+          AND us.status = 'active' 
+          AND (us.end_date < NOW() OR us.sessions_left <= 0)
+    ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }
