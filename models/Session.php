@@ -475,4 +475,72 @@ class Session
     }
 
 
+    public static function updateToOngoing()
+    {
+        global $pdo;
+        $sql = "UPDATE SESSIONS 
+                SET status = 'ongoing' 
+                WHERE status = 'planned' 
+                  AND start_time <= NOW() 
+                  AND end_time > NOW()";
+
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute();
+    }
+
+    public static function updateToCompleted()
+    {
+        global $pdo;
+        $sql = "UPDATE SESSIONS 
+                SET status = 'completed' 
+                WHERE status IN ('planned', 'ongoing') 
+                  AND end_time <= NOW()";
+
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute();
+    }
+
+
+
+    //atunci cand se editeaza o clasa trb verificat la useri daca acum exista overlap
+    public static function findUsersWithConflictsForNewTime($sessionId, $newStartTime, $newEndTime)
+    {
+        global $pdo;
+
+        $sql = "SELECT DISTINCT b1.user_id, u.email, u.first_name, u.last_name
+            FROM BOOKINGS b1
+            JOIN USERS u ON b1.user_id = u.id
+            JOIN BOOKINGS b2 ON b1.user_id = b2.user_id
+            JOIN SESSIONS s ON b2.session_id = s.id
+            WHERE b1.session_id = :session_id
+              AND b2.session_id != :session_id
+              AND s.status != 'canceled'
+              AND s.start_time < :new_end_time
+              AND s.end_time > :new_start_time";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':session_id', $sessionId, PDO::PARAM_INT);
+        $stmt->bindParam(':new_start_time', $newStartTime, PDO::PARAM_STR);
+        $stmt->bindParam(':new_end_time', $newEndTime, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function getBookedUsersForSession($sessionId)
+    {
+        global $pdo;
+        $sql = "SELECT u.id, u.email, u.first_name, u.last_name
+            FROM BOOKINGS b
+            JOIN USERS u ON b.user_id = u.id
+            WHERE b.session_id = :session_id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':session_id', $sessionId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
 }

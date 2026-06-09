@@ -17,7 +17,7 @@ class NotificationService
         return Notification::findUnreadByUserId($userId);
     }
 
-    public function sendNotification($userId, $title, $message)
+    public function createNotification($userId, $title, $message)
     {
         if (empty($title) || empty($message)) {
             throw new \InvalidArgumentException("Title and message cannot be empty.");

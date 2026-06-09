@@ -16,15 +16,15 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
                 <i class="fa-solid fa-border-all"></i> Dashboard
             </a>
             
-            <a href="/kim/admin/users" class="nav__link <?= strpos($currentPath, 'users') !== false ? 'active' : '' ?>">
+            <a href="/kim/users" class="nav__link <?= strpos($currentPath, 'users') !== false ? 'active' : '' ?>">
                 <i class="fa-solid fa-user-group"></i>  Users
             </a>
 
-            <a href="/kim/admin/specialists" class="nav__link <?= strpos($currentPath, 'specialists') !== false ? 'active' : '' ?>">
+            <a href="/kim/specialists" class="nav__link <?= strpos($currentPath, 'specialists') !== false ? 'active' : '' ?>">
                 <i class="fa-solid fa-user-doctor"></i>  Specialists
             </a>
 
-            <a href="/kim/admin/rooms" class="nav__link <?= strpos($currentPath, 'rooms') !== false ? 'active' : '' ?>">
+            <a href="/kim/rooms" class="nav__link <?= strpos($currentPath, 'rooms') !== false ? 'active' : '' ?>">
                 <i class="fa-solid fa-location-dot"></i>  Rooms
             </a>
 
@@ -32,7 +32,7 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
                 <i class="fa-regular fa-clock"></i>  Sessions
             </a>
 
-            <a href="/kim/membership" class="nav__link <?= strpos($currentPath, 'membership') !== false ? 'active' : '' ?>">
+            <a href="/kim/memberships" class="nav__link <?= strpos($currentPath, 'membership') !== false ? 'active' : '' ?>">
                 <i class="fa-regular fa-calendar"></i>  Memberships
             </a>
 

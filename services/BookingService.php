@@ -4,6 +4,7 @@ namespace services;
 
 use models\Booking;
 use models\Session;
+use models\User;
 
 class BookingService
 {
@@ -18,11 +19,26 @@ class BookingService
             throw new \Exception("Session not found");
         }
 
+        $user = User::findById($userId);
+
+        if(!$user){
+            throw new \Exception("User not found");
+        }
+
+
         //aven nevoie de booking sa stim ce usersubid avem
         $booking = Booking::find($userId, $sessionId);
         if (!$booking) {
             throw new \Exception("Booking not found or already canceled.");
         }
+
+        $trainerService = new TrainerService();
+        $trainer = $trainerService->getTrainerById($session->trainer_id);
+
+        if(!$trainer){
+            throw new \Exception("Trainer not found");
+        }
+
 
         $startTime = strtotime($session->start_time);
 
@@ -41,6 +57,19 @@ class BookingService
                 Booking::refundSession($booking->user_subscription_id);
             }
 
+            $notificationService = new NotificationService();
+            $notificationService->createNotification(
+                $userId,
+                '📅 Booking Canceled!',
+                "You have successfully canceled your spot for the {$session->title} class. You'll work harder next time."
+            );
+
+
+            $notificationService->createNotification(
+                $trainer->user_id,
+                'ℹ️ Booking Canceled',
+                "Just a heads-up: {$user->first_name} {$user->last_name} has canceled their spot in your {$session->title} class."
+            );
             $pdo->commit();
 
             return true;
@@ -58,8 +87,22 @@ class BookingService
 
         // verific daca exista sesiune
         $session = Session::findById($sessionId);
+        error_log("Datele sesiunii: " . print_r($session, true));
         if (!$session || $session->status !== 'planned') {
             throw new \Exception("Can't book this session");
+        }
+
+        $user = User::findById($userId);
+
+        if(!$user){
+            throw new \Exception("User not found");
+        }
+
+        $trainerService = new TrainerService();
+        $trainer = $trainerService->getTrainerById($session->trainer_id);
+
+        if(!$trainer){
+            throw new \Exception("Trainer not found");
         }
 
         // verific daca mai sunt locuri
@@ -91,6 +134,20 @@ class BookingService
             $pdo->beginTransaction();
 
             Booking::createBooking($userId, $sessionId, $bestSubId);
+
+            $notificationService = new NotificationService();
+            $notificationService->createNotification(
+                $userId,
+                '📅 Booking Confirmed!',
+                "You have successfully booked your spot for the {$session->title} class. Get ready to crush it!"
+            );
+
+
+            $notificationService->createNotification(
+                $trainer->user_id,
+                '🏋️‍♂️ New Participant!',
+                "Great news! {$user->first_name} {$user->last_name} just booked a spot in your {$session->title} class."
+            );
 
             $pdo->commit();
             return true;

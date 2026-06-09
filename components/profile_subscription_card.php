@@ -41,13 +41,9 @@ $iconClass = isset($icons[$subscription->type]) ? $icons[$subscription->type] : 
                 <i class="fa-regular fa-hourglass"></i>
                 <span>Days left:
                     <strong>
-                        <?php if ($daysLeft > 0): ?>
+
                             <?= $daysLeft ?>
-                        <?php elseif ($daysLeft === 0): ?>
-                            Expires today!
-                        <?php else: ?>
-                            Expired
-                        <?php endif; ?>
+
                     </strong>
                 </span>
             </div>

@@ -64,7 +64,7 @@ class AuthApiController
             $this->setSessionVariables($user);
 
             http_response_code(200);
-            echo json_encode(['status'=>'success', 'redirect' => '/kim/dashboard']);
+            echo json_encode(['status'=>'success', 'redirect' => '/kim/profile']);
             exit;
 
         } catch (\Exception $ex) {
