@@ -46,6 +46,28 @@ class UserService
             throw new \Exception("Unable to create user");
         }
 
+        $user = User::findByEmail($email);
+        $notificationService = new NotificationService();
+        $notificationService->createNotification(
+            $user->id,
+            '🎉 Welcome to KIM Fitness!',
+            "Hi, {$first_name}! Your account has been created successfully. We're excited to start this wellness journey with you."
+        );
+
+        $env = parse_ini_file(__DIR__ . "/../.env");
+        $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
+        $subject = 'Welcome to KIM Fitness!';
+        $title   = 'Welcome to the Family!';
+        $text    = "Hi, <b>{$first_name}</b>,<br/><br/>
+                We are absolutely thrilled to have you on board! Your account has been successfully created.<br/><br/>
+                Get ready to transform your body and mind with our elite training sessions and expert trainers.";
+
+        $btnText = 'Log In to Your Account';
+        $btnUrl  = $baseUrl . '/login';
+
+        \services\MailService::sendEmail($email, $subject, $title, $text, $btnText, $btnUrl);
+
         return true;
     }
 
@@ -160,6 +182,23 @@ class UserService
         if(!$success){
             throw new \Exception("Unable to update user");
         }
+
+        $env = parse_ini_file(__DIR__ . "/../.env");
+        $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
+        $subject = 'Your Password Has Been Changed - KIM Fitness';
+        $title   = 'Password Updated Successfully';
+
+        $text    = "Hi <b>{$user->first_name}</b>,<br/><br/>
+            This is a quick confirmation that the password for your KIM Fitness account has just been successfully changed.<br/><br/>
+            If you made this change, you're all set! <br/><br/>
+            <span style='color: #d9534f; font-size: 14px;'><i>If you did <b>not</b> change your password, please contact our administrator immediately at <b>kimadmin123@gmail.com</b>.</i></span>";
+
+        $btnText = 'Log In to Your Account';
+        $btnUrl  = $baseUrl . '/login';
+
+        MailService::sendEmail($user->email, $subject, $title, $text, $btnText, $btnUrl);
+
         return true;
     }
 
@@ -173,6 +212,21 @@ class UserService
         if(!$success){
             throw new \Exception("Unable to delete user");
         }
+
+        $env = parse_ini_file(__DIR__ . "/../.env");
+        $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
+        $subject = 'Your Account Has Been Deleted - KIM Fitness';
+        $title   = 'Account Deleted';
+
+        $text    = "Hi <b>{$user->first_name}</b>,<br/><br/>
+        This is a confirmation that your KIM Fitness account has been successfully deleted. We're very sorry to see you go!<br/><br/>
+        If you made this choice, no further action is needed and we wish you all the best on your fitness journey.<br/><br/>
+        <span style='color: #d9534f; font-size: 14px;'><i>If you did <b>not</b> delete your account, please contact our administrator immediately at <b>kimadmin123@gmail.com</b>.</i></span>";
+
+
+        MailService::sendEmail($user->email, $subject, $title, $text);
+
         return true;
     }
 }

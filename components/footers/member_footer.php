@@ -34,7 +34,7 @@
                     </li>
 
                     <li>
-                        <a href="/kim/membership">
+                        <a href="/kim/memberships">
                             Membership Plans
                         </a>
                     </li>

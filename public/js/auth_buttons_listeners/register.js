@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
             confirm_password: document.getElementById('form__confirm__password').value
         };
 
+        const submitBtn = document.getElementById("registerBtn");
+        if(submitBtn){
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        }
+
+
+
         try {
             const response = await fetch('/kim/api/auth/register', {
                 method: 'POST',

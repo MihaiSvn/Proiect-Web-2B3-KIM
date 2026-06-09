@@ -74,7 +74,7 @@ class UserSubscriptionController
         } catch (\Exception $ex) {
 
             header(
-                'Location: /kim/membership?error=' .
+                'Location: /kim/memberships?error=' .
                 urlencode($ex->getMessage())
             );
             exit;

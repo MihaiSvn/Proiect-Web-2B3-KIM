@@ -69,34 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
     buttons.forEach(button => {
 
         button.addEventListener('click', async (e) => {
+            e.preventDefault();
 
-            if (
-                button.textContent.trim() ===
-                'Select'
-            ) {
+            if (!button.classList.contains('membership-card__button--active')) {
 
                 buttons.forEach(btn => {
-
                     btn.textContent = 'Select';
-
-                    btn.classList.remove(
-                        'membership-card__button--active'
-                    );
-
+                    btn.classList.remove('membership-card__button--active');
                 });
 
-                button.textContent =
-                    'Buy Now';
-
-                button.classList.add(
-                    'membership-card__button--active'
-                );
+                button.textContent = 'Buy Now';
+                button.classList.add('membership-card__button--active');
 
             } else {
 
-                e.preventDefault();
                 const subscriptionId =
                     button.dataset.subscriptionId;
+
+
+                button.style.pointerEvents = 'none';
+                button.disabled = true;
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
 
                 console.log(subscriptionId);
                 try {

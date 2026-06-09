@@ -38,12 +38,18 @@ class SessionService
             throw new \InvalidArgumentException("Invalid session ID.");
         }
 
+        $allBookedUsers = Session::getBookedUsersForSession($sessionId);
+        $sessionService = new SessionService();
+        $session = $sessionService->getBySessionId($sessionId);
+
         global $pdo;
 
         try{
             $pdo->beginTransaction();
 
             $success = false;
+
+
 
             if ($userRole === 'admin') {
                 $success = Session::cancelByAdmin($sessionId);
@@ -62,6 +68,39 @@ class SessionService
             Session::refundAllParticipants($sessionId);
 
             $pdo->commit();
+
+            $env = parse_ini_file(__DIR__ . "/../.env");
+            $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
+            foreach ($allBookedUsers as $user) {
+                $notificationService = new NotificationService();
+                $notificationService->createNotification(
+                    $user->id,
+                    '🚫 Session Canceled',
+                    "We're sorry, but the session '{$session->title}' scheduled for {$session->start_time} has been canceled."
+                );
+
+                $subjectCancel = 'Class Canceled - KIM Fitness';
+                $titleCancel   = 'Class Cancellation Notice';
+
+                $textCancel    = "Hi,<br/><br/>
+                      We regret to inform you that the <strong>{$session->title}</strong> class scheduled for <b>{$session->start_time}</b> has been canceled.<br/><br/>
+                      Any deducted sessions have been refunded to your active subscription. We deeply apologize for the inconvenience and hope to see you in another class very soon!";
+
+                $btnTextCancel = 'Book Another Class';
+                $btnUrlCancel  = $baseUrl . '/sessions';
+
+
+                MailService::sendEmail(
+                    $user->email,
+                    $subjectCancel,
+                    $titleCancel,
+                    $textCancel,
+                    $btnTextCancel,
+                    $btnUrlCancel
+                );
+            }
+
 
             return true;
         } catch(\Exception $e) {
@@ -249,17 +288,23 @@ class SessionService
                             "The session '{$sessionTitle}' was moved to {$startTime}, creating a conflict with your other bookings."
                         );
 
-                        $subjectConflict = 'Schedule Conflict - KIM Fitness';
-                        $bodyConflict = "
-                                <h2>Attention: A change in your schedule!</h2>
-                                <p>Hi,</p>
-                                <p>The <strong>{$sessionTitle}</strong> class has been rescheduled to <b>{$startTime}</b>.</p>
-                                <p>This new time overlaps with another booking you already have. Please log into your account to manage your bookings and update your schedule.</p>
-                                <br>
-                                <p>The KIM Fitness Team</p>
-                            ";
+                        $env = parse_ini_file(__DIR__ . "/../.env");
+                        $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
 
-                        \services\MailService::sendEmail($bookedUser->email, $subjectConflict, $bodyConflict, true);
+                        $subjectConflict = 'Schedule Conflict - KIM Fitness';
+                        $titleConflict   = 'Attention: A change in your schedule!';
+                        $textConflict    = "Hi,<br/><br/>The class <strong>{$sessionTitle}</strong> has been rescheduled to <b>{$startTime}</b>.<br/>This new time overlaps with another booking you already have. Please log into your account to manage your schedule.";
+                        $btnTextConflict = 'Manage Bookings';
+                        $btnUrlConflict  = $baseUrl . '/dashboard';
+
+                        MailService::sendEmail(
+                            $bookedUser->email,
+                            $subjectConflict,
+                            $titleConflict,
+                            $textConflict,
+                            $btnTextConflict,
+                            $btnUrlConflict
+                        );
                     } else {
                         //INFOMARE A SCHIMBARII OREI, FARA CONFLICT
                         $notificationService->createNotification(
@@ -268,16 +313,25 @@ class SessionService
                             "The session '{$sessionTitle}' has been rescheduled to {$startTime}."
                         );
 
+                        $env = parse_ini_file(__DIR__ . "/../.env");
+                        $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';
+
                         $subjectUpdate = 'Class Time Changed - KIM Fitness';
-                        $bodyUpdate = "
-                                <h2>Update regarding your upcoming class!</h2>
-                                <p>Hi,</p>
-                                <p>We wanted to let you know that the <strong>{$sessionTitle}</strong> class you are booked for has been rescheduled.</p>
-                                <p>The new start time is <b>{$startTime}</b>. Your booking remains active, but if this new time doesn't work for you, please remember to cancel via your account.</p>
-                                <br>
-                                <p>The KIM Fitness Team</p>
-                            ";
-                        \services\MailService::sendEmail($bookedUser->email, $subjectUpdate, $bodyUpdate, true);
+                        $titleUpdate   = 'Update regarding your upcoming class!';
+                        $textUpdate    = "Hi,<br/><br/>We wanted to let you know that the <strong>{$sessionTitle}</strong> class you are booked for has been rescheduled. The new start time is <b>{$startTime}</b>. Your booking remains active.";
+                        $btnTextConflict = 'Manage Bookings';
+                        $btnUrlConflict  = $baseUrl . '/dashboard';
+
+
+                        MailService::sendEmail(
+                            $bookedUser->email,
+                            $subjectUpdate,
+                            $titleUpdate,
+                            $textUpdate,
+                            $btnTextConflict,
+                            $btnUrlConflict
+                        );
+
                     }
                 }
             }
@@ -285,17 +339,10 @@ class SessionService
             $pdo->commit();
             return $updated;
 
-        } catch(\Throwable $e) {
+        } catch(\Exception $e) {
             if($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
-            echo "<div style='background: black; color: red; padding: 20px; font-size: 20px; z-index: 9999; position: relative;'>";
-            echo "<strong>EROARE FATALĂ INTERCEPTATĂ:</strong><br><br>";
-            echo $e->getMessage();
-            echo "<br><br><strong>Fișier:</strong> " . $e->getFile() . " (Linia " . $e->getLine() . ")";
-            echo "</div>";
-
-            die();
             throw $e;
         }
     }

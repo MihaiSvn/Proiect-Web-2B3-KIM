@@ -32,7 +32,7 @@
             </div>
 
             <div class="profile-form__actions">
-                <button type="submit" class="btn btn--primary">
+                <button type="submit" class="btn btn--primary" id="changePassBtn">
                     <i class="fa-regular fa-floppy-disk"></i> Save Changes
                 </button>
             </div>
