@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    console.log('MEMBERSHIP JS LOADED');
+
     const membershipTabs =
         document.querySelectorAll(
             '.membership-packages__tab'
@@ -14,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         membershipTabs.length > 0 &&
         membershipPanels.length > 0
     ){
+
+
 
         function showPanel(index){
 
@@ -60,14 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
             '.membership-card__button'
         );
 
+    console.log('Buttons found:', buttons.length);
+
     buttons.forEach(button => {
 
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async (e) => {
 
-            if(
+            if (
                 button.textContent.trim() ===
                 'Select'
-            ){
+            ) {
 
                 buttons.forEach(btn => {
 
@@ -86,38 +92,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     'membership-card__button--active'
                 );
 
-            }else{
+            } else {
 
+                e.preventDefault();
                 const subscriptionId =
                     button.dataset.subscriptionId;
 
-                const form =
-                    document.createElement('form');
+                console.log(subscriptionId);
+                try {
+                    const response = await fetch('/kim/api/subscription/purchase', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({subscription_id: subscriptionId})
+                    });
 
-                form.method = 'POST';
+                    const result = await response.json();
 
-                form.action =
-                    '/kim/subscription/purchase';
+                    if (result.status === 'success') {
+                        const dashboardUrl = new URL('/kim/dashboard', window.location.origin);
+                        dashboardUrl.searchParams.set('success', result.message);
 
-                const input =
-                    document.createElement('input');
+                        window.location.href = dashboardUrl.toString();
+                    } else {
+                        const currentUrl = new URL(window.location.href);
 
-                input.type = 'hidden';
+                        currentUrl.searchParams.delete('success');
+                        currentUrl.searchParams.set('error', result.message);
 
-                input.name =
-                    'subscription_id';
+                        window.location.href = currentUrl.toString();
+                    }
+                } catch (err) {
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.delete('success');
+                    currentUrl.searchParams.set('error', 'Service unavailable');
 
-                input.value =
-                    subscriptionId;
-
-                form.appendChild(input);
-
-                document.body.appendChild(
-                    form
-                );
-
-                form.submit();
+                    window.location.href = currentUrl.toString();
+                }
             }
+
         });
 
     });
