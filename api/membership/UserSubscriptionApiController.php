@@ -73,33 +73,36 @@ class UserSubscriptionApiController
     public function purchase()
     {
 
+        $data = json_decode(file_get_contents('php://input'), true);
+        $subscriptionId = isset($data['subscription_id']) ? $data['subscription_id'] : null;
         header('Content-Type: application/json');
 
         if (!isset($_SESSION['user_id'])) {
-
+            http_response_code(400);
             echo json_encode(['status' => 'error','message' => 'You need to be logged in!']);
             return;
         }
 
-        if (!isset($_POST['subscription_id'])) {
-
+        if (!$subscriptionId) {
+            http_response_code(400);
             echo json_encode(['status' => 'error', 'message' => 'Invalid subscription!']);
             return;
         }
 
         $userId = $_SESSION['user_id'];
 
-        $subscriptionId = (int)$_POST['subscription_id'];
 
         try {
 
             $userSubscriptionService = new UserSubscriptionsService();
             $userSubscriptionService->purchase($userId, $subscriptionId);
 
+            http_response_code(200);
             echo json_encode(['status' => 'success', 'message' => 'Membership purchased successfully!']);
 
         } catch (\Exception $ex) {
 
+            http_response_code(400);
             echo json_encode(['status' => 'error', 'message' => $ex->getMessage()]);
         }
     }

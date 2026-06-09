@@ -146,4 +146,131 @@ class Booking
 
         return (int) $stmt->fetchColumn() > 0;
     }
+
+    //fctii pt pagina de reports
+
+    public static function getSessionsPerDay()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT
+            DATE(s.start_time) AS day,
+            COUNT(*) AS total
+        FROM BOOKINGS b
+        JOIN SESSIONS s
+            ON b.session_id = s.id
+        WHERE YEARWEEK(s.start_time, 1) = YEARWEEK(CURDATE(), 1)
+        GROUP BY DATE(s.start_time)
+        ORDER BY day ASC
+    ";
+
+        return $pdo->query($query)->fetchAll();
+    }
+
+    public static function getSessionsPerWeek()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT
+            YEARWEEK(booked_at) as week,
+            COUNT(*) as total
+        FROM BOOKINGS
+        GROUP BY YEARWEEK(booked_at)
+        ORDER BY week ASC
+    ";
+
+        return $pdo->query($query)->fetchAll();
+    }
+
+    public static function getSessionsPerMonth()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT
+            DATE_FORMAT(booked_at,'%Y-%m') as month,
+            COUNT(*) as total
+        FROM BOOKINGS
+        GROUP BY month
+        ORDER BY month ASC
+    ";
+
+        return $pdo->query($query)->fetchAll();
+    }
+
+    public static function getTopTrainers()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT
+            CONCAT(u.first_name,' ',u.last_name) AS trainer_name,
+
+            COUNT(b.id) AS total_sessions
+
+        FROM BOOKINGS b
+
+        JOIN SESSIONS s
+            ON b.session_id = s.id
+
+        JOIN TRAINERS t
+            ON s.trainer_id = t.id
+
+        JOIN USERS u
+            ON t.user_id = u.id
+
+        WHERE YEARWEEK(s.start_time,1) = YEARWEEK(CURDATE(),1)
+
+        GROUP BY t.id
+
+        ORDER BY total_sessions DESC
+
+        LIMIT 10
+    ";
+
+        return $pdo->query($query)->fetchAll();
+    }
+
+    public static function getTodaySessionsCount()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT COUNT(*)
+        FROM BOOKINGS
+        WHERE DATE(booked_at) = CURDATE()
+    ";
+
+        return (int)$pdo->query($query)->fetchColumn();
+    }
+
+    public static function getThisWeekSessionsCount()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT COUNT(*)
+        FROM BOOKINGS
+        WHERE YEARWEEK(booked_at,1)
+              = YEARWEEK(CURDATE(),1)
+    ";
+
+        return (int)$pdo->query($query)->fetchColumn();
+    }
+
+    public static function getThisMonthSessionsCount()
+    {
+        global $pdo;
+
+        $query = "
+        SELECT COUNT(*)
+        FROM BOOKINGS
+        WHERE YEAR(booked_at) = YEAR(CURDATE())
+          AND MONTH(booked_at) = MONTH(CURDATE())
+    ";
+
+        return (int)$pdo->query($query)->fetchColumn();
+    }
 }
