@@ -59,6 +59,7 @@
             <p class="management__subtitle">Manage members, trainers, therapists, and administrators.</p>
         </div>
         <div class="management__actions">
+
             <?php
             require_once __DIR__ . '/../classes/FormField.php';
 
@@ -68,75 +69,152 @@
             $popupId = 'popupOverlay_createUser';
 
             $firstNameField = FormField::create('First Name', 'first_name')
-                ->type('text')
-                ->required(true)
-                ->placeholder('John');
+                    ->type('text')
+                    ->required(true)
+                    ->placeholder('John');
 
             $lastNameField = FormField::create('Last Name', 'last_name')
-                ->type('text')
-                ->required(true)
-                ->placeholder('Doe');
+                    ->type('text')
+                    ->required(true)
+                    ->placeholder('Doe');
 
             $emailField = FormField::create('Email Address', 'email')
-                ->type('email')
-                ->required(true)
-                ->placeholder('john.doe@example.com');
+                    ->type('email')
+                    ->required(true)
+                    ->placeholder('john.doe@example.com');
 
             $passwordField = FormField::create('Password', 'password')
-                ->type('password')
-                ->required(true)
-                ->placeholder('Minimum 6 characters');
+                    ->type('password')
+                    ->required(true)
+                    ->placeholder('Minimum 6 characters');
 
             $confirmPasswordField = FormField::create('Confirm Password', 'confirm_password')
-                ->type('password')
-                ->required(true)
-                ->placeholder('Repeat password');
+                    ->type('password')
+                    ->required(true)
+                    ->placeholder('Repeat password');
 
             $roleOptions = [
-                'member'  => 'Member',
-                'trainer' => 'Trainer',
-                'admin'   => 'Admin'
+                    'member'  => 'Member',
+                    'trainer' => 'Trainer',
+                    'admin'   => 'Admin'
             ];
+
             $roleField = FormField::create('Role', 'role')
-                ->type('select')
-                ->required(true)
-                ->placeholder('Select a role')
-                ->options($roleOptions);
+                    ->type('select')
+                    ->required(true)
+                    ->placeholder('Select a role')
+                    ->options($roleOptions);
 
             $specializationOptions = [
-                'fitness' => 'Fitness',
-                'physiotherapy' => 'Physiotherapy',
-                'strength' => 'Strength'
+                    'fitness' => 'Fitness',
+                    'physiotherapy' => 'Physiotherapy',
+                    'strength' => 'Strength'
             ];
 
             $specializationField = FormField::create('Specialization', 'specialization')
-                ->type('select')
-                ->placeholder('Select a specialization')
-                ->options($specializationOptions);
-
+                    ->type('select')
+                    ->placeholder('Select a specialization')
+                    ->options($specializationOptions);
 
             $formBody = [
-                $firstNameField,
-                $lastNameField,
-                $emailField,
-                $passwordField,
-                $confirmPasswordField,
-                $roleField,
-                $specializationField
+                    $firstNameField,
+                    $lastNameField,
+                    $emailField,
+                    $passwordField,
+                    $confirmPasswordField,
+                    $roleField,
+                    $specializationField
+            ];
+            ?>
+
+            <?php include 'components/popup.php'; ?>
+
+            <button
+                    type="button"
+                    class="btn btn--primary js-open-popup"
+                    data-target="popupOverlay_createUser">
+
+                <i class="fa-solid fa-plus"></i>
+                Add User
+
+            </button>
+
+            <?php
+
+            $title = 'Import Trainers';
+            $action = '/kim/api/trainers/import';
+            $submit = 'Import';
+            $popupId = 'popupOverlay_importTrainers';
+
+            $fileField = FormField::create(
+                    'File',
+                    'file'
+            )
+                    ->type('file')
+                    ->required(true);
+
+            $formatField = FormField::create(
+                    'Format',
+                    'format'
+            )
+                    ->type('select')
+                    ->required(true)
+                    ->options([
+                            'csv' => 'CSV',
+                            'xml' => 'XML'
+                    ]);
+
+            $formBody = [
+                    $formatField,
+                    $fileField
             ];
 
-
             ?>
+
             <?php include 'components/popup.php'; ?>
-            <button type="button" class="btn btn--primary js-open-popup" data-target="popupOverlay_createUser">
-                <i class="fa-solid fa-plus"></i> Add User
+
+            <button
+                    type="button"
+                    class="btn btn--outline js-open-popup"
+                    data-target="popupOverlay_importTrainers">
+
+                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                Import Data
+
             </button>
-            <button class="btn btn--outline">
-                <i class="fa-solid fa-arrow-up-from-bracket"></i> Import Data <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <button class="btn btn--outline">
-                <i class="fa-solid fa-arrow-down"></i> Export Data <i class="fa-solid fa-chevron-down"></i>
-            </button>
+
+            <div class="dropdown">
+
+                <button
+                        type="button"
+                        class="btn btn--outline">
+
+                    <i class="fa-solid fa-arrow-down"></i>
+                    Export Data
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="dropdown-content">
+
+                    <a href="/kim/api/trainers/export/csv">
+
+                        <i class="fa-solid fa-file-csv"></i>
+                        Export Trainers CSV
+
+                    </a>
+
+                    <a href="/kim/api/trainers/export/xml">
+
+                        <i class="fa-solid fa-file-code"></i>
+                        Export Trainers XML
+
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
     </header>
 

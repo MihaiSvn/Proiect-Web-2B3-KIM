@@ -71,178 +71,79 @@ class TrainerService
     }
 
     //functie de creat traineri in bd pt cand vreau sa fac import xml/csv
-    public static function createTrainer(
+    private function importTrainer(
         $firstName,
         $lastName,
         $email,
+        $password,
         $specialization
     )
     {
-        global $pdo;
-        $pdo->beginTransaction();
+        $allowedSpecializations = [
 
-        try{
+            'fitness',
+            'strength',
+            'physiotherapy'
+        ];
 
-            $passwordHash = password_hash('hash_12345', PASSWORD_DEFAULT);
-
-            $query = "
-            INSERT INTO USERS
-            (
-                first_name,
-                last_name,
-                email,
-                password_hash,
-                role
+        if(
+            !in_array(
+                $specialization,
+                $allowedSpecializations
             )
-            VALUES
-            (
-                :first_name,
-                :last_name,
-                :email,
-                :password_hash,
-                'trainer'
-            )
-        ";
-
-            $stmt = $pdo->prepare($query);
-
-            $stmt->execute([
-
-                ':first_name' =>
-                    $firstName,
-
-                ':last_name' =>
-                    $lastName,
-
-                ':email' =>
-                    $email,
-
-                ':password_hash' =>
-                    $passwordHash
-            ]);
-
-            $userId =
-                $pdo->lastInsertId();
-
-            $query = "
-            INSERT INTO TRAINERS
-            (
-                user_id,
-                specialization
-            )
-            VALUES
-            (
-                :user_id,
-                :specialization
-            )
-        ";
-
-            $stmt = $pdo->prepare($query);
-
-            $stmt->execute([
-
-                ':user_id' =>
-                    $userId,
-
-                ':specialization' =>
-                    $specialization
-            ]);
-
-            $pdo->commit();
-            return true;
-
-        }catch(\Exception $ex){
-
-            $pdo->rollBack();
-            throw $ex;
-        }
-    }
-
-    public function importCsv($file)
-    {
-        if(!$file || !file_exists($file)){
-
+        ){
             throw new \Exception(
-                'Invalid CSV file'
+                'Invalid specialization'
             );
         }
 
+        $userService =
+            new UserService();
+
+        $userService->createUser(
+
+            $firstName,
+            $lastName,
+            $email,
+
+            $password,
+            $password,
+
+            'trainer',
+
+            $specialization
+        );
+    }
+    public function importCsv($file)
+    {
         $handle =
             fopen(
-                $file,
+                $file['tmp_name'],
                 'r'
             );
 
-        if(!$handle){
-
-            throw new \Exception(
-                'Could not open CSV file'
-            );
-        }
-
-        fgetcsv($handle);
+        fgetcsv(
+            $handle,
+            1000,
+            ';'
+        );
 
         while(
-            ($row = fgetcsv($handle))
-            !== false
+            ($data =
+                fgetcsv(
+                    $handle,
+                    1000,
+                    ';'
+                )) !== false
         ){
 
-            $firstName =
-                trim($row[0]);
+            $this->importTrainer(
 
-            $lastName =
-                trim($row[1]);
-
-            $email =
-                trim($row[2]);
-
-            $specialization =
-                trim($row[3]);
-
-            if(
-                empty($firstName) ||
-                empty($lastName) ||
-                empty($email) ||
-                empty($specialization)
-            ){
-
-                continue;
-            }
-
-            if(
-                Trainer::existsByEmail(
-                    $email
-                )
-            ){
-
-                continue;
-            }
-
-            if(
-                !in_array(
-                    $specialization,
-                    [
-                        'fitness',
-                        'strength',
-                        'physiotherapy'
-                    ]
-                )
-            ){
-
-                throw new \Exception(
-                    'Invalid specialization'
-                );
-            }
-
-            Trainer::createTrainer(
-
-                $firstName,
-
-                $lastName,
-
-                $email,
-
-                $specialization
+                trim($data[0]),
+                trim($data[1]),
+                trim($data[2]),
+                trim($data[3]),
+                trim($data[4])
             );
         }
 
@@ -251,88 +152,23 @@ class TrainerService
 
     public function importXml($file)
     {
-        if(!$file || !file_exists($file)){
-
-            throw new \Exception(
-                'Invalid XML file'
-            );
-        }
-
         $xml =
             simplexml_load_file(
-                $file
+                $file['tmp_name']
             );
 
-        if(!$xml){
+        foreach(
+            $xml->trainer
+            as $trainer
+        ){
 
-            throw new \Exception(
-                'Invalid XML structure'
-            );
-        }
+            $this->importTrainer(
 
-        foreach($xml->trainer as $trainer){
-
-            $firstName =
-                trim(
-                    (string)$trainer->first_name
-                );
-
-            $lastName =
-                trim(
-                    (string)$trainer->last_name
-                );
-
-            $email =
-                trim(
-                    (string)$trainer->email
-                );
-
-            $specialization =
-                trim(
-                    (string)$trainer->specialization
-                );
-
-            if(
-                empty($firstName) ||
-                empty($lastName) ||
-                empty($email) ||
-                empty($specialization)
-            ){
-
-                continue;
-            }
-
-            if(
-                Trainer::existsByEmail(
-                    $email
-                )
-            ){
-
-                continue;
-            }
-
-            if(
-                !in_array(
-                    $specialization,
-                    [
-                        'fitness',
-                        'strength',
-                        'physiotherapy'
-                    ]
-                )
-            ){
-
-                throw new \Exception(
-                    'Invalid specialization'
-                );
-            }
-
-            Trainer::createTrainer(
-
-                $firstName,
-                $lastName,
-                $email,
-                $specialization
+                (string)$trainer->first_name,
+                (string)$trainer->last_name,
+                (string)$trainer->email,
+                (string)$trainer->password,
+                (string)$trainer->specialization
             );
         }
     }
