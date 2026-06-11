@@ -126,6 +126,10 @@ $router = new Router();
 
 $router->get('/login', 'views/login.php');
 
+$router->get('/', function (){
+    $controller = new HomePageController();
+    $controller->index();
+});
 $router->get('/home', function () {
     $controller = new HomePageController();
     $controller->index();

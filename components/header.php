@@ -11,9 +11,14 @@ if (isset($_SESSION['user_id'])) {
             case 'trainer':
                 include 'components/headers/trainer_header.php';
                 break;
+            default:
+                include 'components/headers/unauth_header.php';
+                break;
         }
     } else {
         include 'components/headers/unauth_header.php';
     }
+} else {
+    include 'components/headers/unauth_header.php';
 }
 ?>
