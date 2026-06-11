@@ -47,6 +47,7 @@
     <script src="/kim/public/js/header.js" defer></script>
     <script src="/kim/public/js/profile_button_listeners/notification_dismiss.js" defer></script>
 
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
 
 
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->

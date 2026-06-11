@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/kim/public/css/member_footer.css">
     <script src="/kim/public/js/membership_cards.js?v=<?php echo time(); ?>" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
 
 </head>
 <body>

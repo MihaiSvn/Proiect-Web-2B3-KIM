@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/kim/public/css/forms.css">
     <script src="/kim/public/js/auth_buttons_listeners/register.js?v=<?php echo time(); ?>" defer></script>
 
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
 
 
 </head>

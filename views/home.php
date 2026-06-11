@@ -15,6 +15,8 @@
     <script src="/kim/public/js/services.js" defer></script>
     <script src="/kim/public/js/specialists_carousel.js" defer></script>
     <script src="/kim/public/js/header.js" defer></script>
+
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
 </head>
 
 
