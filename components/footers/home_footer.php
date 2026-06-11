@@ -34,38 +34,6 @@
                 </ul>
 
             </div>
-
-            <div class="footer__newsletter">
-
-                <h4 class="footer__title">
-                    Newsletter
-                </h4>
-
-                <p class="footer__description">
-                    Subscribe to receive wellness tips and exclusive offers
-                </p>
-
-                <form action="/kim/newsletter" method="POST" class="footer__form">
-
-                    <input
-                        type="email"
-                        name="email"
-                        class="footer__input"
-                        placeholder="Enter your email"
-                        required>
-
-                    <button
-                        type="submit"
-                        class="footer__button">
-
-                        <i class="fa-regular fa-envelope"></i>
-
-                    </button>
-
-                </form>
-
-            </div>
-
         </div>
 
         <div class="footer__bottom">

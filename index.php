@@ -15,6 +15,7 @@ require_once 'models/Trainer.php';
 require_once 'models/Room.php';
 require_once 'models/Subscription.php';
 require_once 'models/SubscriptionFeatures.php';
+require_once 'models/Equipment.php';
 
 require_once 'services/UserService.php';
 require_once 'services/UserSubscriptionsService.php';
@@ -26,6 +27,7 @@ require_once 'services/RoomService.php';
 require_once 'services/SubscriptionService.php';
 require_once 'services/ReportsService.php';
 require_once 'services/RoomsEquipmentService.php';
+require_once 'services/EquipmentService.php';
 
 require_once 'controllers/MemberDashboardController.php';
 require_once 'controllers/TrainerDashboardController.php';
@@ -59,6 +61,7 @@ require_once 'api/membership/MembershipApiController.php';
 require_once 'api/trainer/TrainerApiController.php';
 require_once 'api/admin_reports/ReportsApiController.php';
 require_once 'api/admin_rooms/RoomsApiController.php';
+require_once 'api/equipment/EquipmentApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
 require_once 'middleware/ApiAdminMiddleware.php';
@@ -81,6 +84,7 @@ use api\sessions\SessionsApiController;
 use api\booking\BookingApiController;
 use api\notification\NotificationsApiController;
 use api\trainer\TrainerApiController;
+use api\equipment\EquipmentApiController;
 
 use controllers\AdminDashboardController;
 use controllers\MemberDashboardController;
@@ -477,7 +481,11 @@ $router->post('/api/user/edit-admin', function (){
     $apiController->update();
 });
 
-
+$router->post('/api/equipment/create', function (){
+    ApiAdminMiddleware::checkAccess();
+    $apiController = new EquipmentApiController();
+    $apiController->create();
+});
 
 
 $sessionService = new SessionService();
