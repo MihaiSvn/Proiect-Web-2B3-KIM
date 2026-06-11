@@ -36,7 +36,7 @@
     <title>Manage Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/kim/public/css/global.css?v=1.1">
-    <link rel="stylesheet" href="/kim/public/css/forms.css">
+    <link rel="stylesheet" href="/kim/public/css/forms.css?v=1.1">
     <link rel="stylesheet" href="/kim/public/css/manage_users.css">
     <link rel="stylesheet" href="/kim/public/css/subscription_card.css">
     <script src="/kim/public/js/popup.js" defer></script>
@@ -49,6 +49,7 @@
 </html>
 
 
+<?php include 'components/alert.php';?>
 <?php include "components/header.php";?>
 
 <div class="management-container">

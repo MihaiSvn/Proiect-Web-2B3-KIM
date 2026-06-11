@@ -219,10 +219,17 @@ class UserService
             throw new \Exception("User not found");
         }
 
-        $success = User::deleteUser($userId);
-        if(!$success){
-            throw new \Exception("Unable to delete user");
+        try{
+            User::deleteUser($userId);
+
+        } catch (\Exception $e){
+            if ($user->role === 'trainer' && strpos($e->getMessage(), '1451') !== false) {
+                throw new \Exception("Cannot delete this trainer. They have existing sessions assigned to them. Please reassign or delete their sessions first.");
+            }
+
+            throw new \Exception("Unable to delete user due to active database constraints.");
         }
+
 
         $env = parse_ini_file(__DIR__ . "/../.env");
         $baseUrl = $env['APP_URL'] ?? 'http://localhost/kim';

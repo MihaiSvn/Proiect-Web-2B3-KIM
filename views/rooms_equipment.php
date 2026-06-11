@@ -22,7 +22,7 @@
 
     <link
         rel="stylesheet"
-        href="/kim/public/css/rooms_equipment.css"
+        href="/kim/public/css/rooms_equipment.css?v=1.1"
     >
 
     <script
@@ -45,6 +45,7 @@
 <body>
 
 <?php include 'components/headers/admin_header.php'; ?>
+<?php include 'components/alert.php';?>
 
 <div class="rooms-page">
 

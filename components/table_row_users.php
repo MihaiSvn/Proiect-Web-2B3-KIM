@@ -69,7 +69,7 @@ $icons_roles = [
     <td class="no-wrap">
         <div class="action-buttons">
             <button class="action-btn edit-btn js-open-popup" data-target="popupOverlay_edit_<?= $user->id ?>"><i class="fa-regular fa-pen-to-square"></i></button>
-            <button class="action-btn delete-btn"><i class="fa-regular fa-trash-can"></i></button>
+            <button class="action-btn delete-btn js-open-popup" data-target="popupOverlay_delete_<?= $user->id ?>"><i class="fa-regular fa-trash-can"></i></button>
 
             <?php
             $popupId = 'popupOverlay_edit_' . $user->id;
@@ -133,6 +133,25 @@ $icons_roles = [
 
             include 'components/popup.php';
             ?>
+
+            <?php
+
+            $infoText=null;
+            $popupId = 'popupOverlay_delete_' . $user->id;
+            $title = 'Delete Account';
+            $submit = 'Yes, Delete';
+            $action = '/kim/api/user/delete';
+            $infoText = "Are you sure you want to delete the account for <b>" . htmlspecialchars($user->first_name . ' ' . $user->last_name) . "</b>? This action is permanent and cannot be undone.";
+
+            $deleteIdField = FormField::create('', 'user_id')->type('hidden')->value($user->id);
+
+            $formBody = [$deleteIdField];
+
+            include 'components/popup.php';
+
+
+            ?>
+
 
         </div>
     </td>
