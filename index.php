@@ -126,6 +126,10 @@ $router = new Router();
 
 $router->get('/login', 'views/login.php');
 
+$router->get('/', function (){
+    $controller = new HomePageController();
+    $controller->index();
+});
 $router->get('/home', function () {
     $controller = new HomePageController();
     $controller->index();
@@ -257,9 +261,9 @@ $router->get('/api/reports', function () {
 $router->get('/rooms', function () {
 
     WebAdminMiddleware::checkAccess();
-        $controller = new RoomsEquipmentController();
-        $controller->index();
-    }
+    $controller = new RoomsEquipmentController();
+    $controller->index();
+}
 );
 
 $router->get('/api/rooms', function () {
@@ -311,12 +315,12 @@ $router->post(
 
 $router->post('/api/rooms/update', function () {
 
-        ApiAdminMiddleware::checkAccess();
+    ApiAdminMiddleware::checkAccess();
 
-        $controller = new \api\admin_rooms\RoomsApiController();
+    $controller = new \api\admin_rooms\RoomsApiController();
 
-        $controller->update();
-    }
+    $controller->update();
+}
 );
 
 $router->post('/api/reports/export', function () {
@@ -492,9 +496,9 @@ $router->post('/api/notifications/dismiss', function (){
 });
 
 $router->post('/api/notifications/dismiss-all', function (){
-   ApiAuthMiddleware::checkAccess();
-   $apiController = new NotificationsApiController();
-   $apiController->markAllAsRead();
+    ApiAuthMiddleware::checkAccess();
+    $apiController = new NotificationsApiController();
+    $apiController->markAllAsRead();
 });
 
 $router->post('/api/membership/suspend', function (){

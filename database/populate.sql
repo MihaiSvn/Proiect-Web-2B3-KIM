@@ -1,23 +1,23 @@
 
 INSERT INTO USERS (first_name, last_name, email, password_hash, role)
 VALUES
-('Super', 'Admin', 'admin@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'admin'),
-('Alex', 'Smith', 'alex@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
-('Maria', 'Johnson', 'maria@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
-('David', 'Miller', 'david@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
-('Emma', 'Wilson', 'emma@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
-('Oliver', 'Brown', 'oliver@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+    ('Super', 'Admin', 'admin@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'admin'),
+    ('Alex', 'Smith', 'alex@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+    ('Maria', 'Johnson', 'maria@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+    ('David', 'Miller', 'david@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+    ('Emma', 'Wilson', 'emma@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
+    ('Oliver', 'Brown', 'oliver@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
 -- Membri
-('John', 'Client', 'john@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Anna', 'Davis', 'anna@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('William', 'Test', 'william@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Sophia', 'Taylor', 'sophia@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('James', 'Anderson', 'james@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Isabella', 'Thomas', 'isabella@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Lucas', 'Jackson', 'lucas@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Mia', 'White', 'mia@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Benjamin', 'Harris', 'benjamin@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
-('Charlotte', 'Martin', 'charlotte@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member');
+    ('John', 'Client', 'john@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Anna', 'Davis', 'anna@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('William', 'Test', 'william@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Sophia', 'Taylor', 'sophia@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('James', 'Anderson', 'james@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Isabella', 'Thomas', 'isabella@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Lucas', 'Jackson', 'lucas@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Mia', 'White', 'mia@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Benjamin', 'Harris', 'benjamin@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
+    ('Charlotte', 'Martin', 'charlotte@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member');
 
 
 INSERT INTO TRAINERS (user_id, specialization)
@@ -59,19 +59,18 @@ VALUES (1, '4 booked sessions'), (1, 'Facility access'),
 
 INSERT INTO USER_SUBSCRIPTIONS (user_id, subscription_id, start_date, end_date, status, suspending_days_left, sessions_left)
 VALUES
-(4, 12, '2026-05-15 00:00:00', '2026-07-14 23:59:59', 'active', 7, 10), -- John (Full Premium)
-(5, 8, '2026-05-20 00:00:00', '2026-07-19 23:59:59', 'active', 0, 6),   -- Anna (Recovery Plus)
-(7, 3, '2026-06-01 00:00:00', '2026-07-31 23:59:59', 'active', 7, 12),  -- Sophia (Fitness Premium)
-(8, 6, '2026-05-10 00:00:00', '2026-07-09 23:59:59', 'active', 7, 4),   -- James (Strength Premium)
-(10, 11, '2026-06-05 00:00:00', '2026-08-04 23:59:59', 'active', 5, 8), -- Lucas (Full Plus)
+    (7, 12, '2026-05-15 00:00:00', '2026-07-14 23:59:59', 'active', 7, 10), -- John (Full Premium)
+    (8, 8, '2026-05-20 00:00:00', '2026-07-19 23:59:59', 'active', 0, 6),   -- Anna (Recovery Plus)
+    (10, 3, '2026-06-01 00:00:00', '2026-07-31 23:59:59', 'active', 7, 12), -- Sophia (Fitness Premium)
+    (11, 6, '2026-05-10 00:00:00', '2026-07-09 23:59:59', 'active', 7, 4),  -- James (Strength Premium)
+    (13, 11, '2026-06-05 00:00:00', '2026-08-04 23:59:59', 'active', 5, 8), -- Lucas (Full Plus)
 
-(6, 2, '2026-01-10 00:00:00', '2026-03-10 23:59:59', 'expired', 0, 0),  -- William (Fitness Standard)
-(9, 5, '2026-02-15 00:00:00', '2026-04-16 23:59:59', 'expired', 4, 2),  -- Isabella (Strength Standard)
-(4, 1, '2025-12-01 00:00:00', '2026-01-30 23:59:59', 'expired', 0, 0),  -- John abonament vechi
+    (9, 2, '2026-01-10 00:00:00', '2026-03-10 23:59:59', 'expired', 0, 0),  -- William (Fitness Standard)
+    (12, 5, '2026-02-15 00:00:00', '2026-04-16 23:59:59', 'expired', 4, 2), -- Isabella (Strength Standard)
+    (7, 1, '2025-12-01 00:00:00', '2026-01-30 23:59:59', 'expired', 0, 0),  -- John abonament vechi
 
-(11, 2, '2026-05-01 00:00:00', '2026-07-05 23:59:59', 'suspended', 0, 5), -- Mia
-(12, 9, '2026-05-25 00:00:00', '2026-07-28 23:59:59', 'suspended', 0, 10);-- Benjamin
-
+    (14, 2, '2026-05-01 00:00:00', '2026-07-05 23:59:59', 'suspended', 0, 5), -- Mia
+    (15, 9, '2026-05-25 00:00:00', '2026-07-28 23:59:59', 'suspended', 0, 10);-- Benjamin
 
 INSERT INTO ROOMS (name, capacity, type, is_active)
 VALUES ('Main Fitness Floor', 40, 'fitness', TRUE),
@@ -99,27 +98,58 @@ INSERT INTO SESSIONS (trainer_id, room_id, title, type, start_time, end_time, ma
 
 (1, 1, 'Leg Day Focus', 'fitness', '2026-06-08 18:00:00', '2026-06-08 19:30:00', 15, 'completed'),
 (3, 6, 'Crossfit WOD', 'strength', '2026-06-10 19:00:00', '2026-06-10 20:00:00', 12, 'completed'),
-(2, 2, 'Posture Check', 'physiotherapy', '2026-06-11 10:00:00', '2026-06-11 11:00:00', 1, 'planned'), -- AZI
-(4, 5, 'Zumba Party', 'fitness', '2026-06-11 19:00:00', '2026-06-11 20:00:00', 25, 'planned'),        -- AZI
+(2, 2, 'Posture Check', 'physiotherapy', '2026-06-11 10:00:00', '2026-06-11 11:00:00', 1, 'planned'),
+(4, 5, 'Zumba Party', 'fitness', '2026-06-11 19:00:00', '2026-06-11 20:00:00', 25, 'planned'),
 (3, 4, 'Deadlift Workshop', 'strength', '2026-06-12 18:00:00', '2026-06-12 19:30:00', 10, 'planned'),
 
 (1, 1, 'Summer Shred', 'fitness', '2026-07-01 09:00:00', '2026-07-01 10:00:00', 20, 'planned'),
 (2, 2, 'Mobility Flow', 'physiotherapy', '2026-07-05 11:00:00', '2026-07-05 12:00:00', 1, 'planned'),
 (3, 6, 'Olympic Weightlifting', 'strength', '2026-07-10 17:00:00', '2026-07-10 18:30:00', 8, 'planned'),
+
+(3, 4, 'Powerlifting Basics', 'strength', '2026-06-15 16:00:00', '2026-06-15 17:30:00', 12, 'planned'),
+(1, 1, 'Fat Burn HIIT', 'fitness', '2026-06-15 19:00:00', '2026-06-15 20:00:00', 20, 'planned'),
+
+(4, 5, 'Spinning Interval', 'fitness', '2026-06-16 08:30:00', '2026-06-16 09:30:00', 15, 'planned'),
+(5, 3, 'Knee Rehab Level 2', 'physiotherapy', '2026-06-16 11:00:00', '2026-06-16 12:00:00', 1, 'planned'),
+(3, 6, 'Tactical Strength', 'strength', '2026-06-16 18:30:00', '2026-06-16 19:30:00', 10, 'planned'),
+
+(1, 1, 'Full Body Pump', 'fitness', '2026-06-17 09:00:00', '2026-06-17 10:15:00', 25, 'planned'),
+(3, 6, 'MetCon Challenge', 'strength', '2026-06-17 18:00:00', '2026-06-17 19:00:00', 15, 'planned'),
+(2, 2, 'Lumbar Spine Therapy', 'physiotherapy', '2026-06-17 14:00:00', '2026-06-17 15:00:00', 1, 'planned'),
+
+(4, 5, 'Aerobic Dance Core', 'fitness', '2026-06-18 18:30:00', '2026-06-18 19:30:00', 25, 'planned'),
+(2, 2, 'Cervical Decompression', 'physiotherapy', '2026-06-18 09:00:00', '2026-06-18 10:00:00', 1, 'planned'),
+
+(3, 4, 'Hypertrophy: Chest & Back', 'strength', '2026-06-19 17:00:00', '2026-06-19 18:30:00', 12, 'planned'),
+(1, 5, 'Abs & Cardio Express', 'fitness', '2026-06-19 19:00:00', '2026-06-19 19:45:00', 20, 'planned'),
+
+(1, 1, 'Weekend Yoga Stretch', 'fitness', '2026-06-20 11:00:00', '2026-06-20 12:00:00', 30, 'planned'),
+
+(4, 5, 'Tabata Extreme', 'fitness', '2026-06-21 10:00:00', '2026-06-21 11:00:00', 15, 'planned'),
+
 (5, 3, 'Shoulder Rehab', 'physiotherapy', '2026-07-15 15:00:00', '2026-07-15 16:00:00', 1, 'planned');
 
 
+
+
 INSERT INTO BOOKINGS (user_id, session_id, user_subscription_id) VALUES
-(4, 1, 1), (7, 1, 3), (10, 1, 5), -- Morning Burn (Fit)
-(8, 2, 4), (10, 2, 5),            -- Heavy Lifts (Str)
-(5, 3, 2),                        -- Spine Recovery (Phys)
+(7, 1, 1), (10, 1, 3), (13, 1, 5), -- Morning Burn (Fit) - John, Sophia, Lucas
+(11, 2, 4), (13, 2, 5),            -- Heavy Lifts (Str) - James, Lucas
+(8, 3, 2),                         -- Spine Recovery (Phys) - Anna
 
-(4, 6, 1), (7, 6, 3),             -- Leg Day (Fit)
-(8, 7, 4),                        -- Crossfit WOD (Str)
-(5, 8, 2),                        -- Posture Check (Phys - AZI)
-(4, 9, 1), (7, 9, 3), (10, 9, 5), -- Zumba (Fit - AZI)
-(8, 10, 4),                       -- Deadlift Workshop
+(7, 6, 1), (10, 6, 3),             -- Leg Day (Fit) - John, Sophia
+(11, 7, 4),                        -- Crossfit WOD (Str) - James
+(8, 8, 2),                         -- Posture Check (Phys) - Anna
+(7, 9, 1), (10, 9, 3), (13, 9, 5), -- Zumba (Fit) - John, Sophia, Lucas
+(11, 10, 4),                       -- Deadlift Workshop - James
 
-(4, 11, 1), (7, 11, 3),           -- Summer Shred (Fit)
-(5, 12, 2),                       -- Mobility Flow (Phys)
-(8, 13, 4);                       -- Olympic Lifting (Str)
+(7, 11, 1), (10, 11, 3),           -- Summer Shred (Fit) - John, Sophia
+(8, 12, 2),                        -- Mobility Flow (Phys) - Anna
+(11, 13, 4),                       -- Olympic Lifting (Str) - James
+
+(7, 15, 1),                        -- John la Powerlifting
+(10, 15, 3),                       -- Sophia la Powerlifting
+(13, 15, 5),                       -- Lucas la Powerlifting
+(8, 18, 2),                        -- Anna la programarea de fizioterapie
+(11, 21, 4),                       -- James la MetCon
+(7, 23, 1);                        -- John la Zumba de joi
