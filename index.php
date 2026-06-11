@@ -61,6 +61,7 @@ require_once 'api/membership/MembershipApiController.php';
 require_once 'api/trainer/TrainerApiController.php';
 require_once 'api/admin_reports/ReportsApiController.php';
 require_once 'api/admin_rooms/RoomsApiController.php';
+require_once 'controllers/AdminUsersController.php';
 require_once 'api/equipment/EquipmentApiController.php';
 
 require_once 'middleware/ApiAuthMiddleware.php';
@@ -269,6 +270,44 @@ $router->get('/api/rooms', function () {
 
     $controller->getData();
 });
+
+$router->get(
+    '/api/trainers/export/csv',
+    function () {
+
+        ApiAdminMiddleware::checkAccess();
+
+        $controller = new TrainerApiController();
+
+        $controller->exportCsv();
+    }
+);
+
+$router->get(
+    '/api/trainers/export/xml',
+    function () {
+
+        ApiAdminMiddleware::checkAccess();
+
+        $controller =
+            new TrainerApiController();
+
+        $controller->exportXml();
+    }
+);
+
+$router->post(
+    '/api/trainers/import',
+    function () {
+
+        ApiAdminMiddleware::checkAccess();
+
+        $controller =
+            new TrainerApiController();
+
+        $controller->import();
+    }
+);
 
 $router->post('/api/rooms/update', function () {
 

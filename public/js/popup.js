@@ -56,12 +56,38 @@ document.addEventListener('submit', function(e) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
+        const hasFileInput =
+            form.querySelector(
+                'input[type="file"]'
+            );
+
         // fac request la api
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        let requestOptions;
+
+        if(hasFileInput){
+
+            requestOptions = {
+
+                method: 'POST',
+                body: formData
+            };
+
+        }else{
+
+            requestOptions = {
+
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+        }
+
+        fetch(
+            apiUrl,
+            requestOptions
+        )
             .then(response => response.json())
             .then(result => {
                 if (result.status === 'success') {
