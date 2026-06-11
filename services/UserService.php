@@ -2,6 +2,7 @@
 
 namespace services;
 
+use models\Trainer;
 use models\User;
 class UserService
 {
@@ -17,7 +18,7 @@ class UserService
         return User::findAllMembers();
     }
 
-    public function createUser($first_name, $last_name, $email, $password, $confirm_password, $role){
+    public function createUser($first_name, $last_name, $email, $password, $confirm_password, $role, $specialization = null){
 
         if (empty($first_name) || empty($last_name) || empty($email) || empty($password) || empty($confirm_password)) {
             throw new \Exception("All fields are required");
@@ -47,6 +48,16 @@ class UserService
         }
 
         $user = User::findByEmail($email);
+
+        if($role==='trainer'){
+            $trainerSuccess = Trainer::create($user->id, $specialization);
+
+            if (!$trainerSuccess) {
+                User::deleteUser($user->id);
+                throw new \Exception("Failed to save trainer specialization. User creation rolled back.");
+            }
+        }
+
         $notificationService = new NotificationService();
         $notificationService->createNotification(
             $user->id,
@@ -77,7 +88,7 @@ class UserService
         }
 
         $user = User::findByEmailWithPassword($email);
-        
+
         if (!$user || !password_verify($password, $user->password_hash)) {
             throw new \Exception("Invalid email or password");
         }
@@ -229,4 +240,119 @@ class UserService
 
         return true;
     }
+
+    public function getAllUsersCategorized() {
+        $rawUsers = User::getAllUsersWithSubscriptions();
+
+        // impartim pe categorii userii
+        $categorized = [
+            'admin' => [],
+            'trainer' => [],
+            'member' => []
+        ];
+
+        foreach ($rawUsers as $row) {
+            $role = $row->role;
+            $userId = $row->user_id;
+
+            // daca user ul nu a fost inca categorizat, il categorizam acum
+            if (!isset($categorized[$role][$userId])) {
+                $categorized[$role][$userId] = [
+                    'id' => $row->user_id,
+                    'first_name' => $row->first_name,
+                    'last_name' => $row->last_name,
+                    'email' => $row->email,
+                    'role' => $row->role,
+                    'joined_at' => $row->created_at,
+                    'profile_picture' => $row->profile_picture,
+                    'memberships' => [] //aici vin toate abonamentele
+                ];
+            }
+
+            // Daca are un abonament atasat de elft join
+            if ($row->subscription_name) {
+                $categorized[$role][$userId]['memberships'][] = [
+                    'name' => $row->subscription_name,
+                    'type' => $row->subscription_type,
+                    'status' => $row->subscription_status,
+                    'sessions_left' => $row->sessions_left,
+                    'suspending_days_left' => $row->suspending_days_left
+                ];
+
+            }
+        }
+
+        // 4. Resetăm cheile (ID-urile) din array pentru a returna un JSON perfect curat [0, 1, 2...] pe frontend
+        foreach ($categorized as $role => $users) {
+            //findca user_ids nu s ordoante, facem asa pt a avea
+            /*
+             *
+             *              $categorized['member'] = [
+                                    0 => [
+                                        'first_name' => 'Elena',
+                                        'email' => 'elena@email.com'
+                                    ],
+                                    1 => [
+                                        'first_name' => 'Marcus',
+                                        'email' => 'marcus@email.com'
+                                    ]
+                                ];
+             *
+             *
+             */
+            $categorized[$role] = array_values($users);
+        }
+
+        return $categorized;
+    }
+
+    public function updateUser($id, $first_name, $last_name, $email, $role, $specialization = null) {
+
+        if (empty($id) || empty($first_name) || empty($last_name) || empty($email) || empty($role)) {
+            throw new \Exception("All required fields must be filled.");
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception("Email address is not valid.");
+        }
+
+        $oldUser = User::findById($id);
+        if (!$oldUser) {
+            throw new \Exception("User not found.");
+        }
+
+        $existingEmailUser = $this->getUserByEmail($email);
+        if ($existingEmailUser && $existingEmailUser->id != $id) {
+            throw new \Exception("This email is already in use by another account.");
+        }
+
+        if ($role === 'trainer') {
+            $validSpecs = ['fitness', 'physiotherapy', 'strength'];
+            if (empty($specialization) || !in_array($specialization, $validSpecs)) {
+                throw new \Exception("A valid specialization is required for trainers.");
+            }
+        }
+
+        $success = User::update($id, $first_name, $last_name, $email, $role);
+        if (!$success) {
+            throw new \Exception("Failed to update user data.");
+        }
+
+        if ($role === 'trainer') {
+            $existingTrainer = Trainer::findTrainerByUserId($id);
+
+            if ($existingTrainer) {
+                Trainer::updateByUserId($id, $specialization);
+            } else {
+                Trainer::create($id, $specialization);
+            }
+        } else {
+            if ($oldUser->role === 'trainer') {
+                Trainer::deleteByUserId($id);
+            }
+        }
+
+        return true;
+    }
+
 }

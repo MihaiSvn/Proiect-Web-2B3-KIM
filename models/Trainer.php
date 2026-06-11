@@ -22,7 +22,7 @@ class Trainer
 
     public static function findAllTrainers(){
         global $pdo;
-        $query = "SELECT 
+        $query = "SELECT
             t.id AS trainer_id,
             t.specialization,
             u.id AS user_id,
@@ -46,5 +46,32 @@ class Trainer
         $stmt->bindParam(':trainer_id', $trainerId);
         $stmt->execute();
         return $stmt->fetch();
+    }
+
+    public static function create($userId, $specialization)
+    {
+        global $pdo;
+
+        $sql = "INSERT INTO TRAINERS (user_id, specialization) VALUES (:user_id, :specialization)";
+        $stmt = $pdo->prepare($sql);
+
+        return $stmt->execute([
+            ':user_id' => $userId,
+            ':specialization' => $specialization
+        ]);
+    }
+
+    public static function updateByUserId($userId, $specialization) {
+        global $pdo;
+        $sql = "UPDATE TRAINERS SET specialization = :spec WHERE user_id = :uid";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([':spec' => $specialization, ':uid' => $userId]);
+    }
+
+    public static function deleteByUserId($userId) {
+        global $pdo;
+        $sql = "DELETE FROM TRAINERS WHERE user_id = :uid";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([':uid' => $userId]);
     }
 }
