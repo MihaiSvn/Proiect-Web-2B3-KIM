@@ -23,7 +23,7 @@
                  id="avatar_preview">
         </div>
         <div class="photo-upload__info">
-            <h4>Profile Photo</h4>
+            <p>Profile Photo</p>
             <p>JPG or PNG &bull; max 5 MB</p>
 
             <input type="file" id="profile_upload" name="profile_picture" accept=".jpg, .jpeg, .png"

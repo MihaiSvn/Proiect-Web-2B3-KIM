@@ -54,17 +54,17 @@
         <div class="hero__stats">
 
             <div class="hero__stat">
-                <h3>2,800+</h3>
+                <h2>2,800+</h2>
                 <p>Active Members</p>
             </div>
 
             <div class="hero__stat">
-                <h3>98%</h3>
+                <h2>98%</h2>
                 <p>Satisfaction Rate</p>
             </div>
 
             <div class="hero__stat">
-                <h3>50+</h3>
+                <h2>50+</h2>
                 <p>Expert Specialists</p>
             </div>
 
@@ -94,9 +94,9 @@
 
             <div class="hero__progress-content">
 
-                <h3 class="hero__progress-value">
+                <h2 class="hero__progress-value">
                     94%
-                </h3>
+                </h2>
 
                 <p class="hero__progress-text">
                     Progress within 8 weeks
