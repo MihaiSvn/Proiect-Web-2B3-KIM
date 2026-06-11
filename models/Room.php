@@ -116,16 +116,11 @@ class Room
 
         $query = "
         UPDATE ROOMS
-
         SET
             name = :name,
-
             capacity = :capacity,
-
             type = :type,
-
             is_active = :is_active
-
         WHERE id = :id
     ";
 
@@ -152,7 +147,6 @@ class Room
                 $data['room_id']
         ]);
     }
-
     public static function createRoom(
         $data
     )

@@ -47,4 +47,59 @@ class Trainer
         $stmt->execute();
         return $stmt->fetch();
     }
+
+    public static function getAllTrainersForExport()
+{
+    global $pdo;
+
+    $query = "
+        SELECT
+
+            u.first_name,
+            u.last_name,
+            u.email,
+            t.specialization,
+            u.created_at
+
+        FROM USERS u
+
+        JOIN TRAINERS t
+            ON u.id = t.user_id
+
+        ORDER BY u.created_at DESC
+    ";
+
+    return $pdo
+        ->query($query)
+        ->fetchAll();
+}
+
+//ca sa nu adaugam duplicate in urma import
+    public static function existsByEmail(
+        $email
+    )
+    {
+        global $pdo;
+
+        $query = "
+        SELECT COUNT(*)
+        FROM USERS
+        WHERE email = :email
+    ";
+
+        $stmt =
+            $pdo->prepare(
+                $query
+            );
+
+        $stmt->execute([
+
+            ':email' =>
+                $email
+        ]);
+
+        return
+            $stmt->fetchColumn()
+            > 0;
+    }
 }

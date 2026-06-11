@@ -246,8 +246,9 @@ $router->get('/api/reports', function () {
 
 });
 
-$router->get('/admin/rooms', function () {
+$router->get('/rooms', function () {
 
+    WebAdminMiddleware::checkAccess();
         $controller = new RoomsEquipmentController();
         $controller->index();
     }

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html lang="ro">
+
+<article>
+
+    <header>
+        <h1>KIM - Kineto Web Manager</h1>
+
+
+        <p>
+            Aplicație web modulară pentru administrarea activităților desfășurate
+            într-un centru de fitness, forță și kinetoterapie.
+        </p>
+
+
+    </header>
+
+    <section>
+        <h2>Rezumat</h2>
+
+
+        <p>
+            KIM (Kineto Web Manager) reprezintă o platformă web destinată
+            administrării activităților unui centru de fitness și kinetoterapie.
+            Aplicația centralizează gestionarea utilizatorilor, abonamentelor,
+            sesiunilor, antrenorilor, sălilor și rapoartelor statistice,
+            oferind funcționalități dedicate administratorilor, antrenorilor și membrilor.
+        </p>
+
+
+    </section>
+
+    <section>
+        <h2>Introducere</h2>
+
+
+        <p>
+            Administrarea unui centru sportiv presupune gestionarea unui număr mare
+            de utilizatori, abonamente, programări și resurse. KIM a fost dezvoltat
+            pentru a simplifica aceste procese și pentru a oferi o platformă unificată
+            prin care toate activitățile pot fi administrate eficient.
+        </p>
+
+
+    </section>
+
+    <section>
+        <h2>Prezentarea Generală a Sistemului</h2>
+
+
+        <p>
+            Aplicația utilizează o arhitectură MVC și este implementată folosind
+            PHP, MySQL, HTML, CSS și JavaScript. Sistemul este organizat modular,
+            fiecare funcționalitate fiind separată în controllere, servicii,
+            modele și API-uri dedicate.
+        </p>
+
+
+    </section>
+
+    <section>
+        <h2>Arhitectura Sistemului</h2>
+
+        <p>
+            Aplicația KIM este construită pe baza arhitecturii MVC
+            (Model – View – Controller), având o separare clară
+            între interfața utilizatorului, logica de business și
+            accesul la date.
+        </p>
+
+        <p>
+            Sistemul este organizat în componente specializate:
+            controllere web pentru randarea paginilor,
+            controllere API pentru comunicarea asincronă,
+            servicii pentru implementarea regulilor de business,
+            modele pentru accesul la baza de date și middleware
+            pentru autentificare și autorizare.
+        </p>
+
+        <figure>
+            <img
+                    src="/kim/public/images/documentatie/component-diagram.png"
+                    alt="Component Diagram"
+                    width="1000"
+            >
+
+            <figcaption>
+                Component Diagram (C4 Level 3)
+            </figcaption>
+        </figure>
+
+    </section>
+
+    <section>
+
+        <h2>Design și Identitate Vizuală</h2>
+
+        <p>
+            Interfața aplicației KIM utilizează o paletă de culori
+            pastelată, inspirată din domeniul wellness și recuperare
+            medicală. Design-ul urmărește simplitatea, lizibilitatea
+            și accesibilitatea pentru toate categoriile de utilizatori.
+        </p>
+
+        <h3>Paleta de Culori</h3>
+
+        <ul>
+
+            <li>
+                <strong>#49344D</strong>
+                – culoarea principală utilizată pentru titluri,
+                elemente de navigare și accente vizuale.
+            </li>
+
+            <li>
+                <strong>#D7A4A4</strong>
+                – culoarea principală pentru butoane,
+                acțiuni și elemente interactive.
+            </li>
+
+            <li>
+                <strong>#C79292</strong>
+                – variație pentru stările hover ale butoanelor.
+            </li>
+
+            <li>
+                <strong>#FFFFFF</strong>
+                – fundal principal al aplicației.
+            </li>
+
+            <li>
+                <strong>#FAF7F7</strong>
+                – fundal secundar pentru carduri și secțiuni informative.
+            </li>
+
+            <li>
+                <strong>#EADede</strong>
+                – contururi și separatoare vizuale.
+            </li>
+
+            <li>
+                <strong>#4CAF50</strong>
+                – indicarea stărilor active și a operațiilor realizate cu succes.
+            </li>
+
+            <li>
+                <strong>#E05A5A</strong>
+                – indicarea erorilor și a elementelor inactive.
+            </li>
+
+        </ul>
+
+        <h3>Componente Vizuale</h3>
+
+        <ul>
+
+            <li>Carduri pentru afișarea sesiunilor, sălilor și abonamentelor.</li>
+
+            <li>Dashboard-uri dedicate administratorilor, antrenorilor și membrilor.</li>
+
+            <li>Ferestre modale pentru operații de creare și editare.</li>
+
+            <li>Tabele administrative pentru gestionarea datelor.</li>
+
+            <li>Diagrame statistice generate dinamic.</li>
+
+            <li>Notificări vizuale pentru confirmări și erori.</li>
+
+            <li>Butoane și formulare cu design consistent pe întregul sistem.</li>
+
+        </ul>
+
+    </section>
+
+        <h3>Capturi de Ecran</h3>
+
+    <figure>
+        <img
+                src="/kim/public/images/documentatie/home.png"
+                alt="Main HomePage"
+                width="1000"
+        >
+
+        <figcaption>
+            Main Home Page
+        </figcaption>
+    </figure>
+
+    <figure>
+        <img
+                src="/kim/public/images/documentatie/dashboard.png"
+                alt="Admin Dashboard"
+                width="1000"
+        >
+
+        <figcaption>
+            Admin Dashboard
+        </figcaption>
+        <figure>
+            <img
+                    src="/kim/public/images/documentatie/account.png"
+                    alt="Account Page"
+                    width="1000"
+            >
+
+            <figcaption>
+                Account Page
+            </figcaption>
+        </figure>
+    </section>
+
+    <section>
+        <h2>Funcționalități Principale</h2>
+
+
+        <section>
+            <h3>Gestionarea Utilizatorilor</h3>
+
+            <ul>
+                <li>Înregistrarea și autentificarea utilizatorilor.</li>
+
+                <li>Existența a trei roluri distincte: administrator, antrenor/terapeut și membru.</li>
+
+                <li>Actualizarea informațiilor personale și a fotografiei de profil.</li>
+
+                <li>Vizualizarea istoricului activităților și rezervărilor.</li>
+
+                <li>Vizualizarea sesiunilor viitoare la care utilizatorul este înscris.</li>
+
+                <li>Suspendarea temporară a abonamentelor conform regulilor asociate acestora.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Gestionarea Sesiunilor</h3>
+
+            <ul>
+                <li>Vizualizarea programului complet al sesiunilor disponibile.</li>
+
+                <li>Crearea sesiunilor de către administratori și antrenori.</li>
+
+                <li>Modificarea sesiunilor de către administratori și antrenorii responsabili.</li>
+
+                <li>Anularea sesiunilor de către administratori și antrenorii responsabili.</li>
+
+                <li>Configurarea sesiunilor prin selectarea sălii și a antrenorului responsabil.</li>
+
+                <li>Rezervarea locurilor disponibile de către membri.</li>
+
+                <li>Anularea rezervărilor existente de către membri.</li>
+
+                <li>Gestionarea capacității maxime pentru fiecare sesiune.</li>
+
+                <li>Prevenirea conflictelor de programare.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Gestionarea Abonamentelor</h3>
+
+            <ul>
+                <li>Existența a trei categorii principale de abonamente: Fitness, Forță și Kinetoterapie.</li>
+
+                <li>Existența mai multor variante pentru fiecare categorie, diferențiate prin numărul de ședințe incluse și preț.</li>
+
+                <li>Achiziționarea abonamentelor direct din platformă.</li>
+
+                <li>Calcularea automată a perioadei de valabilitate și a ședințelor disponibile.</li>
+
+                <li>Suspendarea temporară a abonamentelor conform regulilor stabilite.</li>
+
+                <li>Expirarea automată a abonamentelor.</li>
+
+                <li>Vizualizarea istoricului complet al abonamentelor.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Gestionarea Antrenorilor și Terapeuților</h3>
+
+            <ul>
+                <li>Administrarea profilurilor antrenorilor și terapeuților.</li>
+
+                <li>Gestionarea specializărilor disponibile: fitness, forță și kinetoterapie.</li>
+
+                <li>Vizualizarea programului și a sesiunilor atribuite fiecărui specialist.</li>
+
+                <li>Importul datelor în format CSV.</li>
+
+                <li>Exportul datelor în format CSV.</li>
+
+                <li>Importul datelor în format XML.</li>
+
+                <li>Exportul datelor în format XML.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Gestionarea Sălilor și Echipamentelor</h3>
+
+            <ul>
+                <li>Crearea și modificarea sălilor disponibile.</li>
+
+                <li>Gestionarea capacității maxime pentru fiecare sală.</li>
+
+                <li>Activarea și dezactivarea sălilor.</li>
+
+                <li>Asocierea sălilor cu sesiunile desfășurate.</li>
+
+                <li>Administrarea echipamentelor existente în fiecare sală.</li>
+
+                <li>Vizualizarea resurselor disponibile pentru fiecare tip de activitate.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Rapoarte și Statistici</h3>
+
+            <ul>
+                <li>Generarea statisticilor privind numărul utilizatorilor activi.</li>
+
+                <li>Calcularea numărului de sesiuni rezervate pe zi.</li>
+
+                <li>Calcularea numărului de sesiuni rezervate pe săptămână.</li>
+
+                <li>Calcularea numărului de sesiuni rezervate pe lună.</li>
+
+                <li>Generarea clasamentelor pentru antrenori și terapeuți.</li>
+
+                <li>Analizarea distribuției tipurilor de abonamente.</li>
+
+                <li>Exportarea rapoartelor în format CSV.</li>
+
+                <li>Exportarea rapoartelor în format XML.</li>
+
+                <li>Generarea diagramelor în format PNG și WebP.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Sistemul de Notificări</h3>
+
+            <ul>
+                <li>Transmiterea notificărilor vizuale în cadrul aplicației.</li>
+
+                <li>Transmiterea notificărilor prin poșta electronică.</li>
+
+                <li>Confirmarea rezervărilor efectuate.</li>
+
+                <li>Informarea utilizatorilor privind modificările programului.</li>
+
+                <li>Transmiterea mesajelor administrative importante.</li>
+            </ul>
+        </section>
+
+
+    </section>
+
+    <section>
+        <h2>Rolurile Utilizatorilor</h2>
+
+        <section>
+            <h3>Administrator</h3>
+
+            <ul>
+                <li>Gestionează utilizatorii existenți în platformă.</li>
+
+                <li>Gestionează antrenorii și terapeuții.</li>
+
+                <li>Creează, modifică și anulează sesiuni.</li>
+
+                <li>Configurează sesiunile prin asocierea unui antrenor și a unei săli.</li>
+
+                <li>Gestionează sălile și echipamentele.</li>
+
+                <li>Importă și exportă date în formatele CSV și XML, cât și diagrame PNG și WebP.</li>
+
+                <li>Generează rapoarte și statistici privind activitatea centrului.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Antrenor / Terapeut</h3>
+
+            <ul>
+                <li>Creează sesiuni specifice specializării sale.</li>
+
+                <li>Modifică propriile sesiuni.</li>
+
+                <li>Anulează propriile sesiuni.</li>
+
+                <li>Vizualizează programul personal și sesiunile atribuite.</li>
+
+                <li>Consultă participanții înscriși la sesiunile gestionate.</li>
+
+                <li>Își actualizează informațiile personale din profil.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Membru</h3>
+
+            <ul>
+                <li>Achiziționează abonamente disponibile.</li>
+
+                <li>Rezervă locuri la sesiunile disponibile.</li>
+
+                <li>Anulează rezervările efectuate anterior.</li>
+
+                <li>Vizualizează istoricul activităților și rezervărilor.</li>
+
+                <li>Vizualizează sesiunile viitoare.</li>
+
+                <li>Suspendă temporar abonamentul în limita regulilor asociate acestuia.</li>
+
+                <li>Primește notificări în aplicație și prin e-mail.</li>
+
+                <li>Își actualizează informațiile personale și fotografia de profil.</li>
+            </ul>
+        </section>
+
+
+    </section>
+
+    <section>
+        <h2>Proiectarea Bazei de Date</h2>
+
+
+        <ul>
+            <li><strong>USERS</strong> – informații despre utilizatori și rolurile acestora.</li>
+
+            <li><strong>TRAINERS</strong> – informații specifice antrenorilor și terapeuților.</li>
+
+            <li><strong>SUBSCRIPTIONS</strong> – tipurile de abonamente disponibile.</li>
+
+            <li><strong>SUBSCRIPTION_FEATURES</strong> – beneficiile asociate fiecărui abonament.</li>
+
+            <li><strong>USER_SUBSCRIPTIONS</strong> – abonamentele achiziționate de utilizatori.</li>
+
+            <li><strong>ROOMS</strong> – sălile disponibile pentru desfășurarea activităților.</li>
+
+            <li><strong>EQUIPMENT</strong> – echipamentele asociate sălilor.</li>
+
+            <li><strong>SESSIONS</strong> – sesiunile organizate în cadrul centrului.</li>
+
+            <li><strong>BOOKINGS</strong> – rezervările efectuate de utilizatori.</li>
+
+            <li><strong>NOTIFICATIONS</strong> – notificările transmise utilizatorilor.</li>
+        </ul>
+
+
+    </section>
+
+    <section>
+        <h2>Tehnologii Utilizate</h2>
+
+
+        <ul>
+            <li>PHP</li>
+            <li>MySQL</li>
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>JavaScript</li>
+            <li>Chart.js</li>
+            <li>PHPMailer</li>
+            <li>XAMPP</li>
+        </ul>
+
+
+    </section>
+
+    <section>
+        <h2>Concluzii</h2>
+
+
+        <p>
+            KIM oferă o soluție completă pentru administrarea unui centru de fitness
+            și kinetoterapie, integrând gestionarea utilizatorilor, a sesiunilor,
+            a abonamentelor, a resurselor și a rapoartelor statistice într-o
+            singură platformă. Arhitectura modulară permite extinderea ulterioară
+            a aplicației și integrarea de funcționalități suplimentare.
+        </p>
+
+
+    </section>
+
+</article>
+</html>
