@@ -41,6 +41,8 @@
     <script src="/kim/public/js/popup.js" defer></script>
     <script src="/kim/public/js/header.js" defer></script>
     <script src="/kim/public/js/manage_users.js" defer></script>
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
+
 </head>
 <body>
 

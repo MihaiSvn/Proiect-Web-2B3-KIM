@@ -30,6 +30,8 @@
     <script src="/kim/public/js/profile_button_listeners/save_personal_info.js" defer></script>
     <script src="/kim/public/js/profile_button_listeners/save_change_password.js" defer></script>
     <script src="/kim/public/js/profile_button_listeners/notification_dismiss.js" defer></script>
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
+
 </head>
 <body>
 <?php

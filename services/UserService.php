@@ -289,7 +289,6 @@ class UserService
             }
         }
 
-        // 4. Resetăm cheile (ID-urile) din array pentru a returna un JSON perfect curat [0, 1, 2...] pe frontend
         foreach ($categorized as $role => $users) {
             //findca user_ids nu s ordoante, facem asa pt a avea
             /*

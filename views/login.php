@@ -11,6 +11,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="/kim/public/js/auth_buttons_listeners/login.js" defer></script>
+
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
+
 </head>
 <body class="login__page">
 
