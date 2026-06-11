@@ -48,7 +48,7 @@ class User
 
     public static function findById($id){
         global $pdo;
-        $sql = "SELECT id, first_name, last_name, email, role, profile_picture, created_at 
+        $sql = "SELECT id, first_name, last_name, email, role, profile_picture, created_at
                                 FROM users WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -94,7 +94,7 @@ class User
     public static function findActiveSubscriptionsByUserId($user_id){
         global $pdo;
 
-        $sql = "SELECT 
+        $sql = "SELECT
                 s.id as subscription_id,
                 s.name as subscription_name,
                 s.type,
@@ -169,12 +169,52 @@ class User
         global $pdo;
 
         $query = "
-        SELECT COUNT(*) 
+        SELECT COUNT(*)
         FROM USERS
     ";
 
         return (int)$pdo->query($query)->fetchColumn();
     }
 
+
+    public static function getAllUsersWithSubscriptions() {
+        global $pdo;
+
+        $sql = "
+            SELECT
+                u.id as user_id, u.first_name, u.last_name, u.email, u.role, u.created_at, u.profile_picture,
+                us.status as subscription_status, us.sessions_left, us.suspending_days_left,
+                s.name as subscription_name, s.type as subscription_type
+            FROM USERS u
+            LEFT JOIN USER_SUBSCRIPTIONS us ON u.id = us.user_id AND us.status != 'expired'
+            LEFT JOIN SUBSCRIPTIONS s ON us.subscription_id = s.id
+            ORDER BY u.created_at DESC
+        ";
+
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll();
+    }
+
+    public static function update($id, $first_name, $last_name, $email, $role)
+    {
+        global $pdo;
+
+        $sql = "UPDATE `USERS`
+                SET `first_name` = :first_name,
+                    `last_name` = :last_name,
+                    `email` = :email,
+                    `role` = :role
+                WHERE `id` = :id";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            ':first_name' => $first_name,
+            ':last_name'  => $last_name,
+            ':email'      => $email,
+            ':role'       => $role,
+            ':id'         => $id
+        ]);
+    }
 
 }
