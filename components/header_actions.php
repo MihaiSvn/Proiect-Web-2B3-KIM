@@ -9,13 +9,11 @@
 
     <div class="header__actions">
         <?php if($_SESSION['user_role']!=='admin'): ?>
-        <a href="/kim/profile/notifications" style="text-decoration: none;">
-        <button class="header__btn header__btn-notification">
+        <a href="/kim/profile/notifications" style="text-decoration: none;" class="header__btn header__btn-notification">
             <i class="fa-regular fa-bell"></i>
             <?php if ($hasUnread): ?>
                 <span class="notification__dot"></span>
             <?php endif; ?>
-        </button>
         </a>
         <?php endif;?>
 

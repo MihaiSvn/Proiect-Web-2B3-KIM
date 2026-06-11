@@ -21,9 +21,9 @@
 
             <div class="footer__links">
 
-                <h4 class="footer__title">
+                <h3 class="footer__title">
                     Quick Links
-                </h4>
+                </h3>
 
                 <ul>
 
