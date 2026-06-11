@@ -148,7 +148,7 @@ require_once __DIR__ . '/../classes/FormField.php';
                 ->required(true);
 
 
-        $editRooms = \models\Room::getAllActiveRoomsByType($session->session_type);
+        $editRooms = models\Room::getAllActiveRoomsByType($session->session_type);
         $editRoomOptions = [];
         if($editRooms) {
             foreach($editRooms as $r) {
