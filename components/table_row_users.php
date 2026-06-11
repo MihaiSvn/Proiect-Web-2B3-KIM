@@ -74,6 +74,7 @@ $icons_roles = [
             <?php
             $popupId = 'popupOverlay_edit_' . $user->id;
 
+            $infoText = null;
             $title = 'Edit User: ' . htmlspecialchars($user->first_name . ' ' . $user->last_name);
             $action = '/kim/api/user/edit-admin';
             $submit = 'Save Changes';
@@ -98,7 +99,7 @@ $icons_roles = [
                 ->value($user->email);
 
             $roleOptions = [
-                'member'  => 'Member / Client',
+                'member'  => 'Member',
                 'trainer' => 'Trainer',
                 'admin'   => 'Administrator'
             ];
@@ -156,5 +157,3 @@ $icons_roles = [
         </div>
     </td>
 </tr>
-
-

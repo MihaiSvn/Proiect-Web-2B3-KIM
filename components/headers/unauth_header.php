@@ -11,15 +11,15 @@ $hasUnread = isset($unreadNotifications) && count($unreadNotifications) > 0;
         <?php include 'components/logo.php'; ?>
 
         <nav class="header__nav" id="mobile-nav">
-            <a href="" class="nav__link">
+            <a href="/kim/home" class="nav__link">
                 Home
             </a>
 
-            <a href="" class="nav__link">
+            <a href="#services" class="nav__link">
                 Services
             </a>
 
-            <a href="" class="nav__link">
+            <a href="#experts" class="nav__link">
                 Experts
             </a>
         </nav>
