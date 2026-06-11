@@ -53,6 +53,8 @@
             rgba(215,164,164,.25);
 
     transition:.2s;
+
+    margin-right: 12px;
 }
 
 .rooms__add-button:hover{
@@ -394,5 +396,6 @@
     .rooms__add-button{
 
         width:100%;
+        margin-bottom: 12px;
     }
 }

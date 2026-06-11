@@ -20,15 +20,29 @@ require_once
 
         </div>
 
-        <button
-            class="
+        <div>
+            <button
+                class="
                 rooms__add-button
                 js-open-popup
             "
-            data-target="popupOverlay_addRoom"
-        >
-            Add Room
-        </button>
+                data-target="popupOverlay_addRoom"
+            >
+                Add Room
+            </button>
+
+            <button
+                class="
+                    rooms__add-button
+                    js-open-popup
+                "
+                data-target="popupOverlay_addEquipment"
+                style="background-color: #6c757d;" >
+                Add Equipment
+            </button>
+        </div>
+
+
 
     </div>
 
@@ -428,6 +442,77 @@ require_once
 
     $popupId =
         'popupOverlay_addRoom';
+
+    include
+        __DIR__ .
+        '/../popup.php';
+
+    ?>
+
+    <?php
+
+    $title =
+        'Add Equipment';
+
+    $submit =
+        'Add Equipment';
+
+    $action =
+        '/kim/api/equipment/create';
+
+    $infoText =
+        null;
+
+    $roomOptions = [];
+    foreach($rooms as $r) {
+        $roomOptions[$r->id] = $r->name;
+    }
+
+    $equipNameField =
+        FormField::create(
+            'Equipment Name',
+            'name'
+        )
+            ->required(true)
+            ->placeholder('Treadmill, Dumbbells 20kg');
+
+    $equipRoomField =
+        FormField::create(
+            'Assign to Room',
+            'room_id'
+        )
+            ->type('select')
+            ->required(true)
+            ->options($roomOptions);
+
+    $equipStatusField =
+        FormField::create(
+            'Is Functional?',
+            'is_functional'
+        )
+            ->type('select')
+            ->required(true)
+            ->options([
+
+                '1' =>
+                    'Yes, Functional',
+
+                '0' =>
+                    'No, Needs Maintenance'
+            ])
+            ->value(1);
+
+    $formBody = [
+
+        $equipNameField,
+
+        $equipRoomField,
+
+        $equipStatusField
+    ];
+
+    $popupId =
+        'popupOverlay_addEquipment';
 
     include
         __DIR__ .
