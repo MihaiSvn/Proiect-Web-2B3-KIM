@@ -40,6 +40,7 @@ require_once 'controllers/profile_page_tabs_controllers/ProfileSettingsControlle
 require_once 'controllers/MembershipPageController.php';
 require_once 'controllers/HomePageController.php';
 require_once 'controllers/ReportsPageController.php';
+require_once 'controllers/AdminUsersController.php';
 
 require_once 'api/profile/ProfileActivityApiController.php';
 require_once 'api/profile/ProfileNotificationsApiController.php';
@@ -91,6 +92,7 @@ use controllers\SessionsPageController;
 use controllers\TrainerDashboardController;
 use controllers\UserSubscriptionController;
 use controllers\HomePageController;
+use controllers\AdminUsersController;
 
 
 use services\BookingService;
@@ -210,11 +212,12 @@ $router->get('/profile/settings', function (){
     $profileSettingsController->index();
 });
 
-$router->get('/users', function () {
+
+
+$router->get('/users', function (){
     WebAdminMiddleware::checkAccess();
-    $userService = new UserService();
-    $controller = new AdminUsersController($userService);
-    $controller->index();
+    $adminUsersController = new AdminUsersController();
+    $adminUsersController->index();
 });
 
 $router->get('/api/memberships', function () {
@@ -414,6 +417,22 @@ $router->post('/api/membership/suspend', function (){
     $apiController->suspend();
 });
 
+$router->get('/api/user/all', function (){
+    ApiAdminMiddleware::checkAccess();
+    $apiController  = new UserApiController();
+    $apiController->getAllUsers();
+});
+
+$router->post('/api/user/create', function (){
+    ApiAdminMiddleware::checkAccess();
+    $apiController = new UserApiController();
+    $apiController->create();
+});
+$router->post('/api/user/edit-admin', function (){
+    ApiAdminMiddleware::checkAccess();
+    $apiController = new UserApiController();
+    $apiController->update();
+});
 
 
 
