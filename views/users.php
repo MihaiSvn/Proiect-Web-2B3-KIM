@@ -30,8 +30,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Manage Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -41,12 +40,10 @@
     <link rel="stylesheet" href="/kim/public/css/subscription_card.css">
     <script src="/kim/public/js/popup.js" defer></script>
     <script src="/kim/public/js/header.js" defer></script>
-    <script src="/kim/public/js/manage_users.js" defer"></script>
+    <script src="/kim/public/js/manage_users.js" defer></script>
 </head>
 <body>
 
-</body>
-</html>
 
 
 <?php include 'components/alert.php';?>
@@ -260,3 +257,7 @@
     </section>
 
 </div>
+</body>
+
+</html>
+

@@ -64,6 +64,7 @@
 
                         <?php if ($field->type !== 'hidden'): ?>
                             <label class="form__label" for="<?= $field->id ?>"><?= $field->label ?></label>
+                            <label class="form__label" for="<?= $popupId ?>_<?= $field->id ?>"><?= $field->label ?></label>
                         <?php endif; ?>
 
 <!--                        daca e dropdown -->
@@ -86,13 +87,15 @@
                         <?php else: ?>
                             <input type="<?= $field->type ?>"
                                    name="<?= $field->id ?>"
-                                   id="<?= $field->id ?>"
+                                   id="<?= $popupId ?>_<?= $field->id ?>"
                                    value="<?= $field->value ?>"
-                                   placeholder="<?= $field->placeholder ?>"
-                                    <?= $field->required ? 'required' : '' ?>
 
-                                    <?= isset($field->min) ? 'min="' . $field->min . '"' : '' ?>
-                                    <?= isset($field->max) ? 'max="' . $field->max . '"' : '' ?>
+                                <?= ($field->type !== 'hidden' && !empty($field->placeholder)) ? 'placeholder="' . htmlspecialchars($field->placeholder) . '"' : '' ?>
+
+                                <?= ($field->type !== 'hidden' && $field->required) ? 'required' : '' ?>
+
+                                <?= isset($field->min) ? 'min="' . $field->min . '"' : '' ?>
+                                <?= isset($field->max) ? 'max="' . $field->max . '"' : '' ?>
                             >
                         <?php endif; ?>
                     </div>

@@ -17,7 +17,7 @@ $currentUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     <?php include 'components/profile_pic-circle.php'; ?>
 
 
-    <h3 class="user-summary__name"><?= $userFirstName . ' ' . $userLastName ?></h3>
+    <p class="user-summary__name"><?= $userFirstName . ' ' . $userLastName ?></p>
     <p class="user-summary__role"><?= ucfirst($userRole) ?></p>
 
 </div>
@@ -59,7 +59,7 @@ $currentUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 </nav>
 
 <div class="profile__card member-since">
-    <h4 class="member-since__title">MEMBER SINCE</h4>
+    <p class="member-since__title">MEMBER SINCE</p>
     <p class="member-since__date"> <?= date('M Y', strtotime($userJoinDate)) ?></p>
 </div>
 
