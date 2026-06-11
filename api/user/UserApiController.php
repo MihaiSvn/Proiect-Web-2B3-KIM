@@ -202,4 +202,191 @@ class UserApiController
         http_response_code(200);
         echo json_encode(['user' => $user]);
     }
+
+    /*
+     *
+     *
+     *
+     * EXEMPLU RASPUNS LA GET ALL USERS
+     *
+                 * {
+                "status": "success",
+                "admin": [
+                    {
+                        "id": 1,
+                        "first_name": "Kim",
+                        "last_name": "Admin",
+                        "email": "kimadmin123@gmail.com",
+                        "role": "admin",
+                        "joined_at": "2023-01-10 08:30:00",
+                        "profile_picture": "default_admin.png",
+                        "overall_status": "active",
+                        "memberships": []
+                    }
+                ],
+                "trainer": [
+                    {
+                        "id": 2,
+                        "first_name": "Marcus",
+                        "last_name": "Chen",
+                        "email": "marcus.chen@serenity.com",
+                        "role": "trainer",
+                        "joined_at": "2023-10-10 14:15:00",
+                        "profile_picture": "marcus_avatar.jpg",
+                        "overall_status": "active",
+                        "memberships": []
+                    }
+                ],
+                "member": [
+                    {
+                        "id": 3,
+                        "first_name": "Elena",
+                        "last_name": "Martinez",
+                        "email": "elena.martinez@email.com",
+                        "role": "member",
+                        "joined_at": "2024-01-15 09:20:00",
+                        "profile_picture": "elena_avatar.jpg",
+                        "overall_status": "active",
+                        "memberships": [
+                            {
+                                "name": "Fitness Premium",
+                                "type": "fitness",
+                                "status": "active",
+                                "sessions_left": 12,
+                                "suspending_days_left": 14
+                            },
+                            {
+                                "name": "Strength Elite",
+                                "type": "strength",
+                                "status": "active",
+                                "sessions_left": 8,
+                                "suspending_days_left": 7
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "first_name": "Sarah",
+                        "last_name": "Williams",
+                        "email": "sarah.williams@email.com",
+                        "role": "member",
+                        "joined_at": "2024-03-05 11:45:00",
+                        "profile_picture": null,
+                        "overall_status": "suspended",
+                        "memberships": [
+                            {
+                                "name": "Full Access",
+                                "type": "all",
+                                "status": "suspended",
+                                "sessions_left": 20,
+                                "suspending_days_left": 0
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "first_name": "Michael",
+                        "last_name": "Scott",
+                        "email": "michael.scott@email.com",
+                        "role": "member",
+                        "joined_at": "2024-06-10 10:00:00",
+                        "profile_picture": null,
+                        "overall_status": "active",
+                        "memberships": []
+                    }
+                ]
+            }
+     */
+
+    public function getAllUsers()
+    {
+        $userService = new UserService();
+
+        try{
+            $categorizedUsers = $userService->getAllUsersCategorized();
+
+            $response = array_merge(['status' => 'success'], $categorizedUsers);
+
+            http_response_code(200);
+            echo json_encode($response);
+            exit;
+        } catch (\Exception $e){
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'An error occurred while fetching users: ' . $e->getMessage()
+            ]);
+            exit;
+        }
+    }
+
+    public function create(){
+        $data = json_decode(file_get_contents("php://input"),true);
+        $first_name = isset($data['first_name']) ? $data['first_name'] : '';
+        $last_name = isset($data['last_name']) ? $data['last_name'] : '';
+        $email = isset($data['email']) ? $data['email'] : '';
+        $password = isset($data['password']) ? $data['password'] : '';
+        $confirmPassword = isset($data['confirm_password']) ? $data['confirm_password'] : '';
+        $role = isset($data['role']) ? $data['role'] : null;
+
+        $specialization = isset($data['specialization']) ? $data['specialization'] : null;
+
+
+
+        if (empty($first_name) || empty($last_name) || empty($email) || empty($password) || empty($confirmPassword)) {
+            http_response_code(400);
+            echo json_encode(['status'=>'error', 'message'=>'All fields are required.']);
+            exit;
+        }
+
+        $userService = new UserService();
+        try {
+            $userService->createUser($first_name, $last_name, $email, $password, $confirmPassword, $role, $specialization);
+
+            $user = $userService->getUserByEmail($email);
+
+            http_response_code(200);
+            echo json_encode(['status'=>'success', 'message' => 'User successfully created']);
+            exit;
+
+        } catch (\Exception $ex) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => $ex->getMessage()]);
+            exit;
+        }
+    }
+
+
+    public function update() {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $id = isset($data['user_id']) ? $data['user_id'] : null;
+        $first_name = isset($data['first_name']) ? $data['first_name'] : '';
+        $last_name = isset($data['last_name']) ? $data['last_name'] : '';
+        $email = isset($data['email']) ? $data['email'] : '';
+        $role = isset($data['role']) ? $data['role'] : '';
+        $specialization = isset($data['specialization']) ? $data['specialization'] : null;
+
+        if (empty($id)) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'User ID is missing.']);
+            exit;
+        }
+
+        $userService = new UserService();
+
+        try {
+            $userService->updateUser($id, $first_name, $last_name, $email, $role, $specialization);
+
+            http_response_code(200);
+            echo json_encode(['status' => 'success', 'message' => 'User successfully updated.']);
+            exit;
+
+        } catch (\Exception $ex) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => $ex->getMessage()]);
+            exit;
+        }
+    }
+
 }

@@ -8,6 +8,7 @@
 
 
     <div class="header__actions">
+        <?php if($_SESSION['user_role']!=='admin'): ?>
         <a href="/kim/profile/notifications" style="text-decoration: none;">
         <button class="header__btn header__btn-notification">
             <i class="fa-regular fa-bell"></i>
@@ -16,6 +17,7 @@
             <?php endif; ?>
         </button>
         </a>
+        <?php endif;?>
 
 
         <a href="/kim/profile">
