@@ -7,7 +7,7 @@ VALUES
 ('David', 'Miller', 'david@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
 ('Emma', 'Wilson', 'emma@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
 ('Oliver', 'Brown', 'oliver@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'trainer'),
--- Membri (Clienți)
+-- Membri
 ('John', 'Client', 'john@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
 ('Anna', 'Davis', 'anna@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
 ('William', 'Test', 'william@kim.com', '$2y$10$tnKszUW3PPeOHsTQ2ZzOcuQOBJenizfG2XM9amdcUprf2c/BYF7GK', 'member'),
@@ -118,7 +118,7 @@ INSERT INTO BOOKINGS (user_id, session_id, user_subscription_id) VALUES
 (8, 7, 4),                        -- Crossfit WOD (Str)
 (5, 8, 2),                        -- Posture Check (Phys - AZI)
 (4, 9, 1), (7, 9, 3), (10, 9, 5), -- Zumba (Fit - AZI)
-(8, 10, 4),                       -- Deadlift Workshop (Str - Mâine)
+(8, 10, 4),                       -- Deadlift Workshop
 
 (4, 11, 1), (7, 11, 3),           -- Summer Shred (Fit)
 (5, 12, 2),                       -- Mobility Flow (Phys)

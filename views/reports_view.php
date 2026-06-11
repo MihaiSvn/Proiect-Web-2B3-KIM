@@ -24,6 +24,9 @@
     <script defer src="/kim/public/js/report_trainers.js"></script>
     <script defer src="/kim/public/js/report_distribution.js"></script>
 
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
+
+
 </head>
 
 <body>

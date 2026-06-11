@@ -35,6 +35,9 @@
 
 
     <script src="/kim/public/js/calendar.js" defer></script>
+
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
+
     <!--    defer asteapta ca codul html sa se incarca ca apoi sa ruleze script ul-->
 </head>
 <body>
