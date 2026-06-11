@@ -64,7 +64,6 @@
 
                         <?php if ($field->type !== 'hidden'): ?>
                             <label class="form__label" for="<?= $field->id ?>"><?= $field->label ?></label>
-                            <label class="form__label" for="<?= $popupId ?>_<?= $field->id ?>"><?= $field->label ?></label>
                         <?php endif; ?>
 
 <!--                        daca e dropdown -->

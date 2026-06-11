@@ -39,6 +39,8 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
+    <link rel="icon" href="/kim/public/images/serenity_icon.svg" type="image/svg+xml">
+
 
 </head>
 
