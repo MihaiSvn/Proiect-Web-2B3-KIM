@@ -140,12 +140,6 @@ class UserApiController
             exit;
         }
 
-        if ($userIdToDelete == $currentUserId && $currentUserRole === 'admin') {
-            http_response_code(403);
-            echo json_encode(["status" => "error", "message" => "An admin cannot delete their own account."]);
-            exit;
-        }
-
         if ($userIdToDelete == $currentUserId && $currentUserRole === 'trainer') {
             http_response_code(403);
             echo json_encode(["status" => "error", "message" => "A trainer cannot delete their own account."]);
