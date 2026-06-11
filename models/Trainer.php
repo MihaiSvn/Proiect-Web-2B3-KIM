@@ -49,30 +49,25 @@ class Trainer
     }
 
     public static function getAllTrainersForExport()
-{
-    global $pdo;
+    {
+        global $pdo;
 
-    $query = "
+        $query = "
         SELECT
-
             u.first_name,
             u.last_name,
             u.email,
-            t.specialization,
-            u.created_at
-
+            t.specialization
         FROM USERS u
-
         JOIN TRAINERS t
             ON u.id = t.user_id
-
         ORDER BY u.created_at DESC
     ";
 
-    return $pdo
-        ->query($query)
-        ->fetchAll();
-}
+        return $pdo
+            ->query($query)
+            ->fetchAll();
+    }
 
 //ca sa nu adaugam duplicate in urma import
     public static function existsByEmail(
