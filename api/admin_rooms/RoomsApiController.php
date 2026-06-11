@@ -8,63 +8,94 @@ class RoomsApiController
 {
     public function getData()
     {
-        $service =
-            new RoomsEquipmentService();
+        $service = new RoomsEquipmentService();
 
         http_response_code(200);
 
         echo json_encode([
 
-            'rooms' =>
-                $service->getRooms()
+            'rooms' => $service->getRooms()
         ]);
     }
 
     public function update()
     {
-        $service =
-            new RoomsEquipmentService();
-
-        $service->updateRoom(
-            json_decode(
-                file_get_contents(
-                    'php://input'
-                ),
-                true
-            )
+        $data = json_decode(
+            file_get_contents('php://input'),
+            true
         );
 
-        echo json_encode([
+        if(
+            !isset($data['room_id'])
+        ){
+            http_response_code(400);
 
-            'status' =>
-                'success',
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Invalid room'
+            ]);
 
-            'message' =>
-                'Room updated successfully'
-        ]);
+            return;
+        }
+
+        try{
+
+            $service =
+                new RoomsEquipmentService();
+
+            $service->updateRoom(
+                $data
+            );
+
+            echo json_encode([
+
+                'status' => 'success',
+                'message' => 'Room updated successfully'
+            ]);
+
+        }catch(\Exception $ex){
+
+            http_response_code(400);
+
+            echo json_encode([
+
+                'status' => 'error',
+                'message' => $ex->getMessage()
+            ]);
+        }
     }
 
     public function create()
     {
-        $service =
-            new RoomsEquipmentService();
+        try{
 
-        $service->createRoom(
-            json_decode(
-                file_get_contents(
-                    'php://input'
-                ),
-                true
-            )
-        );
+            $service =
+                new RoomsEquipmentService();
 
-        echo json_encode([
+            $service->createRoom(
+                json_decode(
+                    file_get_contents(
+                        'php://input'
+                    ),
+                    true
+                )
+            );
 
-            'status' =>
-                'success',
+            echo json_encode([
 
-            'message' =>
-                'Room created successfully'
-        ]);
+                'status' => 'success',
+                'message' => 'Room created successfully'
+            ]);
+
+        }catch(\Exception $ex){
+
+            http_response_code(400);
+
+            echo json_encode([
+
+                'status' => 'error',
+                'message' => $ex->getMessage()
+            ]);
+        }
     }
 }
