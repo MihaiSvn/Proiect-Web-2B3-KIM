@@ -176,7 +176,7 @@ require_once __DIR__ . '/../classes/FormField.php';
                     $roomOptions = [];
                     $jsRoomData = [];
 
-                    $roomsToIterate = $isAdmin ? \models\Room::getAllActiveRooms() : $availableRooms;
+                    $roomsToIterate = $isAdmin ? models\Room::getAllActiveRooms() : $availableRooms;
 
                     if ($roomsToIterate) {
                         foreach ($roomsToIterate as $room) {

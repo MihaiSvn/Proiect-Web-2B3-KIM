@@ -2,9 +2,8 @@
 
 namespace services;
 
-use models\Session;
-use models\Trainer;
 use models\Room;
+use models\Session;
 
 require_once __DIR__ . '/MailService.php';
 class SessionService
